@@ -17,10 +17,10 @@ jobs:
                   java-version: "11"
 
             # Setup the flutter environment.
+            - uses: actions/checkout@v3
             - uses: subosito/flutter-action@v2
               with:
-                  channel: "stable"
-                  flutter-version: "3.13.4"
+                channel: 'master'
 
             # Fetch sub modules
             - run: git submodule update --init --recursive
