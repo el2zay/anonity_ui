@@ -120,6 +120,7 @@ class _HomePageState extends State<HomePage> {
             decoration: const InputDecoration(
               hintText: "Rechercher",
               prefixIcon: Icon(Icons.search),
+              // Changer la couleur du fond
               enabledBorder: OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.transparent),
               ),

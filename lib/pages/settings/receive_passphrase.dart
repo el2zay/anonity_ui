@@ -26,6 +26,12 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
 
   late Widget scannerWidget;
 
+  @override
+  void dispose() {
+    errorMessage = '';
+    super.dispose();
+  }
+
   void updateButtonState() {
     setState(() {
       // Ignorer l'espace vide à la fin si il y en a un
@@ -134,10 +140,13 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
           const SizedBox(height: 30),
           TextField(
             controller: _passphraseController,
-            decoration: InputDecoration(
+            decoration: const InputDecoration(
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide.none,
+              ),
               hintText: 'Entre ta passphrase.',
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(10),
+                borderSide: BorderSide.none,
               ),
             ),
             autocorrect: false,

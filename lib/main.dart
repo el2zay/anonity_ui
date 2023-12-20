@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:denonceur/pages/empty_token.dart';
 import 'package:denonceur/pages/home.dart';
+import 'package:denonceur/src/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -18,6 +19,10 @@ void main() async {
   token = (await getToken())!;
   notif = await getNotif();
   passphrase = await getPassphrase();
+
+  final lightTheme = getAppSpecificTheme(false);
+  final darkTheme = getAppSpecificTheme(true);
+  
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
@@ -43,94 +48,6 @@ class ThemeProvider with ChangeNotifier {
     notifyListeners();
   }
 }
-
-final lightTheme = ThemeData(
-  brightness: Brightness.light,
-  splashColor: Colors.transparent,
-  highlightColor: Colors.transparent,
-  floatingActionButtonTheme: FloatingActionButtonThemeData(
-    backgroundColor: Colors.grey[800],
-    foregroundColor: Colors.white,
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(Colors.white70),
-      // Texte en noir
-      foregroundColor: MaterialStateProperty.all(Colors.black),
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      splashFactory: NoSplash.splashFactory,
-    ),
-  ),
-  inputDecorationTheme: const InputDecorationTheme(
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.black),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-    ),
-  ),
-  snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.grey),
-  // Ajout du thème pour CheckboxListTile
-  useMaterial3: true,
-);
-
-final darkTheme = ThemeData(
-  brightness: Brightness.dark,
-  splashColor: Colors.transparent,
-  highlightColor: Colors.transparent,
-  scaffoldBackgroundColor: Colors.black,
-  // le fond des listes soit en noir
-  colorScheme: const ColorScheme.dark(
-    surface: Colors.black,
-  ),
-  // App Bar en noir
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.black,
-    foregroundColor: Colors.white,
-  ),
-  floatingActionButtonTheme: const FloatingActionButtonThemeData(
-    backgroundColor: Colors.white,
-    // Couleur des icones en noir
-    foregroundColor: Colors.black,
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-    style: ButtonStyle(
-      backgroundColor: MaterialStateProperty.all(Colors.grey[900]),
-      // Texte en noir
-      foregroundColor: MaterialStateProperty.all(Colors.white),
-      shape: MaterialStateProperty.all(
-        RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      splashFactory: NoSplash.splashFactory,
-    ),
-  ),
-  // Mettre les icons button en gris
-  iconTheme: IconThemeData(color: Colors.blueGrey[400]),
-  // focusBorder des textfield en blanc
-  inputDecorationTheme: const InputDecorationTheme(
-    focusedBorder: OutlineInputBorder(
-      borderSide: BorderSide(color: Colors.white),
-      borderRadius: BorderRadius.all(Radius.circular(10)),
-    ),
-  ),
-  snackBarTheme: SnackBarThemeData(
-    backgroundColor: Colors.grey[900],
-    contentTextStyle: const TextStyle(color: Colors.white),
-  ),
-  // listTileTheme: ListTileThemeData(
-  //   tileColor: Colors.grey[900],
-  //   shape: const RoundedRectangleBorder(
-  //     borderRadius: BorderRadius.all(
-  //       Radius.circular(15),
-  //     ),
-  //   ),
-  // ),
-  useMaterial3: true,
-);
 
 // Route qui permet de charger la page de la gauche vers la droite
 Route lToR(Widget page) {

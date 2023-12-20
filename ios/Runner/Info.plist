@@ -46,6 +46,6 @@
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>This application needs the camera to scan a QRCode, enabling users to synchronise what they record between their devices.</string>
+	<string>This application needs the camera to scan a QRCode, enabling users to synchronise what they passkey between their devices.</string>
 </dict>
 </plist>

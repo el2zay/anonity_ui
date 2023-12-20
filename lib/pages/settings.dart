@@ -5,6 +5,7 @@ import 'package:denonceur/pages/empty_token.dart';
 import 'package:denonceur/pages/settings/delete_data.dart';
 import 'package:denonceur/pages/settings/share_passphrase.dart';
 import 'package:denonceur/pages/settings/receive_passphrase.dart';
+import 'package:denonceur/src/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,25 +29,26 @@ class _SettingsPageState extends State<SettingsPage> {
       body: ListView(
         padding: const EdgeInsets.all(18.0),
         children: [
-          CheckboxListTile(
-            title: const Text(
-              "Notifications",
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontWeight: FontWeight.w600),
-              textAlign: TextAlign.center,
+          Theme(
+            data: getCheckboxListTileThemeData(
+              Theme.of(context).brightness,
             ),
-            value: notif,
-            onChanged: (bool? value) async {
-              setState(() {
-                notif = value!;
-              });
-              final prefs = await SharedPreferences.getInstance();
-              prefs.setBool('notif', isChecked);
-            },
-            checkColor: Colors.white,
-            activeColor: Colors.transparent,
+            child: CheckboxListTile(
+              title: const Text(
+                "Notifications",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                textAlign: TextAlign.center,
+              ),
+              value: notif,
+              onChanged: (bool? value) async {
+                setState(() {
+                  notif = value!;
+                });
+                final prefs = await SharedPreferences.getInstance();
+                prefs.setBool('notif', isChecked);
+              },
+              activeColor: Colors.transparent,
+            ),
           ),
           const SizedBox(height: 5),
 
