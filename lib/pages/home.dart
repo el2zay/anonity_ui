@@ -101,12 +101,12 @@ class _HomePageState extends State<HomePage> {
         ),
         actions: [
           IconButton(
-            icon: const Icon(LucideIcons.settings),
-            highlightColor: Colors.transparent,
-            iconSize: 30,
             onPressed: () {
               Navigator.of(context).push(rToL(const SettingsPage()));
             },
+            icon: const Icon(LucideIcons.settings),
+            highlightColor: Colors.transparent,
+            iconSize: 30,
           ),
         ],
         title: const Text('🔲', style: TextStyle(fontSize: 30)),

@@ -2,6 +2,8 @@
 
 import 'package:denonceur/main.dart';
 import 'package:denonceur/pages/empty_token.dart';
+import 'package:denonceur/pages/report.dart';
+import 'package:denonceur/pages/settings/change_theme.dart';
 import 'package:denonceur/pages/settings/delete_data.dart';
 import 'package:denonceur/pages/settings/share_passphrase.dart';
 import 'package:denonceur/pages/settings/receive_passphrase.dart';
@@ -23,6 +25,21 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Paramètres"),
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ReportPage(),
+                ),
+              );
+            },
+            icon: const Icon(Icons.bug_report_outlined),
+            highlightColor: Colors.transparent,
+            iconSize: 30,
+          ),
+        ],
       ),
 
       // Faire une liste de paramètre
@@ -59,16 +76,42 @@ class _SettingsPageState extends State<SettingsPage> {
 
           const SizedBox(height: 40),
 
-          // Button pour changer l'icone de l'application
+          // Bouton pour changer le thème
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                fixedSize: const Size.fromHeight(55)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ChangeThemePage(),
+                ),
+              );
+            },
+            child: const Text(
+              "Changer le thème",
+              style: TextStyle(fontSize: 18),
+            ),
+          ),
+          const SizedBox(height: 5),
+
+          const Text(
+              "Tu peux changer le thème de l'application pour qu'elle soit plus adaptée à ton utilisation.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15)),
+
+          const SizedBox(height: 40),
+
           ElevatedButton(
             style: ElevatedButton.styleFrom(
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 fixedSize: const Size.fromHeight(55)),
             onPressed: () {},
-            child: // Mettre une icone de crayon et le texte "Changer l'icone de l'application"
-                const Text("Déguiser l'application",
-                    style: TextStyle(fontSize: 18)),
+            child: const Text("Déguiser l'application",
+                style: TextStyle(fontSize: 18)),
           ),
 
           const SizedBox(height: 5),
