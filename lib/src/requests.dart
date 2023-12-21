@@ -8,7 +8,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
 Future<List<Posts>> fetchBookMarks(context) async {
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'),
@@ -49,6 +48,24 @@ Future<List<Posts>> fetchPosts(context) async {
 Future<void> savePost(id, context) async {
   var request = http.Request(
       'POST', Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'));
+  request.body = jsonEncode({
+    "id": id,
+  });
+  request.headers.addAll({
+    'Authorization': 'Bearer $token',
+    'Content-Type': 'application/json',
+  });
+  final response = await request.send();
+
+  if (response.statusCode != 200) {
+    return showSnackBar(
+        context, "Une erreur est survenue : ${response.reasonPhrase}");
+  }
+}
+
+Future<void> supportsPost(id, context) async {
+  var request =
+      http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/supports'));
   request.body = jsonEncode({
     "id": id,
   });

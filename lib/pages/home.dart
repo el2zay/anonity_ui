@@ -308,8 +308,10 @@ class _HomePageState extends State<HomePage> {
                                 onDoubleTap: () {
                                   debugPrint('Soutiens');
                                 },
-                                onTap: () {
+                                onTap: () async {
                                   HapticFeedback.selectionClick();
+                                  await supportsPost(
+                                      snapshot.data![index].id, context);
                                 },
                                 child: const Icon(
                                   LucideIcons.heartHandshake,

@@ -136,8 +136,10 @@ class _BookmarksPageState extends State<BookmarksPage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             GestureDetector(
-                              onTap: () {
-                                debugPrint('Soutiens');
+                              onTap: () async {
+                                HapticFeedback.selectionClick();
+                                await supportsPost(
+                                    snapshot.data![index].id, context);
                               },
                               child: const Icon(
                                 LucideIcons.heartHandshake,
