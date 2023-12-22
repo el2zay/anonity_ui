@@ -47,6 +47,12 @@ class Posts {
   }
 }
 
+// Définir l'icone bookmarks
+Icon bookmarkIcon = const Icon(
+  Icons.bookmark_add_outlined,
+  size: 25,
+);
+
 class _HomePageState extends State<HomePage> {
   ValueNotifier<bool> buttonsEnabled = ValueNotifier(true);
 
@@ -134,7 +140,6 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.campaign, size: 35),
         onPressed: () {
-          // Changer la page en faisant une animation de bas en haut
           if (buttonsEnabled.value) {
             // Vérifier si les boutons sont actifs
             Navigator.push(
@@ -321,13 +326,26 @@ class _HomePageState extends State<HomePage> {
                               GestureDetector(
                                 onTap: () async {
                                   HapticFeedback.selectionClick();
+                                  setState(() {
+                                    // Si l'icone est un bookmark_outline alors on change l'icone en bookmark
+                                    if (bookmarkIcon.icon ==
+                                        Icons.bookmark_add_outlined) {
+                                      bookmarkIcon = const Icon(
+                                        Icons.bookmark,
+                                        color: Colors.blue,
+                                        size: 25,
+                                      );
+                                    } else {
+                                      bookmarkIcon = const Icon(
+                                        Icons.bookmark_add_outlined,
+                                        size: 25,
+                                      );
+                                    }
+                                  });
                                   await savePost(
                                       snapshot.data![index].id, context);
                                 },
-                                child: const Icon(
-                                  Icons.bookmark_add_outlined,
-                                  size: 25,
-                                ),
+                                child: bookmarkIcon,
                               ),
                             ],
                           ),

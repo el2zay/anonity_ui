@@ -123,6 +123,8 @@ class _PostPageState extends State<PostPage> {
                   ),
                 ),
                 maxLength: 5000,
+                // TODO Ne pas pouvoir sauter plus de 2 lignes à la fois
+
                 style: const TextStyle(fontSize: 16),
                 keyboardType: TextInputType.multiline,
                 maxLines: null,

@@ -30,6 +30,28 @@ Future<List<Posts>> fetchBookMarks(context) async {
   }
 }
 
+Future<List<Posts>> fetchSupports(context) async {
+  final response =
+      await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/supports'),
+          // Ajouter le token
+          headers: <String, String>{
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> jsonData = json.decode(response.body);
+    final List<dynamic> data = jsonData['data'];
+
+    return data.map((e) => Posts.fromJson(e)).toList();
+  } else if (response.statusCode == 400) {
+    return [];
+  } else {
+    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
+    return [];
+  }
+}
+
 Future<List<Posts>> fetchPosts(context) async {
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts'));

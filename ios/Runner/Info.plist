@@ -47,5 +47,7 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>This application needs the camera to scan a QRCode, enabling users to synchronise what they passkey between their devices.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>This application needs the photo library to send screenshots when a bug is reported.</string>
 </dict>
 </plist>

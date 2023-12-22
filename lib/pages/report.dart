@@ -13,7 +13,10 @@ class _ReportPageState extends State<ReportPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: const Text("Signaler un bug"),
+        centerTitle: true,
+      ),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(25),
@@ -71,8 +74,26 @@ class _ReportPageState extends State<ReportPage> {
                   return null;
                 },
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 25),
               // TODO: Pouvoir inclure des captures
+              Card(
+                elevation: 7,
+                shadowColor: Colors.blue,
+                child: Container(
+                  margin: const EdgeInsets.all(100),
+                  child: const Column(
+                    children: [
+                      Text("Ajouter une capture d'écran",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center),
+                    ],
+                  ),
+                ),
+              ),
+              const SizedBox(height: 30),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
