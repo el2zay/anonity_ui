@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 late String passphrase;
 late String token;
 late bool notif;
+late int theme;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,10 +20,11 @@ void main() async {
   token = (await getToken())!;
   notif = await getNotif();
   passphrase = await getPassphrase();
+  theme = await getTheme();
 
   final lightTheme = getAppSpecificTheme(false);
   final darkTheme = getAppSpecificTheme(true);
-  
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
@@ -30,6 +32,11 @@ void main() async {
         title: 'Denonceur',
         theme: lightTheme,
         darkTheme: darkTheme,
+        themeMode: theme == 0
+            ? ThemeMode.system
+            : theme == 1
+                ? ThemeMode.light
+                : ThemeMode.dark,
         home: token == "" ? const EmptyTokenPage() : const HomePage(),
       ),
     ),
@@ -114,4 +121,11 @@ Future<String> getPassphrase() async {
   );
   var passphrase = tokenSplitDecode['passphrase'];
   return passphrase ?? "";
+}
+
+Future<int> getTheme() async {
+  final prefs = await SharedPreferences.getInstance();
+  final theme = prefs.getInt('theme');
+
+  return theme ?? 0;
 }

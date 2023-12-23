@@ -56,6 +56,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
                 textAlign: TextAlign.center,
               ),
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                  Radius.circular(15),
+                ),
+              ),
               value: notif,
               onChanged: (bool? value) async {
                 setState(() {

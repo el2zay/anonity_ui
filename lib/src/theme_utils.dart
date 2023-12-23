@@ -14,11 +14,6 @@ ThemeData getCheckboxListTileThemeData(Brightness brightness) {
     listTileTheme: ListTileThemeData(
       tileColor: tileColor,
       textColor: textColor,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(
-          Radius.circular(15),
-        ),
-      ),
     ),
   );
 }
