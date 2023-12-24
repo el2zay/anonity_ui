@@ -1,3 +1,4 @@
+import 'package:denonceur/src/widgets/image_picker_widget.dart';
 import 'package:flutter/material.dart';
 
 class ReportPage extends StatefulWidget {
@@ -75,25 +76,32 @@ class _ReportPageState extends State<ReportPage> {
                 },
               ),
               const SizedBox(height: 25),
-              // TODO: Pouvoir inclure des captures
               Card(
-                elevation: 7,
-                shadowColor: Colors.blue,
                 child: Container(
-                  margin: const EdgeInsets.all(100),
+                  padding: const EdgeInsets.all(10),
                   child: const Column(
                     children: [
-                      Text("Ajouter une capture d'écran",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          textAlign: TextAlign.center),
+                      Text(
+                        'Ajouter des images',
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Text(
+                        "Tu peux ajouter jusqu'à 3 images.",
+                        style: TextStyle(
+                          fontSize: 15,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      ImagePickerWidget(),
                     ],
                   ),
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 45),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
