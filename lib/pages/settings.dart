@@ -53,7 +53,7 @@ class _SettingsPageState extends State<SettingsPage> {
             child: CheckboxListTile(
               title: const Text(
                 "Notifications",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500),
                 textAlign: TextAlign.center,
               ),
               shape: const RoundedRectangleBorder(

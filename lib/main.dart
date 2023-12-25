@@ -28,19 +28,30 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => ThemeProvider(),
-      child: MaterialApp(
-        title: 'Denonceur',
-        theme: lightTheme,
-        darkTheme: darkTheme,
-        themeMode: theme == 0
-            ? ThemeMode.system
-            : theme == 1
-                ? ThemeMode.light
-                : ThemeMode.dark,
-        home: token == "" ? const EmptyTokenPage() : const HomePage(),
+      child: Consumer<ThemeProvider>(
+        builder: (context, themeProvider, child) {
+          ThemeMode initialThemeMode = theme == 0
+              ? ThemeMode.system
+              : theme == 1
+                  ? ThemeMode.light
+                  : ThemeMode.dark;
+
+          if (themeProvider.themeMode != ThemeMode.system) {
+            initialThemeMode = themeProvider.themeMode;
+          }
+
+          return MaterialApp(
+            title: 'Denonceur',
+            theme: lightTheme,
+            darkTheme: darkTheme,
+            themeMode: initialThemeMode,
+            home: token == "" ? const EmptyTokenPage() : const HomePage(),
+          );
+        },
       ),
     ),
   );
+
   // Mode portrait seulement
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
@@ -62,26 +73,6 @@ Route lToR(Widget page) {
     pageBuilder: (context, animation, secondaryAnimation) => page,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       const begin = Offset(-1.0, 0.0);
-      const end = Offset.zero;
-      const curve = Curves.ease;
-
-      final tween =
-          Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-      return SlideTransition(
-        position: animation.drive(tween),
-        child: child,
-      );
-    },
-  );
-}
-
-// Route qui permet de charger la page de la droite vers la gauche
-Route rToL(Widget page) {
-  return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => page,
-    transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(1.0, 0.0);
       const end = Offset.zero;
       const curve = Curves.ease;
 
