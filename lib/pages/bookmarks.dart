@@ -1,10 +1,7 @@
-import 'package:denonceur/pages/home.dart';
 import 'package:denonceur/src/requests.dart';
-import 'package:expandable_text/expandable_text.dart';
+import 'package:denonceur/src/widgets/post_card_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:lucide_icons/lucide_icons.dart';
 
 class BookmarksPage extends StatefulWidget {
   const BookmarksPage({super.key});
@@ -103,69 +100,11 @@ class _BookmarksPageState extends State<BookmarksPage> {
               shrinkWrap: true,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
-                return Card(
-                  margin: const EdgeInsets.only(top: 10),
-                  elevation: 7,
-                  shadowColor: Colors.blue,
-                  child: GestureDetector(
-                    onDoubleTap: () {
-                      debugPrint('Double tap!');
-                      // TODO: Animation de soutien
-                    },
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        ListTile(
-                          title: Text(
-                            "${snapshot.data![index].title} (${snapshot.data![index].age} ans)",
-                            style: const TextStyle(
-                              fontWeight: FontWeight.w700,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          subtitle: ExpandableText(
-                            snapshot.data![index].subject.toString(),
-                            expandText: 'Voir plus',
-                            collapseText: '\nVoir moins',
-                            maxLines: 6,
-                            animation: false,
-                            linkColor: Colors.blue,
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            GestureDetector(
-                              onTap: () async {
-                                HapticFeedback.selectionClick();
-                                await supportsPost(
-                                    snapshot.data![index].id, context);
-                              },
-                              child: const Icon(
-                                LucideIcons.heartHandshake,
-                                size: 25,
-                              ),
-                            ),
-                            GestureDetector(
-                              onTap: () async {
-                                // Emettre une vibration
-                                HapticFeedback.selectionClick();
-                                await savePost(
-                                    snapshot.data![index].id, context);
-                                setState(() {});
-                              },
-                              child: const Icon(
-                                Icons.bookmark,
-                                color: Colors.blue,
-                                size: 25,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 10),
-                      ],
-                    ),
-                  ),
+                return PostCard(
+                  title: snapshot.data![index].title!,
+                  subject: snapshot.data![index].subject!,
+                  age: snapshot.data![index].age!,
+                  postId: snapshot.data![index].id!,
                 );
               },
             );

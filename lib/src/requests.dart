@@ -2,8 +2,8 @@ import 'dart:convert';
 
 import 'package:denonceur/main.dart';
 import 'package:denonceur/pages/empty_token.dart';
+import 'package:denonceur/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:denonceur/pages/home.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';

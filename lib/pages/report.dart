@@ -77,6 +77,8 @@ class _ReportPageState extends State<ReportPage> {
               ),
               const SizedBox(height: 25),
               Card(
+                elevation: 0,
+                color: Colors.transparent,
                 child: Container(
                   padding: const EdgeInsets.all(10),
                   child: const Column(

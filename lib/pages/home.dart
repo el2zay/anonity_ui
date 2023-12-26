@@ -5,9 +5,8 @@ import 'package:denonceur/pages/bookmarks.dart';
 import 'package:denonceur/pages/post.dart';
 import 'package:denonceur/pages/settings.dart';
 import 'package:denonceur/src/requests.dart';
-import 'package:expandable_text/expandable_text.dart';
+import 'package:denonceur/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -16,35 +15,6 @@ class HomePage extends StatefulWidget {
 
   @override
   State<HomePage> createState() => _HomePageState();
-}
-
-class Posts {
-  String? title;
-  String? subject;
-  int? age;
-  String? id;
-
-  Posts({
-    this.title,
-    this.subject,
-    this.age,
-    this.id,
-  });
-
-  Posts.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        subject = json['body'],
-        age = json['age'] as int?,
-        id = json['id'];
-
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['title'] = title;
-    data['body'] = subject;
-    data['age'] = age;
-    data['id'] = id;
-    return data;
-  }
 }
 
 // Définir l'icone bookmarks
@@ -78,7 +48,6 @@ class _HomePageState extends State<HomePage> {
       });
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +157,7 @@ class _HomePageState extends State<HomePage> {
         // Faire un pull to refresh
         child: FutureBuilder<List<Posts>>(
           future: fetchPosts(context),
-          builder: (context, snapshot) {
+          builder: (context, AsyncSnapshot<List<Posts>> snapshot) {
             if (activeConnection == false) {
               buttonsEnabled.value = false;
               return Center(
@@ -283,82 +252,11 @@ class _HomePageState extends State<HomePage> {
                       ),
                     );
                   }
-                  return Card(
-                    margin: const EdgeInsets.only(top: 10),
-                    elevation: 7,
-                    shadowColor: Colors.blue,
-                    child: GestureDetector(
-                      onDoubleTap: () {
-                        HapticFeedback.selectionClick();
-                        // TODO: Animation de soutien
-                      },
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ListTile(
-                            title: Text(
-                              "${snapshot.data![index].title} (${snapshot.data![index].age} ans)",
-                              style: const TextStyle(
-                                fontWeight: FontWeight.w700,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                            subtitle: ExpandableText(
-                              snapshot.data![index].subject.toString(),
-                              expandText: 'Voir plus',
-                              collapseText: '\nVoir moins',
-                              maxLines: 6,
-                              animation: false,
-                              linkColor: Colors.blue,
-                            ),
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              GestureDetector(
-                                onDoubleTap: () {
-                                  debugPrint('Soutiens');
-                                },
-                                onTap: () async {
-                                  HapticFeedback.selectionClick();
-                                  await supportsPost(
-                                      snapshot.data![index].id, context);
-                                },
-                                child: const Icon(
-                                  LucideIcons.heartHandshake,
-                                  size: 25,
-                                ),
-                              ),
-                              GestureDetector(
-                                onTap: () async {
-                                  HapticFeedback.selectionClick();
-                                  setState(() {
-                                    // Si l'icone est un bookmark_outline alors on change l'icone en bookmark
-                                    if (bookmarkIcon.icon ==
-                                        Icons.bookmark_add_outlined) {
-                                      bookmarkIcon = const Icon(
-                                        Icons.bookmark,
-                                        color: Colors.blue,
-                                        size: 25,
-                                      );
-                                    } else {
-                                      bookmarkIcon = const Icon(
-                                        Icons.bookmark_add_outlined,
-                                        size: 25,
-                                      );
-                                    }
-                                  });
-                                  await savePost(
-                                      snapshot.data![index].id, context);
-                                },
-                                child: bookmarkIcon,
-                              ),
-                            ],
-                          ),
-                          const SizedBox(height: 10),
-                        ],
-                      ),
-                    ),
+                  return PostCard(
+                    title: snapshot.data![index].title!,
+                    subject: snapshot.data![index].subject!,
+                    age: snapshot.data![index].age!,
+                    postId: snapshot.data![index].id!,
                   );
                 },
               );
