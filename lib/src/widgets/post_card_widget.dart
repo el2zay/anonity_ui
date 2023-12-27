@@ -51,8 +51,12 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(top: 18),
-      elevation: 7,
-      shadowColor: Colors.blue,
+      elevation: 0.5,
+      shadowColor: Colors.white,
+      // Ne pas arrondir
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child: GestureDetector(
         onDoubleTap: () {
           HapticFeedback.selectionClick();
@@ -78,6 +82,7 @@ class PostCard extends StatelessWidget {
                 linkColor: Colors.blue,
               ),
             ),
+            const SizedBox(height: 15),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
@@ -106,7 +111,7 @@ class PostCard extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 13),
           ],
         ),
       ),

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 ThemeData getCheckboxListTileThemeData(Brightness brightness) {
   Color? tileColor = brightness == Brightness.dark
-      ? Colors.grey[900]
+      ? const Color.fromRGBO(40, 39, 44, 1)
       : const Color.fromRGBO(223, 221, 226, 1);
 
   Color? textColor =
@@ -29,7 +29,6 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
       colorScheme: const ColorScheme.dark(
         surface: Colors.black,
       ),
-
       // App Bar en noir
       appBarTheme: const AppBarTheme(
         backgroundColor: Colors.black,
@@ -57,10 +56,19 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
       iconTheme: IconThemeData(color: Colors.blueGrey[400]),
       // focusBorder des textfield en blanc
       inputDecorationTheme: const InputDecorationTheme(
+        filled: false,
+        fillColor: Color.fromRGBO(29, 32, 35, 1),
         focusedBorder: OutlineInputBorder(
           borderSide: BorderSide(color: Colors.white),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
+      ),
+      // Card noire
+      cardTheme: const CardTheme(
+        color: Colors.black,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all(Colors.white),
       ),
       snackBarTheme: SnackBarThemeData(
         backgroundColor: Colors.grey[900],
@@ -90,11 +98,21 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
           splashFactory: NoSplash.splashFactory,
         ),
       ),
-      inputDecorationTheme: const InputDecorationTheme(
-        focusedBorder: OutlineInputBorder(
+      inputDecorationTheme: InputDecorationTheme(
+        filled: false,
+        fillColor: Colors.grey[200],
+        focusedBorder: const OutlineInputBorder(
           borderSide: BorderSide(color: Colors.black),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
+      ),
+      // Card blanche
+      cardTheme: const CardTheme(
+        color: Colors.white,
+      ),
+      checkboxTheme: CheckboxThemeData(
+        checkColor: MaterialStateProperty.all(Colors.black),
+        fillColor: MaterialStateProperty.all(Colors.white),
       ),
       snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.grey),
       useMaterial3: true,
