@@ -1,5 +1,7 @@
+import 'package:denonceur/src/requests.dart';
 import 'package:denonceur/src/widgets/image_picker_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
 
 class ReportPage extends StatefulWidget {
   const ReportPage({super.key});
@@ -10,6 +12,17 @@ class ReportPage extends StatefulWidget {
 
 class _ReportPageState extends State<ReportPage> {
   final _formKey = GlobalKey<FormState>();
+  final TextEditingController _titleController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _userController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  String errorMessage = '';
+
+  @override
+  void dispose() {
+    errorMessage = '';
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +41,7 @@ class _ReportPageState extends State<ReportPage> {
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: null,
                 maxLength: 100,
+                controller: _titleController,
                 decoration: const InputDecoration(
                   labelText: 'Titre',
                   border: OutlineInputBorder(
@@ -46,6 +60,7 @@ class _ReportPageState extends State<ReportPage> {
                 textCapitalization: TextCapitalization.sentences,
                 maxLines: null,
                 maxLength: 5000,
+                controller: _descriptionController,
                 decoration: const InputDecoration(
                   labelText: 'Description',
                   border: OutlineInputBorder(
@@ -61,6 +76,7 @@ class _ReportPageState extends State<ReportPage> {
               ),
               const SizedBox(height: 25),
               TextFormField(
+                controller: _emailController,
                 decoration: const InputDecoration(
                   labelText: 'Adresse mail',
                   hintText: 'example@example.com',
@@ -103,11 +119,49 @@ class _ReportPageState extends State<ReportPage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 45),
+              const SizedBox(height: 20),
+              // TODO: A finir : afficher  l'erreur
+              if (errorMessage.isNotEmpty)
+              Text(
+                errorMessage,
+                style: TextStyle(
+                  color: Colors.red[800],
+                  fontWeight: FontWeight.w600,
+                  fontSize: 15,
+                ),
+              ),
+              const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    Navigator.pop(context);
+                    if (getImagesPath() == []) {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Erreur'),
+                            content: const Text(
+                                "Il est obligatoire d'ajouter au moins une image."),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('Annuler'),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  reportActions(context);
+                                },
+                                child: const Text('Oui'),
+                              )
+                            ],
+                          );
+                        },
+                      );
+                    }
+                    reportActions(context);
                   }
                 },
                 child: const Text('Envoyer'),
@@ -117,5 +171,36 @@ class _ReportPageState extends State<ReportPage> {
         ),
       ),
     );
+  }
+
+  void reportActions(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (BuildContext context) {
+        return PopScope(
+          onPopInvoked: (didPop) => didPop ? null : false,
+          child: const Center(
+            child: CupertinoActivityIndicator(
+              radius: 20,
+            ),
+          ),
+        );
+      },
+    );
+    bugReport(
+      context,
+      _titleController.text,
+      _descriptionController.text,
+      _userController.text,
+      _emailController.text,
+      getImagesPath()![0],
+      getImagesPath()![1],
+      getImagesPath()![2],
+    );
+
+    Navigator.of(context).pop();
+
+    showSnackBar(context, "envoie");
   }
 }

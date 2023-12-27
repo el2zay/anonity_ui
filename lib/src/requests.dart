@@ -67,7 +67,7 @@ Future<List<Posts>> fetchPosts(context) async {
   }
 }
 
-Future<void> savePost(id, context) async {
+Future<void> savePost(context, id) async {
   var request = http.Request(
       'POST', Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'));
   request.body = jsonEncode({
@@ -85,7 +85,7 @@ Future<void> savePost(id, context) async {
   }
 }
 
-Future<void> supportsPost(id, context) async {
+Future<void> supportsPost(context, id) async {
   var request =
       http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/supports'));
   request.body = jsonEncode({
@@ -144,8 +144,41 @@ Future<List> login(context, newPassphrase) async {
   }
 }
 
+Future bugReport(
+    context, title, description, user, email, path1, path2, path3) async {
+  var request = http.MultipartRequest(
+      'POST', Uri.parse('${dotenv.env['API_REQUEST']!}/bugs'));
+  request.fields.addAll({
+    'title': title,
+    'description': description,
+    'user': user,
+    'email': email
+  });
+  if (path1 != []) {
+    request.files.add(await http.MultipartFile.fromPath('screenshot1', path1));
+  }
+  if (path2 != null) {
+    request.files.add(await http.MultipartFile.fromPath('screenshot2', path2));
+  }
+  if (path3 != null) {
+    request.files.add(await http.MultipartFile.fromPath('screenshot3', path3));
+  }
+
+  http.StreamedResponse response = await request.send();
+
+  if (response.statusCode == 200) {
+    // Print ce qui a été envoyer
+    showSnackBar(context, await response.stream.bytesToString());
+  } else {
+    // Récupérer "message" dans le body
+    final String responseBody = await response.stream.bytesToString();
+    final Map<String, dynamic> jsonData = json.decode(responseBody);
+    final String message = jsonData['message'];
+    return message;
+  }
+}
+
 Future<void> deleteDatas(context) async {
-  debugPrint(token);
   final http.Response response = await http.delete(
     Uri.parse('${dotenv.env['API_REQUEST']!}/deleteAllMyDatas'),
     headers: <String, String>{

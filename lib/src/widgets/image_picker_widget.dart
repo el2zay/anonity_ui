@@ -12,9 +12,24 @@ class ImagePickerWidget extends StatefulWidget {
   State<ImagePickerWidget> createState() => _ImagePickerWidgetState();
 }
 
-class _ImagePickerWidgetState extends State<ImagePickerWidget> {
-  final List<File> _images = [];
+final _images = [];
 
+// Fonction pour récupérer le path des images
+List<String?>? getImagesPath() {
+  if (_images.isEmpty) {
+    return [];
+  }
+  
+  List<String?> imagesPath = List.filled(3, null, growable: false);
+  var i = 0;
+  for (var image in _images.take(2)) {
+    imagesPath[i++] = image.path;
+  }
+  return imagesPath;
+}
+
+
+class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future getImageFromGallery(BuildContext context) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);

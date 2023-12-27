@@ -92,7 +92,7 @@ class PostCard extends StatelessWidget {
                   },
                   onTap: () async {
                     HapticFeedback.selectionClick();
-                    await supportsPost(postId, context);
+                    await supportsPost(context, postId);
                   },
                   child: const Icon(
                     LucideIcons.heartHandshake,
@@ -102,7 +102,7 @@ class PostCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.selectionClick();
-                    await savePost(postId, context);
+                    await savePost(context, postId);
                   },
                   child: const Icon(
                     Icons.bookmark_add_outlined,
