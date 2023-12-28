@@ -168,12 +168,19 @@ class _SettingsPageState extends State<SettingsPage> {
             style:
                 ElevatedButton.styleFrom(fixedSize: const Size.fromHeight(55)),
             onPressed: () {
-              // Afficher une petite popup qui vient du bas de l'écran
+              double maxHeight = MediaQuery.of(context).size.height *
+                  0.7;
+              if (maxHeight > 300) {
+                maxHeight =
+                    300;
+              }
+
               showModalBottomSheet(
                 constraints: BoxConstraints(
-                  maxHeight: MediaQuery.of(context).size.height * 0.36,
+                  maxHeight: maxHeight,
                 ),
-                isScrollControlled: false,
+                useSafeArea: true,
+                isScrollControlled: true,
                 context: context,
                 shape: const RoundedRectangleBorder(
                   borderRadius: BorderRadius.vertical(

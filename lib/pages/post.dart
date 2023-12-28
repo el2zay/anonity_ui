@@ -103,7 +103,7 @@ class _PostPageState extends State<PostPage> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                maxLength: 30,
+                maxLength: 45,
                 textCapitalization: TextCapitalization.sentences,
               ),
             ),

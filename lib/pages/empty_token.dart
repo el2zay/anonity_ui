@@ -50,82 +50,79 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
               ),
             ),
           ),
-          Center(
-            child: Column(
-              children: [
-                const SizedBox(height: 150),
-                const Text(
-                  "Bienvenue sur Dénonceur !",
-                  style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 150),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ReceivePassphrasePage()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo[800],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
-                    ),
+          SafeArea(
+            left: false,
+            top: false,
+            right: false,
+            bottom: false,
+            minimum: const EdgeInsets.only(top: 100.0),
+            child: Center(
+              child: Column(
+                children: [
+                  const Text(
+                    "Bienvenue sur Dénonceur !",
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
-                  child: const Text(
-                    "J'ai déjà une passphrase",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                    "Tu peux récupérer ta passphrase pour transférer tes données sur un autre appareil et les synchroniser.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15, color: Colors.white)),
-                const SizedBox(height: 40),
-                ElevatedButton(
-                  onPressed: () async {
-                    showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return const Center(
-                          child: CupertinoActivityIndicator(
-                            radius: 20,
-                          ),
-                        );
-                      },
-                    );
-                    var newToken = await register(context);
-
-                    final prefs = await SharedPreferences.getInstance();
-                    if (newToken != null) {
-                      prefs.setString('token', newToken);
-                      // Afficher la page HomePage
+                  const SizedBox(height: 150),
+                  ElevatedButton(
+                    onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const HomePage()),
+                            builder: (context) =>
+                                const ReceivePassphrasePage()),
                       );
-                    }
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.indigo[800],
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(32.0),
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigo[800],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
+                    child: const Text(
+                      "J'ai déjà une passphrase",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
-                  child: const Text(
-                    "Je n'ai pas de passphrase",
-                    style: TextStyle(fontSize: 20, color: Colors.white),
+                  const SizedBox(height: 150),
+                  ElevatedButton(
+                    onPressed: () async {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return const Center(
+                            child: CupertinoActivityIndicator(
+                              radius: 20,
+                            ),
+                          );
+                        },
+                      );
+                      var newToken = await register(context);
+
+                      final prefs = await SharedPreferences.getInstance();
+                      if (newToken != null) {
+                        prefs.setString('token', newToken);
+                        // Afficher la page HomePage
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomePage()),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.indigo[800],
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(32.0),
+                      ),
+                    ),
+                    child: const Text(
+                      "Je n'ai pas de passphrase",
+                      style: TextStyle(fontSize: 20, color: Colors.white),
+                    ),
                   ),
-                ),
-                const SizedBox(height: 10),
-                const Text(
-                    "Lors de la création de ta passphrase tu n'as pas besoin de donner une information personnelle.\nPour t'identifier, une passphrase te sera attribuée.",
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 15, color: Colors.white)),
-              ],
+                ],
+              ),
             ),
           ),
         ],

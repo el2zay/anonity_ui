@@ -28,9 +28,44 @@ class _ReportPageState extends State<ReportPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Signaler un bug"),
-        centerTitle: true,
-      ),
+          title: const Text("Signaler un bug"),
+          centerTitle: true,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back),
+            onPressed: () {
+              if (_titleController.text.isNotEmpty ||
+                  _descriptionController.text.isNotEmpty ||
+                  _emailController.text.isNotEmpty) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Attention'),
+                      content: const Text(
+                          "En quittant cette page, tu perdras toutes les informations saisies. Es-tu sûr de vouloir quitter cette page ?"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Rester'),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('Quitter'),
+                        )
+                      ],
+                    );
+                  },
+                );
+              } else {
+                Navigator.of(context).pop();
+              }
+            },
+          )),
       body: SingleChildScrollView(
         child: Container(
           margin: const EdgeInsets.all(25),
@@ -122,46 +157,43 @@ class _ReportPageState extends State<ReportPage> {
               const SizedBox(height: 20),
               // TODO: A finir : afficher  l'erreur
               if (errorMessage.isNotEmpty)
-              Text(
-                errorMessage,
-                style: TextStyle(
-                  color: Colors.red[800],
-                  fontWeight: FontWeight.w600,
-                  fontSize: 15,
+                Text(
+                  errorMessage,
+                  style: TextStyle(
+                    color: Colors.red[800],
+                    fontWeight: FontWeight.w600,
+                    fontSize: 15,
+                  ),
                 ),
-              ),
               const SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    if (getImagesPath() == []) {
+                    if (getImagesPath()!.isEmpty) {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
                             title: const Text('Erreur'),
                             content: const Text(
-                                "Il est obligatoire d'ajouter au moins une image."),
+                                "Tu dois ajouter au moins une image pour envoyer ton rapport de bug.\r"),
                             actions: [
                               TextButton(
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: const Text('Annuler'),
+                                child: const Text('OK',
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold)),
                               ),
-                              TextButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                  reportActions(context);
-                                },
-                                child: const Text('Oui'),
-                              )
                             ],
                           );
                         },
                       );
+                    } else {
+                      reportActions(context);
                     }
-                    reportActions(context);
                   }
                 },
                 child: const Text('Envoyer'),

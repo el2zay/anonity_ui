@@ -154,7 +154,7 @@ Future bugReport(
     'user': user,
     'email': email
   });
-  if (path1 != []) {
+  if (path1 != [] && path1 != null) {
     request.files.add(await http.MultipartFile.fromPath('screenshot1', path1));
   }
   if (path2 != null) {
@@ -168,7 +168,7 @@ Future bugReport(
 
   if (response.statusCode == 200) {
     // Print ce qui a été envoyer
-    showSnackBar(context, await response.stream.bytesToString());
+    showSnackBar(context, "Merci pour ton rapport de bug !");
   } else {
     // Récupérer "message" dans le body
     final String responseBody = await response.stream.bytesToString();

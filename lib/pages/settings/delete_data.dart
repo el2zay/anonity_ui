@@ -38,7 +38,6 @@ class _DeleteDataPageState extends State<DeleteDataPage> {
           const SizedBox(height: 20),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              padding: const EdgeInsets.only(left: 30, right: 30),
               shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
