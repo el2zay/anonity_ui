@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:denonceur/src/requests.dart';
 import 'package:denonceur/src/widgets/image_picker_widget.dart';
 import 'package:flutter/material.dart';
@@ -155,7 +157,6 @@ class _ReportPageState extends State<ReportPage> {
                 ),
               ),
               const SizedBox(height: 20),
-              // TODO: A finir : afficher  l'erreur
               if (errorMessage.isNotEmpty)
                 Text(
                   errorMessage,
@@ -205,7 +206,7 @@ class _ReportPageState extends State<ReportPage> {
     );
   }
 
-  void reportActions(BuildContext context) {
+  void reportActions(BuildContext context) async {
     showDialog(
       context: context,
       barrierDismissible: false,
@@ -220,7 +221,7 @@ class _ReportPageState extends State<ReportPage> {
         );
       },
     );
-    bugReport(
+    var bugReportFunc = await bugReport(
       context,
       _titleController.text,
       _descriptionController.text,
@@ -231,8 +232,11 @@ class _ReportPageState extends State<ReportPage> {
       getImagesPath()![2],
     );
 
-    Navigator.of(context).pop();
+    setState(() {
+      errorMessage = bugReportFunc;
+    });
 
-    showSnackBar(context, "envoie");
+    Navigator.of(context).pop();
+    Navigator.of(context).pop();
   }
 }

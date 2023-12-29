@@ -19,7 +19,7 @@ List<String?>? getImagesPath() {
   if (_images.isEmpty) {
     return [];
   }
-  
+
   List<String?> imagesPath = List.filled(3, null, growable: false);
   var i = 0;
   for (var image in _images.take(2)) {
@@ -27,7 +27,6 @@ List<String?>? getImagesPath() {
   }
   return imagesPath;
 }
-
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
   Future getImageFromGallery(BuildContext context) async {

@@ -163,7 +163,7 @@ class _HomePageState extends State<HomePage> {
         }),
         // Faire un pull to refresh
         child: FutureBuilder<List<Posts>>(
-          future: fetchPosts(context),
+          future: fetchPosts(context, null),
           builder: (context, AsyncSnapshot<List<Posts>> snapshot) {
             if (activeConnection == false) {
               buttonsEnabled.value = false;
@@ -235,29 +235,33 @@ class _HomePageState extends State<HomePage> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   if (index == snapshot.data!.length - 1) {
+                    // Refetch des posts
                     return Container(
                       margin: const EdgeInsets.all(30),
-                      child: const Column(
-                        children: [
-                          Text(
-                            "Tu as atteint la fin de la liste.",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          SizedBox(height: 15),
-                          Text(
-                            "Si tu souhaites témoigner, n'hésite pas.\nTu as juste a appuyé sur le bouton\nSache que ton témoignage est totalement anonyme et qu'il pourra permettre de t'aider mais aussi des personnes dans la même situation que toi.",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
+                      child: CupertinoActivityIndicator(
+                        radius: 10,
                       ),
                     );
+                    //       // Refaire le future
+                    //       // Text(
+                    //       //   "Tu as atteint la fin de la liste.",
+                    //       //   style: TextStyle(
+                    //       //     fontSize: 20,
+                    //       //     fontWeight: FontWeight.w700,
+                    //       //   ),
+                    //       // ),
+                    //       // SizedBox(height: 15),
+                    //       // Text(
+                    //       //   "Si tu souhaites témoigner, n'hésite pas.\nTu as juste a appuyé sur le bouton\nSache que ton témoignage est totalement anonyme et qu'il pourra permettre de t'aider mais aussi des personnes dans la même situation que toi.",
+                    //       //   style: TextStyle(
+                    //       //     fontSize: 15,
+                    //       //     fontWeight: FontWeight.w500,
+                    //       //   ),
+                    //       //   textAlign: TextAlign.center,
+                    //       // ),
+                    //     ],
+                    //   ),
+                    // );
                   }
                   return PostCard(
                     title: snapshot.data![index].title!,

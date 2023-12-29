@@ -52,9 +52,9 @@ Future<List<Posts>> fetchSupports(context) async {
   }
 }
 
-Future<List<Posts>> fetchPosts(context) async {
+Future<List<Posts>> fetchPosts(context, postIds) async {
   final response =
-      await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts'));
+      await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts?ids=$postIds'));
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonData = json.decode(response.body);
@@ -64,6 +64,50 @@ Future<List<Posts>> fetchPosts(context) async {
   } else {
     showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
     return [];
+  }
+}
+
+Future<void> postData(context, age, title, expression) async {
+  var request =
+      http.Request('POST', Uri.parse('https://denonceurapi.oriondev.fr/posts'));
+  request.body = jsonEncode({
+    'age': age,
+    'title': title,
+    'body': expression,
+  });
+  request.headers.addAll({
+    'Authorization':
+        'Bearer $token',
+    'Content-Type': 'application/json',
+  });
+
+  final response = await request.send();
+
+  if (response.statusCode == 200) {
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text(
+        "Merci pour ta dénonciation !",
+        textAlign: TextAlign.center,
+      ),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(left: 70, right: 70),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15))),
+      duration: Duration(seconds: 2),
+    ));
+  } else {
+    // TODO: Conserver la dénonciation en cache pour la renvoyer plus tard
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      content: Text(
+        "Une erreur est survenue lors de l'envoi de votre dénonciation.",
+        textAlign: TextAlign.center,
+      ),
+      behavior: SnackBarBehavior.floating,
+      margin: EdgeInsets.only(left: 70, right: 70),
+      shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.all(Radius.circular(15))),
+      duration: Duration(seconds: 2),
+    ));
   }
 }
 
@@ -176,6 +220,7 @@ Future bugReport(
     final String message = jsonData['message'];
     return message;
   }
+  return "";
 }
 
 Future<void> deleteDatas(context) async {
