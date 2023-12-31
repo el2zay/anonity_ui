@@ -61,9 +61,12 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
                 children: [
                   const Text(
                     "Bienvenue sur Dénonceur !",
-                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
                   ),
-                  const SizedBox(height: 150),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
@@ -84,7 +87,7 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
                       style: TextStyle(fontSize: 20, color: Colors.white),
                     ),
                   ),
-                  const SizedBox(height: 150),
+                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   ElevatedButton(
                     onPressed: () async {
                       showDialog(
