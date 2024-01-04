@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +35,7 @@ class Posts {
   }
 }
 
-class PostCard extends StatelessWidget {
+class PostCard extends StatefulWidget {
   final String title;
   final String subject;
   final int age;
@@ -48,12 +50,16 @@ class PostCard extends StatelessWidget {
   });
 
   @override
+  createState() => _PostCardState();
+}
+
+class _PostCardState extends State<PostCard> {
+  @override
   Widget build(BuildContext context) {
     return Card(
       margin: const EdgeInsets.only(top: 18),
       elevation: 0.5,
       shadowColor: Colors.white,
-      // Ne pas arrondir
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
       ),
@@ -67,14 +73,14 @@ class PostCard extends StatelessWidget {
           children: [
             ListTile(
               title: Text(
-                "$title ($age ans)",
+                "${widget.title} (${widget.age} ans)",
                 style: const TextStyle(
                   fontWeight: FontWeight.w700,
                 ),
                 textAlign: TextAlign.center,
               ),
               subtitle: ExpandableText(
-                subject,
+                widget.subject,
                 expandText: 'Voir plus',
                 collapseText: '\nVoir moins',
                 maxLines: 6,
@@ -92,7 +98,7 @@ class PostCard extends StatelessWidget {
                   },
                   onTap: () async {
                     HapticFeedback.selectionClick();
-                    await supportsPost(context, postId);
+                    await supportsPost(context, widget.postId);
                   },
                   child: const Icon(
                     LucideIcons.heartHandshake,
@@ -102,7 +108,9 @@ class PostCard extends StatelessWidget {
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.selectionClick();
-                    await savePost(context, postId);
+                    await savePost(context, widget.postId);
+                    // Rafraichir la page
+                    
                   },
                   child: const Icon(
                     Icons.bookmark_add_outlined,

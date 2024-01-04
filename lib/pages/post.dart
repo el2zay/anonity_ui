@@ -16,16 +16,42 @@ class _PostPageState extends State<PostPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _expressionController = TextEditingController();
   bool isButtonDisabled = true;
+  bool titleMessage = false;
+  bool expressionMessage = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _ageController.addListener(updateButtonState);
+    _titleController.addListener(updateButtonState);
+    _expressionController.addListener(updateButtonState);
+  }
+
+  @override
+  void dispose() {
+    _ageController.dispose();
+    _titleController.dispose();
+    _expressionController.dispose();
+    super.dispose();
+  }
 
   void updateButtonState() {
     setState(() {
-      if (_ageController.text.isEmpty ||
-          _titleController.text.isEmpty ||
-          _expressionController.text.length < 70) {
-        isButtonDisabled = true;
-      } else {
-        isButtonDisabled = false;
-      }
+      isButtonDisabled = _ageController.text.isEmpty ||
+          _titleController.text.replaceAll(RegExp(r'[\s\u200E]'), '').length <
+              10 ||
+          _expressionController.text
+                  .replaceAll(RegExp(r'[\s\u200E]'), '')
+                  .length <
+              70;
+
+      titleMessage =
+          _titleController.text.replaceAll(RegExp(r'[\s\u200E]'), '').length <
+              10;
+      expressionMessage = _expressionController.text
+              .replaceAll(RegExp(r'[\s\u200E]'), '')
+              .length <
+          70;
     });
   }
 
@@ -89,6 +115,30 @@ class _PostPageState extends State<PostPage> {
                 textCapitalization: TextCapitalization.sentences,
               ),
             ),
+            if (titleMessage)
+              RichText(
+                textAlign: TextAlign.center,
+                strutStyle: const StrutStyle(fontSize: 25.0),
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.info_outline,
+                        size: 20,
+                        color: Colors.blue[400],
+                      ),
+                    ),
+                    TextSpan(
+                        text: '\t10 lettres minimum.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue[400],
+                        )),
+                  ],
+                ),
+              ),
             const SizedBox(height: 20),
             const Text(
               "Exprime toi",
@@ -105,14 +155,36 @@ class _PostPageState extends State<PostPage> {
                   ),
                 ),
                 maxLength: 5000,
-                // TODO Ne pas pouvoir sauter plus de 2 lignes à la fois
-
                 style: const TextStyle(fontSize: 16),
                 keyboardType: TextInputType.multiline,
                 maxLines: null,
                 textCapitalization: TextCapitalization.sentences,
               ),
             ),
+            if (expressionMessage)
+              RichText(
+                textAlign: TextAlign.center,
+                strutStyle: const StrutStyle(fontSize: 25.0),
+                text: TextSpan(
+                  style: Theme.of(context).textTheme.bodyMedium,
+                  children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.info_outline,
+                        size: 20,
+                        color: Colors.blue[400],
+                      ),
+                    ),
+                    TextSpan(
+                        text: '\t70 lettres minimum.',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.blue[400],
+                        )),
+                  ],
+                ),
+              ),
           ],
         ),
       ),
@@ -120,8 +192,8 @@ class _PostPageState extends State<PostPage> {
         onPressed: isButtonDisabled
             ? null
             : () async {
-                await postData(context, _ageController.text, _titleController.text,
-                    _expressionController.text);
+                await postData(context, _ageController.text,
+                    _titleController.text, _expressionController.text);
                 Navigator.pop(context);
               },
         backgroundColor: isButtonDisabled
