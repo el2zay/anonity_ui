@@ -104,13 +104,14 @@ class _PostCardState extends State<PostCard> {
                     LucideIcons.heartHandshake,
                     size: 25,
                   ),
+                  //   child: Image.asset("assets/icons/heart-handshake-colored.png",
+                  //       width: 25),
                 ),
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.selectionClick();
                     await savePost(context, widget.postId);
                     // Rafraichir la page
-                    
                   },
                   child: const Icon(
                     Icons.bookmark_add_outlined,

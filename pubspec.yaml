@@ -33,3 +33,4 @@ flutter:
   assets:
     - .env
     - assets/background.mp4
+    - assets/icons/

@@ -94,28 +94,33 @@ class _HomePageState extends State<HomePage> {
         centerTitle: true,
         bottom: PreferredSize(
           preferredSize: const Size.fromHeight(60),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 45),
-            child: TextField(
-              onChanged: (value) {
-                if (value.length > 2) debugPrint(value);
-              },
-              decoration: InputDecoration(
-                hintText: "Rechercher",
-                prefixIcon: const Icon(Icons.search),
-                filled: true,
-                contentPadding: const EdgeInsets.all(10),
-                // Changer la couleur du fond
-                enabledBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.circular(20),
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.transparent),
-                  borderRadius: BorderRadius.circular(20),
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 45),
+                child: TextField(
+                  onChanged: (value) {
+                    if (value.length > 2) debugPrint(value);
+                  },
+                  decoration: InputDecoration(
+                    hintText: "Rechercher",
+                    prefixIcon: const Icon(Icons.search),
+                    filled: true,
+                    contentPadding: const EdgeInsets.all(10),
+                    // Changer la couleur du fond
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.transparent),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
                 ),
               ),
-            ),
+              const SizedBox(height: 15),
+            ],
           ),
         ),
       ),
