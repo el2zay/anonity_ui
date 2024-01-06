@@ -17,12 +17,6 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-// Définir l'icone bookmarks
-Icon bookmarkIcon = const Icon(
-  Icons.bookmark_add_outlined,
-  size: 25,
-);
-
 class _HomePageState extends State<HomePage> {
   ValueNotifier<bool> buttonsEnabled = ValueNotifier(true);
 

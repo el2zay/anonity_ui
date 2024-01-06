@@ -20,7 +20,6 @@ Future<List<Posts>> fetchBookMarks(context) async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonData = json.decode(response.body);
     final List<dynamic> data = jsonData['data'];
-
     return data.map((e) => Posts.fromJson(e)).toList();
   } else if (response.statusCode == 400) {
     return [];
@@ -30,7 +29,30 @@ Future<List<Posts>> fetchBookMarks(context) async {
   }
 }
 
-Future<List<Posts>> fetchSupports(context) async {
+Future<List> fetchBookmarksIds(context) async {
+  final response =
+      await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'),
+          // Ajouter le token
+          headers: <String, String>{
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      });
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> jsonData = json.decode(response.body);
+    final List<dynamic> data = jsonData['data'];
+    final List ids = data.map((e) => e['id']).toList();
+    print(ids);
+    return ids;
+  } else if (response.statusCode == 400) {
+    return [];
+  } else {
+    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
+    return [];
+  }
+}
+
+Future<List> fetchSupports(context) async {
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/supports'),
           // Ajouter le token
@@ -42,8 +64,8 @@ Future<List<Posts>> fetchSupports(context) async {
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonData = json.decode(response.body);
     final List<dynamic> data = jsonData['data'];
-
-    return data.map((e) => Posts.fromJson(e)).toList();
+    final List ids = data.map((e) => e['id']).toList();
+    return ids;
   } else if (response.statusCode == 400) {
     return [];
   } else {
@@ -53,13 +75,12 @@ Future<List<Posts>> fetchSupports(context) async {
 }
 
 Future<List<Posts>> fetchPosts(context, postIds) async {
-  final response =
-      await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts?ids=$postIds'));
+  final response = await http
+      .get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts?ids=$postIds'));
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonData = json.decode(response.body);
     final List<dynamic> data = jsonData['data'];
-
     return data.map((e) => Posts.fromJson(e)).toList();
   } else {
     showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
@@ -76,8 +97,7 @@ Future<void> postData(context, age, title, expression) async {
     'body': expression,
   });
   request.headers.addAll({
-    'Authorization':
-        'Bearer $token',
+    'Authorization': 'Bearer $token',
     'Content-Type': 'application/json',
   });
 
@@ -250,11 +270,11 @@ Future<void> deleteDatas(context) async {
   }
 }
 
-void showSnackBar(BuildContext context, String message) {
+void showSnackBar(BuildContext context, message) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Text(
-        message,
+        message.toString(),
         textAlign: TextAlign.center,
       ),
       behavior: SnackBarBehavior.floating,

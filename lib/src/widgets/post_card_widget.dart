@@ -54,6 +54,34 @@ class PostCard extends StatefulWidget {
 }
 
 class _PostCardState extends State<PostCard> {
+  bool isMounted = false;
+  bool isSupported = false;
+  bool isBookmarked = false;
+
+  @override
+  void initState() {
+    super.initState();
+    isMounted = true;
+    checkSupportStatus();
+  }
+
+  @override
+  void dispose() {
+    isMounted = false;
+    super.dispose();
+  }
+
+  Future<void> checkSupportStatus() async {
+    List supportsIds = await fetchSupports(context);
+    List bookmarksIds = await fetchBookmarksIds(context);
+    if (isMounted) {
+      setState(() {
+        isSupported = supportsIds.contains(widget.postId);
+        isBookmarked = bookmarksIds.contains(widget.postId);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -64,8 +92,11 @@ class _PostCardState extends State<PostCard> {
         borderRadius: BorderRadius.zero,
       ),
       child: GestureDetector(
-        onDoubleTap: () {
+        onDoubleTap: () async {
           HapticFeedback.selectionClick();
+          HapticFeedback.selectionClick();
+          await supportsPost(context, widget.postId);
+          checkSupportStatus();
           // TODO: Animation de soutien
         },
         child: Column(
@@ -99,24 +130,38 @@ class _PostCardState extends State<PostCard> {
                   onTap: () async {
                     HapticFeedback.selectionClick();
                     await supportsPost(context, widget.postId);
+                    checkSupportStatus();
                   },
-                  child: const Icon(
-                    LucideIcons.heartHandshake,
-                    size: 25,
-                  ),
-                  //   child: Image.asset("assets/icons/heart-handshake-colored.png",
-                  //       width: 25),
+                  child: isSupported
+                      ? Image.asset(
+                          "assets/icons/heart-handshake-colored.png",
+                          width: 25,
+                        )
+                      : const Icon(
+                          LucideIcons.heartHandshake,
+                          size: 25,
+                        ),
                 ),
                 GestureDetector(
                   onTap: () async {
                     HapticFeedback.selectionClick();
                     await savePost(context, widget.postId);
-                    // Rafraichir la page
+                    checkSupportStatus();
                   },
-                  child: const Icon(
-                    Icons.bookmark_add_outlined,
-                    size: 25,
-                  ),
+                  child: isBookmarked
+                      ? const Icon(
+                          Icons.bookmark,
+                          size: 25,
+                          color: Colors.blue,
+                          )
+                      : const Icon(
+                          Icons.bookmark_add_outlined,
+                          size: 25,
+                        ),
+                  // child: const Icon(
+                  //   Icons.bookmark_add_outlined,
+                  //   size: 25,
+                  // ),
                 ),
               ],
             ),
