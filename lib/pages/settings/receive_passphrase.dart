@@ -1,5 +1,5 @@
-import 'package:denonceur/pages/home.dart';
-import 'package:denonceur/src/requests.dart';
+import 'package:anonity/pages/home.dart';
+import 'package:anonity/src/requests.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';

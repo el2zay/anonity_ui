@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:denonceur/pages/home.dart';
-import 'package:denonceur/pages/settings/receive_passphrase.dart';
-import 'package:denonceur/src/requests.dart';
+import 'package:anonity/pages/home.dart';
+import 'package:anonity/pages/settings/receive_passphrase.dart';
+import 'package:anonity/src/requests.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -60,7 +60,7 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
               child: Column(
                 children: [
                   const Text(
-                    "Bienvenue sur Dénonceur !",
+                    "Bienvenue sur Anonity !",
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,

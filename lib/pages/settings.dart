@@ -1,13 +1,13 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:denonceur/main.dart';
-import 'package:denonceur/pages/empty_token.dart';
-import 'package:denonceur/pages/report.dart';
-import 'package:denonceur/pages/settings/change_theme.dart';
-import 'package:denonceur/pages/settings/delete_data.dart';
-import 'package:denonceur/pages/settings/share_passphrase.dart';
-import 'package:denonceur/pages/settings/receive_passphrase.dart';
-import 'package:denonceur/src/theme_utils.dart';
+import 'package:anonity/main.dart';
+import 'package:anonity/pages/empty_token.dart';
+import 'package:anonity/pages/report.dart';
+import 'package:anonity/pages/settings/change_theme.dart';
+import 'package:anonity/pages/settings/delete_data.dart';
+import 'package:anonity/pages/settings/share_passphrase.dart';
+import 'package:anonity/pages/settings/receive_passphrase.dart';
+import 'package:anonity/src/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -168,11 +168,9 @@ class _SettingsPageState extends State<SettingsPage> {
             style:
                 ElevatedButton.styleFrom(fixedSize: const Size.fromHeight(55)),
             onPressed: () {
-              double maxHeight = MediaQuery.of(context).size.height *
-                  0.7;
+              double maxHeight = MediaQuery.of(context).size.height * 0.7;
               if (maxHeight > 300) {
-                maxHeight =
-                    300;
+                maxHeight = 300;
               }
 
               showModalBottomSheet(

@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:denonceur/pages/empty_token.dart';
-import 'package:denonceur/pages/home.dart';
-import 'package:denonceur/src/theme_utils.dart';
+import 'package:anonity/pages/empty_token.dart';
+import 'package:anonity/pages/home.dart';
+import 'package:anonity/src/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -41,7 +41,7 @@ void main() async {
           }
 
           return MaterialApp(
-            title: 'Denonceur',
+            title: 'Anonity',
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: initialThemeMode,

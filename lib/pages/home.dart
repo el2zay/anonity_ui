@@ -1,11 +1,11 @@
 import 'dart:io';
 
-import 'package:denonceur/main.dart';
-import 'package:denonceur/pages/bookmarks.dart';
-import 'package:denonceur/pages/post.dart';
-import 'package:denonceur/pages/settings.dart';
-import 'package:denonceur/src/requests.dart';
-import 'package:denonceur/src/widgets/post_card_widget.dart';
+import 'package:anonity/main.dart';
+import 'package:anonity/pages/bookmarks.dart';
+import 'package:anonity/pages/post.dart';
+import 'package:anonity/pages/settings.dart';
+import 'package:anonity/src/requests.dart';
+import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/cupertino.dart';

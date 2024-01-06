@@ -1,5 +1,5 @@
-import 'package:denonceur/src/requests.dart';
-import 'package:denonceur/src/widgets/post_card_widget.dart';
+import 'package:anonity/src/requests.dart';
+import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 

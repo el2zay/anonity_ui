@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:denonceur/main.dart';
-import 'package:denonceur/pages/empty_token.dart';
-import 'package:denonceur/src/widgets/post_card_widget.dart';
+import 'package:anonity/main.dart';
+import 'package:anonity/pages/empty_token.dart';
+import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -90,7 +90,7 @@ Future<List<Posts>> fetchPosts(context, postIds) async {
 
 Future<void> postData(context, age, title, expression) async {
   var request =
-      http.Request('POST', Uri.parse('https://denonceurapi.oriondev.fr/posts'));
+      http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/posts'));
   request.body = jsonEncode({
     'age': age,
     'title': title,

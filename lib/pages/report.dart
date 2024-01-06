@@ -1,7 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:denonceur/src/requests.dart';
-import 'package:denonceur/src/widgets/image_picker_widget.dart';
+import 'package:anonity/src/requests.dart';
+import 'package:anonity/src/widgets/image_picker_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 

@@ -1,4 +1,4 @@
-package com.example.denonceur
+package com.example.anonity
 
 import io.flutter.embedding.android.FlutterActivity
 
