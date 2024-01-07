@@ -4,13 +4,12 @@ description: "Une application qui permet aux personnes harcelées de dénoncer c
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.3.0-120.0.dev <4.0.0'
-
+  sdk: ">=3.3.0-120.0.dev <4.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
-    
+
   qr_flutter: ^4.1.0
   lucide_icons: ^0.257.0
   provider: ^6.1.1

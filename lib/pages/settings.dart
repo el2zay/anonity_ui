@@ -3,11 +3,12 @@
 import 'package:anonity/main.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/pages/report.dart';
+import 'package:anonity/pages/settings/change_icon.dart';
 import 'package:anonity/pages/settings/change_theme.dart';
 import 'package:anonity/pages/settings/delete_data.dart';
 import 'package:anonity/pages/settings/share_passphrase.dart';
 import 'package:anonity/pages/settings/receive_passphrase.dart';
-import 'package:anonity/src/theme_utils.dart';
+import 'package:anonity/src/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,8 +115,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 shape: const RoundedRectangleBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 fixedSize: const Size.fromHeight(55)),
-            onPressed: () {},
-            child: const Text("Déguiser l'application",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ChangeIconPage(),
+                ),
+              );
+            },
+            child: const Text("Changer l'icône",
                 style: TextStyle(fontSize: 18)),
           ),
 

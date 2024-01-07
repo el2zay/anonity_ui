@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:anonity/src/requests.dart';
+import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
 
 class PostPage extends StatefulWidget {

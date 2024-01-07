@@ -4,7 +4,7 @@ import 'package:anonity/main.dart';
 import 'package:anonity/pages/bookmarks.dart';
 import 'package:anonity/pages/post.dart';
 import 'package:anonity/pages/settings.dart';
-import 'package:anonity/src/requests.dart';
+import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';

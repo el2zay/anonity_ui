@@ -2,7 +2,7 @@
 
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/pages/settings/receive_passphrase.dart';
-import 'package:anonity/src/requests.dart';
+import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
