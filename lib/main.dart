@@ -13,6 +13,7 @@ late String passphrase;
 late String token;
 late bool notif;
 late int theme;
+late int icon;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,6 +22,7 @@ void main() async {
   notif = await getNotif();
   passphrase = await getPassphrase();
   theme = await getTheme();
+  icon = await getIcon();
 
   final lightTheme = getAppSpecificTheme(false);
   final darkTheme = getAppSpecificTheme(true);
@@ -119,4 +121,11 @@ Future<int> getTheme() async {
   final theme = prefs.getInt('theme');
 
   return theme ?? 0;
+}
+
+Future<int> getIcon() async {
+  final prefs = await SharedPreferences.getInstance();
+  final icon = prefs.getInt('icon');
+
+  return icon ?? 0;
 }

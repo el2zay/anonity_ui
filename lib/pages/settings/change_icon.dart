@@ -1,4 +1,6 @@
+import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangeIconPage extends StatefulWidget {
   const ChangeIconPage({super.key});
@@ -8,8 +10,6 @@ class ChangeIconPage extends StatefulWidget {
 }
 
 class _ChangeIconPageState extends State<ChangeIconPage> {
-  int selected = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -72,16 +72,18 @@ class _ChangeIconPageState extends State<ChangeIconPage> {
         title,
         style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
       ),
-      onTap: () {
+      onTap: () async {
         setState(() {
-          selected = index;
+          icon = index;
         });
+        final prefs = await SharedPreferences.getInstance();
+        prefs.setInt('icon', index);
       },
       trailing: Checkbox(
-        value: selected == index,
+        value: icon == index,
         onChanged: (bool? value) {
           setState(() {
-            selected = index;
+            icon = index;
           });
         },
         activeColor: Colors.blue[600],
