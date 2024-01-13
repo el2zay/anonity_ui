@@ -6,8 +6,6 @@ import 'package:flutter/services.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:expandable_text/expandable_text.dart';
 
-
-
 class Posts {
   String? title;
   String? subject;
@@ -136,7 +134,8 @@ class _PostCardState extends State<PostCard> {
                   },
                   child: isSupported
                       ? Image.asset(
-                          "assets/icons/heart-handshake-colored.png",
+                          "assets/heart-handshake.png",
+                          height: 25,
                           width: 25,
                         )
                       : const Icon(

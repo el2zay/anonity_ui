@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 late String passphrase;
 late String token;
@@ -47,7 +48,7 @@ void main() async {
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: initialThemeMode,
-            home: token == "" ? const EmptyTokenPage() : const HomePage(),
+            home: token == "" && !kIsWeb ? const EmptyTokenPage() : const HomePage(),
           );
         },
       ),

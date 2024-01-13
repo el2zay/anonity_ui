@@ -3,7 +3,6 @@
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -60,18 +59,7 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
                   SizedBox(height: MediaQuery.of(context).size.height * 0.2),
                   ElevatedButton(
                     onPressed: () async {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return const Center(
-                            child: CupertinoActivityIndicator(
-                              radius: 20,
-                            ),
-                          );
-                        },
-                      );
                       var newToken = await register(context);
-
                       final prefs = await SharedPreferences.getInstance();
                       if (newToken != null) {
                         prefs.setString('token', newToken);

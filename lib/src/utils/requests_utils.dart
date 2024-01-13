@@ -42,7 +42,6 @@ Future<List> fetchBookmarksIds(context) async {
     final Map<String, dynamic> jsonData = json.decode(response.body);
     final List<dynamic> data = jsonData['data'];
     final List ids = data.map((e) => e['id']).toList();
-    print(ids);
     return ids;
   } else if (response.statusCode == 400) {
     return [];

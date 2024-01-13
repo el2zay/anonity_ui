@@ -12,8 +12,7 @@ class DeleteDataPage extends StatefulWidget {
 
 var labelDanger = "Je comprends, et souhaite supprimer mes données.";
 var sec = 7;
-// ignore: prefer_typing_uninitialized_variables
-var timer;
+dynamic timer;
 var isClicked = false;
 
 class _DeleteDataPageState extends State<DeleteDataPage> {
@@ -80,6 +79,7 @@ class _DeleteDataPageState extends State<DeleteDataPage> {
                       sec = 7;
                     });
                     timer.cancel();
+                    const CupertinoActivityIndicator();
                     showDialog(
                       context: context,
                       builder: (BuildContext context) {

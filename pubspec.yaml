@@ -4,7 +4,8 @@ description: "Une application qui permet aux personnes harcelées de dénoncer c
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.3.0-120.0.dev <4.0.0"
+  sdk: '>=3.2.0 <4.0.0'
+
 
 dependencies:
   flutter:
@@ -31,4 +32,4 @@ flutter:
   uses-material-design: true
   assets:
     - .env
-    - assets/icons/
+    - assets/

@@ -9,6 +9,7 @@ import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -47,43 +48,47 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.bookmark_outline),
-          highlightColor: Colors.transparent,
-          iconSize: 30,
-          onPressed: () {
-            if (buttonsEnabled.value) {
-              Navigator.of(context).push(lToR(const BookmarksPage()));
-            } else {
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text(
-                  'Suite à une erreur tu ne peux pas accéder à tes favoris pour le moment...',
-                  textAlign: TextAlign.center,
+        leading: kIsWeb
+            ? null
+            : IconButton(
+                icon: const Icon(Icons.bookmark_outline),
+                highlightColor: Colors.transparent,
+                iconSize: 30,
+                onPressed: () {
+                  if (buttonsEnabled.value) {
+                    Navigator.of(context).push(lToR(const BookmarksPage()));
+                  } else {
+                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text(
+                        'Suite à une erreur tu ne peux pas accéder à tes favoris pour le moment...',
+                        textAlign: TextAlign.center,
+                      ),
+                      behavior: SnackBarBehavior.floating,
+                      margin: EdgeInsets.only(left: 70, right: 70),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(15))),
+                      duration: Duration(seconds: 2),
+                    ));
+                  }
+                },
+              ),
+        actions: kIsWeb
+            ? null
+            : [
+                IconButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const SettingsPage(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(LucideIcons.settings),
+                  highlightColor: Colors.transparent,
+                  iconSize: 30,
                 ),
-                behavior: SnackBarBehavior.floating,
-                margin: EdgeInsets.only(left: 70, right: 70),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                duration: Duration(seconds: 2),
-              ));
-            }
-          },
-        ),
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const SettingsPage(),
-                ),
-              );
-            },
-            icon: const Icon(LucideIcons.settings),
-            highlightColor: Colors.transparent,
-            iconSize: 30,
-          ),
-        ],
+              ],
         title: const Text('🔲', style: TextStyle(fontSize: 30)),
         centerTitle: true,
         bottom: PreferredSize(
@@ -93,15 +98,11 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 45),
                 child: TextField(
-                  onChanged: (value) {
-                    if (value.length > 2) debugPrint(value);
-                  },
                   decoration: InputDecoration(
                     hintText: "Rechercher",
                     prefixIcon: const Icon(Icons.search),
                     filled: true,
                     contentPadding: const EdgeInsets.all(10),
-                    // Changer la couleur du fond
                     enabledBorder: OutlineInputBorder(
                       borderSide: const BorderSide(color: Colors.transparent),
                       borderRadius: BorderRadius.circular(20),
@@ -118,33 +119,35 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.campaign, size: 35),
-        onPressed: () {
-          if (buttonsEnabled.value) {
-            // Vérifier si les boutons sont actifs
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const PostPage(),
-                fullscreenDialog: true,
-              ),
-            );
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text(
-                'Suite à une erreur tu ne peux pas témoigner pour le moment...',
-                textAlign: TextAlign.center,
-              ),
-              behavior: SnackBarBehavior.floating,
-              margin: EdgeInsets.only(left: 70, right: 70),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(15))),
-              duration: Duration(seconds: 2),
-            ));
-          }
-        },
-      ),
+      floatingActionButton: kIsWeb
+          ? null
+          : FloatingActionButton(
+              child: const Icon(Icons.campaign, size: 35),
+              onPressed: () {
+                if (buttonsEnabled.value) {
+                  // Vérifier si les boutons sont actifs
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PostPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                    content: Text(
+                      'Suite à une erreur tu ne peux pas témoigner pour le moment...',
+                      textAlign: TextAlign.center,
+                    ),
+                    behavior: SnackBarBehavior.floating,
+                    margin: EdgeInsets.only(left: 70, right: 70),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15))),
+                    duration: Duration(seconds: 2),
+                  ));
+                }
+              },
+            ),
       body: RefreshIndicator.adaptive(
         onRefresh: _refresh,
         displacement: 5,
