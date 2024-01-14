@@ -1,5 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:anonity/pages/show_post.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/services.dart';
@@ -98,6 +99,19 @@ class _PostCardState extends State<PostCard> {
           await supportsPost(context, widget.postId);
           checkSupportStatus();
           // TODO: Animation de soutien
+        },
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ShowPostPage(
+                title: widget.title,
+                subject: widget.subject,
+                age: widget.age,
+                postId: widget.postId,
+              ),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

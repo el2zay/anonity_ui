@@ -123,8 +123,8 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
               );
             },
-            child: const Text("Changer l'icône",
-                style: TextStyle(fontSize: 18)),
+            child:
+                const Text("Changer l'icône", style: TextStyle(fontSize: 18)),
           ),
 
           const SizedBox(height: 5),
@@ -223,7 +223,7 @@ class _SettingsPageState extends State<SettingsPage> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
+                  return AlertDialog.adaptive(
                     title: const Text("Se déconnecter"),
                     content: const Text(
                         "Tu vas être déconnecté de ton compte. Tu pourras te reconnecter plus tard avec ta passphrase."),

@@ -41,7 +41,7 @@ class _ReportPageState extends State<ReportPage> {
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
+                    return AlertDialog.adaptive(
                       title: const Text('Attention'),
                       content: const Text(
                           "En quittant cette page, tu perdras toutes les informations saisies. Es-tu sûr de vouloir quitter cette page ?"),

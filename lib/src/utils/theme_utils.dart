@@ -22,6 +22,7 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
   if (isDarkMode) {
     return ThemeData(
       brightness: Brightness.dark,
+      primaryColor: Colors.white,
       splashColor: Colors.transparent,
       highlightColor: Colors.transparent,
       scaffoldBackgroundColor: Colors.black,

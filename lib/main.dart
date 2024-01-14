@@ -18,6 +18,7 @@ late int icon;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await SharedPreferences.getInstance();
   await dotenv.load(fileName: ".env");
   token = (await getToken())!;
   notif = await getNotif();
@@ -38,7 +39,6 @@ void main() async {
               : theme == 1
                   ? ThemeMode.light
                   : ThemeMode.dark;
-
           if (themeProvider.themeMode != ThemeMode.system) {
             initialThemeMode = themeProvider.themeMode;
           }
