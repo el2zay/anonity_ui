@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:anonity/pages/show_post.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/services.dart';
@@ -134,48 +135,50 @@ class _PostCardState extends State<PostCard> {
               ),
             ),
             const SizedBox(height: 15),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                GestureDetector(
-                  onDoubleTap: () {
-                    debugPrint('Soutiens');
-                  },
-                  onTap: () async {
-                    HapticFeedback.selectionClick();
-                    await supportsPost(context, widget.postId);
-                    checkSupportStatus();
-                  },
-                  child: isSupported
-                      ? Image.asset(
-                          "assets/heart-handshake.png",
-                          height: 25,
-                          width: 25,
-                        )
-                      : const Icon(
-                          LucideIcons.heartHandshake,
-                          size: 25,
-                        ),
-                ),
-                GestureDetector(
-                  onTap: () async {
-                    HapticFeedback.selectionClick();
-                    await savePost(context, widget.postId);
-                    checkSupportStatus();
-                  },
-                  child: isBookmarked
-                      ? const Icon(
-                          Icons.bookmark,
-                          size: 25,
-                          color: Colors.blue,
-                        )
-                      : const Icon(
-                          Icons.bookmark_add_outlined,
-                          size: 25,
-                        ),
-                ),
-              ],
-            ),
+            kIsWeb
+                ? const SizedBox()
+                : Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      GestureDetector(
+                        onDoubleTap: () {
+                          debugPrint('Soutiens');
+                        },
+                        onTap: () async {
+                          HapticFeedback.selectionClick();
+                          await supportsPost(context, widget.postId);
+                          checkSupportStatus();
+                        },
+                        child: isSupported
+                            ? Image.asset(
+                                "assets/heart-handshake.png",
+                                height: 25,
+                                width: 25,
+                              )
+                            : const Icon(
+                                LucideIcons.heartHandshake,
+                                size: 25,
+                              ),
+                      ),
+                      GestureDetector(
+                        onTap: () async {
+                          HapticFeedback.selectionClick();
+                          await savePost(context, widget.postId);
+                          checkSupportStatus();
+                        },
+                        child: isBookmarked
+                            ? const Icon(
+                                Icons.bookmark,
+                                size: 25,
+                                color: Colors.blue,
+                              )
+                            : const Icon(
+                                Icons.bookmark_add_outlined,
+                                size: 25,
+                              ),
+                      ),
+                    ],
+                  ),
             const SizedBox(height: 13),
           ],
         ),

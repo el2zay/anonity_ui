@@ -4,7 +4,6 @@ import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,6 +14,8 @@ late String token;
 late bool notif;
 late int theme;
 late int icon;
+late double fontSize;
+late int align;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,6 +26,8 @@ void main() async {
   passphrase = await getPassphrase();
   theme = await getTheme();
   icon = await getIcon();
+  fontSize = await getFontSize();
+  align = await getAlign();
 
   final lightTheme = getAppSpecificTheme(false);
   final darkTheme = getAppSpecificTheme(true);
@@ -48,15 +51,14 @@ void main() async {
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: initialThemeMode,
-            home: token == "" && !kIsWeb ? const EmptyTokenPage() : const HomePage(),
+            home: token == "" && !kIsWeb
+                ? const EmptyTokenPage()
+                : const HomePage(),
           );
         },
       ),
     ),
   );
-
-  // Mode portrait seulement
-  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
 
 class ThemeProvider with ChangeNotifier {
@@ -129,4 +131,18 @@ Future<int> getIcon() async {
   final icon = prefs.getInt('icon');
 
   return icon ?? 0;
+}
+
+Future<double> getFontSize() async {
+  final prefs = await SharedPreferences.getInstance();
+  final fontSize = prefs.getDouble('fontSize');
+
+  return fontSize ?? 20;
+}
+
+Future<int> getAlign() async {
+  final prefs = await SharedPreferences.getInstance();
+  final align = prefs.getInt('align');
+
+  return align ?? 0;
 }
