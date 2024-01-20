@@ -15,12 +15,11 @@ dependencies:
   lucide_icons: ^0.257.0
   provider: ^6.1.1
   qr_code_scanner: ^1.0.1
-  http: ^1.1.0
+  http: ^1.2.0
   expandable_text: 2.3.0
   shared_preferences: ^2.2.2
   flutter_dotenv: ^5.1.0
-  image_picker: ^1.0.5
-  video_player: ^2.8.1
+  image_picker: ^1.0.7
 
 dev_dependencies:
   flutter_test:
@@ -34,3 +33,28 @@ flutter:
     - .env
     - assets/
     - assets/icons/
+  fonts:
+    - family: Arial
+      fonts:
+        - asset: assets/fonts/Arial.ttf
+          style: normal
+    - family: Comic Sans MS
+      fonts:
+        - asset: assets/fonts/Comic_Sans_MS.ttf
+          style: normal
+    - family: Garamond
+      fonts:
+        - asset: assets/fonts/Garamond.ttf
+          style: normal
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto.ttf
+          style: normal
+    - family: Segoe UI
+      fonts:
+        - asset: assets/fonts/Segoe_UI.ttf
+          style: normal
+    - family: Times New Roman
+      fonts:
+        - asset: assets/fonts/Times_New_Roman.ttf
+          style: normal

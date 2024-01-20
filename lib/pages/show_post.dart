@@ -34,7 +34,7 @@ class _ShowPostPageState extends State<ShowPostPage> {
         actions: [
           IconButton(
             tooltip: "Plus",
-            icon: const Icon(Icons.more_horiz),
+            icon: const Icon(LucideIcons.moreHorizontal),
             onPressed: () {
               showMenu(
                 context: context,
@@ -42,9 +42,44 @@ class _ShowPostPageState extends State<ShowPostPage> {
                 items: [
                   _buildTextSizeMenu(),
                   PopupMenuItem(
-                    value: 2,
+                    value: 1,
                     child: InkWell(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pop(context);
+                        showModalBottomSheet(
+                          context: context,
+                          builder: (context) {
+                            return Padding(
+                              padding: const EdgeInsets.all(16.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                children: [
+                                  const Text(
+                                    "Police",
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 20,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  const SizedBox(height: 25),
+                                  FontList(
+                                    selectedFont: fontFamily,
+                                    onChanged: (value) async {
+                                      setState(() {
+                                        fontFamily = value;
+                                      });
+                                      final prefs =
+                                          await SharedPreferences.getInstance();
+                                      prefs.setString("fontFamily", value);
+                                    },
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                        );
+                      },
                       child: Row(
                         children: [
                           const SizedBox(height: 10),
@@ -54,8 +89,14 @@ class _ShowPostPageState extends State<ShowPostPage> {
                             width: 25,
                           ),
                           const SizedBox(width: 10),
-                          const Text("Changer la police"),
+                          const Text("Police"),
                           const Spacer(),
+                          Text(fontFamily,
+                              style: TextStyle(
+                                  color: Theme.of(context)
+                                      .primaryColor
+                                      .withOpacity(0.8))),
+                          const SizedBox(width: 10),
                           Icon(
                             Icons.arrow_forward_ios,
                             color: Theme.of(context).primaryColor,
@@ -66,7 +107,7 @@ class _ShowPostPageState extends State<ShowPostPage> {
                     ),
                   ),
                   PopupMenuItem(
-                      value: 1,
+                      value: 2,
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
@@ -128,22 +169,6 @@ class _ShowPostPageState extends State<ShowPostPage> {
                               )),
                         ],
                       )),
-                  PopupMenuItem(
-                    value: 3,
-                    child: Icon(
-                      LucideIcons.baseline,
-                      color: Theme.of(context).primaryColor,
-                      size: 20,
-                    ),
-                  ),
-                  PopupMenuItem(
-                    value: 4,
-                    child: Icon(
-                      LucideIcons.palette,
-                      color: Theme.of(context).primaryColor,
-                      size: 20,
-                    ),
-                  ),
                 ],
               );
             },
@@ -167,7 +192,7 @@ class _ShowPostPageState extends State<ShowPostPage> {
                 padding: const EdgeInsets.only(left: 10.0),
                 child: Text(
                   widget.subject,
-                  style: TextStyle(fontSize: fontSize),
+                  style: TextStyle(fontSize: fontSize, fontFamily: fontFamily),
                   textAlign: TextAlign.values[align],
                 ),
               )
@@ -251,6 +276,65 @@ class _TextSizeSliderState extends State<TextSizeSlider> {
         ),
         Text("${_fontSize.toInt()} pt"),
       ],
+    );
+  }
+}
+
+// Créé un widget avec la liste des polices
+
+class FontList extends StatefulWidget {
+  final ValueChanged<String> onChanged;
+  final String selectedFont;
+
+  const FontList({
+    super.key,
+    required this.selectedFont,
+    required this.onChanged,
+  });
+
+  @override
+  createState() => _FontListState();
+}
+
+class _FontListState extends State<FontList> {
+  late String _selectedFont;
+
+  List<String> availableFonts = [
+    'Arial',
+    'Comic Sans MS',
+    'Garamond',
+    'Roboto',
+    'Segoe UI',
+    'Times New Roman',
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedFont = widget.selectedFont;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: availableFonts.length,
+      itemBuilder: (context, index) {
+        return ListTile(
+          title: Text(availableFonts[index],
+              style:
+                  TextStyle(fontFamily: availableFonts[index], fontSize: 20)),
+          trailing: _selectedFont == availableFonts[index]
+              ? const Icon(Icons.check)
+              : null,
+          onTap: () async {
+            setState(() {
+              _selectedFont = availableFonts[index];
+            });
+            widget.onChanged(availableFonts[index]);
+          },
+        );
+      },
     );
   }
 }

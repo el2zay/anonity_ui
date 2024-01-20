@@ -18,7 +18,7 @@ class _ChangeIconPageState extends State<ChangeIconPage> {
       ),
       body: ListView(
         children: [
-          buildListTile("", "Anonity", 0),
+          buildListTile("assets/icons/anonity.png", "Anonity", 0),
           const SizedBox(height: 20),
           buildListTile("assets/icons/instagram.png", "Instagram", 1),
           const SizedBox(height: 20),

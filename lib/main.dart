@@ -15,6 +15,7 @@ late bool notif;
 late int theme;
 late int icon;
 late double fontSize;
+late String fontFamily;
 late int align;
 
 void main() async {
@@ -27,6 +28,7 @@ void main() async {
   theme = await getTheme();
   icon = await getIcon();
   fontSize = await getFontSize();
+  fontFamily = await getFontFamily();
   align = await getAlign();
 
   final lightTheme = getAppSpecificTheme(false);
@@ -138,6 +140,13 @@ Future<double> getFontSize() async {
   final fontSize = prefs.getDouble('fontSize');
 
   return fontSize ?? 20;
+}
+
+Future<String> getFontFamily() async {
+  final prefs = await SharedPreferences.getInstance();
+  final fontFamily = prefs.getString('fontFamily');
+
+  return fontFamily ?? "Roboto";
 }
 
 Future<int> getAlign() async {
