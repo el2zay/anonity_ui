@@ -82,7 +82,6 @@ Future<List<Posts>> fetchPosts(context, postIds) async {
     final List<dynamic> data = jsonData['data'];
     return data.map((e) => Posts.fromJson(e)).toList();
   } else {
-    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
     return [];
   }
 }

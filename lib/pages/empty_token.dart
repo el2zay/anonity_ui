@@ -17,76 +17,92 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: <Widget>[
-          SafeArea(
-            left: false,
-            top: false,
-            right: false,
-            bottom: false,
-            minimum: const EdgeInsets.only(top: 100.0),
-            child: Center(
-              child: Column(
-                children: [
-                  const Text(
-                    "Bienvenue sur Anonity !",
-                    style: TextStyle(
-                        fontSize: 25,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) =>
-                                const ReceivePassphrasePage()),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigo[800],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                    ),
-                    child: const Text(
-                      "J'ai déjà une passphrase",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                  SizedBox(height: MediaQuery.of(context).size.height * 0.2),
-                  ElevatedButton(
-                    onPressed: () async {
-                      var newToken = await register(context);
-                      final prefs = await SharedPreferences.getInstance();
-                      if (newToken != null) {
-                        prefs.setString('token', newToken);
-                        // Afficher la page HomePage
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const HomePage()),
-                        );
-                      }
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.indigo[800],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(32.0),
-                      ),
-                    ),
-                    child: const Text(
-                      "Je n'ai pas de passphrase",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                ],
+      body: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [Colors.indigo, Colors.black],
+        )),
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                'assets/splash.png',
+                width: MediaQuery.of(context).size.width * 0.25,
               ),
-            ),
+              SizedBox(height: MediaQuery.of(context).size.height * 0.1),
+              const Text(
+                "Bienvenue dans Anonity !",
+                style: TextStyle(
+                    fontSize: 27,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              const Text(
+                "Merci d'avoir télécharger l'application !",
+                style: TextStyle(fontSize: 12, color: Colors.white),
+              ),
+              const SizedBox(height: 70),
+              ElevatedButton(
+                onPressed: () async {
+                  var newToken = await register(context);
+
+                  if (newToken != null) {
+                    final prefs = await SharedPreferences.getInstance();
+                    prefs.setString('token', newToken);
+
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const HomePage()),
+                    );
+                  }
+                },
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.indigo[800],
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32.0),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 115)),
+                child: const Text(
+                  "M'INSCRIRE",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              const SizedBox(height: 35),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const ReceivePassphrasePage()),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.grey[900],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(32.0),
+                  ),
+                ),
+                child: const Text(
+                  "TU AS TA PASSPHRASE ? SE CONNECTER",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w700,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }
