@@ -36,10 +36,19 @@ class _ReaderPageState extends State<ReaderPage> {
             },
           );
         },
-        child: const Icon(
+        child: Icon(
           Icons.more_horiz,
+          shadows: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: const Offset(0, 1),
+            ),
+          ],
         ),
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.miniEndDocked,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(16.0),

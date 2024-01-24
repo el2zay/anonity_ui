@@ -89,7 +89,11 @@ class _HomePageState extends State<HomePage> {
                   iconSize: 30,
                 ),
               ],
-        title: const Text('🔲', style: TextStyle(fontSize: 30)),
+        title: Image.asset(
+          "assets/icons/anonity.png",
+          fit: BoxFit.contain,
+          height: 40,
+        ),
         centerTitle: true,
         bottom: kIsWeb
             ? null
@@ -126,7 +130,18 @@ class _HomePageState extends State<HomePage> {
       floatingActionButton: kIsWeb
           ? null
           : FloatingActionButton(
-              child: const Icon(Icons.campaign, size: 35),
+              child: Icon(
+                Icons.campaign,
+                size: 35,
+                shadows: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 1,
+                    offset: const Offset(0, 1),
+                  ),
+                ],
+              ),
               onPressed: () {
                 if (buttonsEnabled.value) {
                   // Vérifier si les boutons sont actifs
