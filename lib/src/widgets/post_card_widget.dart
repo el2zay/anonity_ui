@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:anonity/pages/show_post.dart';
+import 'package:anonity/pages/reader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -105,7 +105,7 @@ class _PostCardState extends State<PostCard> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => ShowPostPage(
+              builder: (context) => ReaderPage(
                 title: widget.title,
                 subject: widget.subject,
                 age: widget.age,

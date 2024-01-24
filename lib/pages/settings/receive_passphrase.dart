@@ -2,6 +2,7 @@ import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -126,7 +127,7 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  Icons.flash_on,
+                  LucideIcons.scan,
                   size: 40,
                 ),
                 SizedBox(height: 30),
