@@ -1,3 +1,4 @@
+import 'package:anonity/main.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +14,7 @@ class BookmarksPage extends StatefulWidget {
 class _BookmarksPageState extends State<BookmarksPage> {
   @override
   Widget build(BuildContext context) {
+    isBookmarkPage = true;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Enregistrés"),

@@ -64,7 +64,7 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     isMounted = true;
-    checkSupportStatus();
+    checkStatus();
   }
 
   @override
@@ -73,7 +73,7 @@ class _PostCardState extends State<PostCard> {
     super.dispose();
   }
 
-  Future<void> checkSupportStatus() async {
+  Future<void> checkStatus() async {
     List supportsIds = await fetchSupports(context);
     List bookmarksIds = await fetchBookmarksIds(context);
     if (isMounted) {
@@ -98,7 +98,7 @@ class _PostCardState extends State<PostCard> {
           HapticFeedback.selectionClick();
           HapticFeedback.selectionClick();
           await supportsPost(context, widget.postId);
-          checkSupportStatus();
+          checkStatus();
           // TODO: Animation de soutien
         },
         onTap: () {
@@ -147,7 +147,7 @@ class _PostCardState extends State<PostCard> {
                         onTap: () async {
                           HapticFeedback.selectionClick();
                           await supportsPost(context, widget.postId);
-                          checkSupportStatus();
+                          checkStatus();
                         },
                         child: isSupported
                             ? Image.asset(
@@ -164,7 +164,7 @@ class _PostCardState extends State<PostCard> {
                         onTap: () async {
                           HapticFeedback.selectionClick();
                           await savePost(context, widget.postId);
-                          checkSupportStatus();
+                          checkStatus();
                         },
                         child: isBookmarked
                             ? const Icon(

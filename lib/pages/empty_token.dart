@@ -1,9 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'package:anonity/main.dart';
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class EmptyTokenPage extends StatefulWidget {
@@ -16,6 +18,7 @@ class EmptyTokenPage extends StatefulWidget {
 class _EmptyTokenPageState extends State<EmptyTokenPage> {
   @override
   Widget build(BuildContext context) {
+    final tokenProvider = Provider.of<TokenProvider>(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -54,6 +57,7 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
                   if (newToken != null) {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setString('token', newToken);
+                    tokenProvider.setToken(newToken);
 
                     Navigator.push(
                       context,

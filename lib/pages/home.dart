@@ -46,6 +46,8 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    isBookmarkPage = false;
+    double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         leading: kIsWeb
@@ -102,22 +104,28 @@ class _HomePageState extends State<HomePage> {
                 child: Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 45),
-                      child: TextField(
-                        decoration: InputDecoration(
-                          hintText: "Rechercher",
-                          prefixIcon: const Icon(Icons.search),
-                          filled: true,
-                          contentPadding: const EdgeInsets.all(10),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide:
-                                const BorderSide(color: Colors.transparent),
-                            borderRadius: BorderRadius.circular(20),
+                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                      child: SizedBox(
+                        width: screenWidth >= 768
+                            ? screenWidth * 0.7
+                            : double.infinity,
+                        // Ajustez la largeur selon vos besoins
+                        child: TextField(
+                          decoration: InputDecoration(
+                            hintText: "Rechercher",
+                            prefixIcon: const Icon(Icons.search),
+                            filled: true,
+                            contentPadding: const EdgeInsets.all(10),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide:
+                                  const BorderSide(color: Colors.transparent),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
                           ),
                         ),
                       ),

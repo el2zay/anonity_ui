@@ -121,6 +121,9 @@ class _ReportPageState extends State<ReportPage> {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                   ),
                 ),
+                onEditingComplete: () {
+                  // TODO: Vérifier l'e-mail
+                },
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Tu dois renseigner une adresse mail.';

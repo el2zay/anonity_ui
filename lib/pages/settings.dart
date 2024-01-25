@@ -3,6 +3,7 @@
 import 'package:anonity/main.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/pages/report.dart';
+import 'package:anonity/pages/settings/actions.dart';
 import 'package:anonity/pages/settings/change_icon.dart';
 import 'package:anonity/pages/settings/change_theme.dart';
 import 'package:anonity/pages/settings/delete_data.dart';
@@ -136,7 +137,32 @@ class _SettingsPageState extends State<SettingsPage> {
 
           const SizedBox(height: 40),
 
-          // Bouton
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                fixedSize: const Size.fromHeight(55)),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ActionsPage(),
+                ),
+              );
+            },
+            child: const Text("Personnaliser les actions",
+                style: TextStyle(fontSize: 18)),
+          ),
+
+          const SizedBox(height: 5),
+
+          const Text(
+              "Tu peux personnaliser les actions sur les posts pour pouvoir les faires comme tu le souhaites et plus rapidement.",
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 15)),
+
+          const SizedBox(height: 40),
+
           ElevatedButton(
             style:
                 ElevatedButton.styleFrom(fixedSize: const Size.fromHeight(55)),

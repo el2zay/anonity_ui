@@ -17,6 +17,7 @@ late int icon;
 late double fontSize;
 late String fontFamily;
 late int align;
+bool isBookmarkPage = false;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,10 +36,17 @@ void main() async {
   final darkTheme = getAppSpecificTheme(true);
 
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
-      child: Consumer<ThemeProvider>(
-        builder: (context, themeProvider, child) {
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider<TokenProvider>(
+          create: (context) => TokenProvider(),
+        ),
+        ChangeNotifierProvider<ThemeProvider>(
+          create: (context) => ThemeProvider(),
+        ),
+      ],
+      child: Consumer2<TokenProvider, ThemeProvider>(
+        builder: (context, tokenProvider, themeProvider, child) {
           ThemeMode initialThemeMode = theme == 0
               ? ThemeMode.system
               : theme == 1
@@ -70,6 +78,15 @@ class ThemeProvider with ChangeNotifier {
 
   void setThemeMode(ThemeMode mode) {
     _themeMode = mode;
+    notifyListeners();
+  }
+}
+
+class TokenProvider extends ChangeNotifier {
+  String token = "";
+
+  void setToken(newToken) {
+    token = newToken;
     notifyListeners();
   }
 }
