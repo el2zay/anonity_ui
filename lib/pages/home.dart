@@ -58,7 +58,8 @@ class _HomePageState extends State<HomePage> {
                 iconSize: 30,
                 onPressed: () {
                   if (buttonsEnabled.value) {
-                    Navigator.of(context).push(lToR(const BookmarksPage()));
+                    Navigator.of(context).push(betterPush(
+                        const BookmarksPage(), const Offset(-1.0, 0.0)));
                   } else {
                     ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                       content: Text(
@@ -79,12 +80,8 @@ class _HomePageState extends State<HomePage> {
             : [
                 IconButton(
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SettingsPage(),
-                      ),
-                    );
+                    Navigator.of(context).push(betterPush(
+                        const SettingsPage(), const Offset(1.0, 0.0)));
                   },
                   icon: const Icon(LucideIcons.settings),
                   highlightColor: Colors.transparent,
@@ -247,7 +244,7 @@ class _HomePageState extends State<HomePage> {
             } else if (snapshot.hasData) {
               buttonsEnabled.value = true;
               return ListView.builder(
-                shrinkWrap: true,
+                shrinkWrap: false,
                 itemCount: snapshot.data!.length,
                 itemBuilder: (context, index) {
                   if (index == snapshot.data!.length - 1) {

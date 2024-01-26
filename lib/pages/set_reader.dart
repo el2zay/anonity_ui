@@ -306,7 +306,7 @@ class _FontListState extends State<FontList> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      shrinkWrap: true,
+      shrinkWrap: false,
       itemCount: availableFonts.length,
       itemBuilder: (context, index) {
         return ListTile(

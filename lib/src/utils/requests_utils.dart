@@ -165,7 +165,7 @@ Future<void> supportsPost(context, id) async {
   }
 }
 
-Future<String?> register(context) async {
+Future register(context) async {
   final response = await http.post(
     Uri.parse('${dotenv.env['API_REQUEST']!}/register'),
   );
@@ -175,7 +175,8 @@ Future<String?> register(context) async {
     final String token = jsonData['message'];
     return token;
   } else {
-    return "Une erreur est survenue : ${response.reasonPhrase}";
+    return showSnackBar(
+        context, "Une erreur est survenue : ${response.reasonPhrase}");
   }
 }
 

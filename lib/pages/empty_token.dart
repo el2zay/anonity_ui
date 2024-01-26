@@ -53,16 +53,19 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
               ElevatedButton(
                 onPressed: () async {
                   var newToken = await register(context);
+                  if (newToken is String?) {
+                    if (newToken != null) {
+                      final prefs = await SharedPreferences.getInstance();
+                      prefs.setString('token', newToken);
+                      tokenProvider.setToken(newToken);
 
-                  if (newToken != null) {
-                    final prefs = await SharedPreferences.getInstance();
-                    prefs.setString('token', newToken);
-                    tokenProvider.setToken(newToken);
-
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const HomePage()),
-                    );
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomePage()),
+                        (route) => false,
+                      );
+                    }
                   }
                 },
                 style: ElevatedButton.styleFrom(

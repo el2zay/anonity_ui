@@ -17,6 +17,9 @@ late int icon;
 late double fontSize;
 late String fontFamily;
 late int align;
+late int onTap;
+late int onDoubleTap;
+late int onLongPress;
 bool isBookmarkPage = false;
 
 void main() async {
@@ -31,6 +34,9 @@ void main() async {
   fontSize = await getFontSize();
   fontFamily = await getFontFamily();
   align = await getAlign();
+  onTap = await getOnTap();
+  onDoubleTap = await getOnDoubleTap();
+  onLongPress = await getOnLongPress();
 
   final lightTheme = getAppSpecificTheme(false);
   final darkTheme = getAppSpecificTheme(true);
@@ -91,12 +97,27 @@ class TokenProvider extends ChangeNotifier {
   }
 }
 
-// Route qui permet de charger la page de la gauche vers la droite
-Route lToR(Widget page) {
+Route betterPush(Widget page, Offset offset, {bool fullscreenDialog = false}) {
   return PageRouteBuilder(
-    pageBuilder: (context, animation, secondaryAnimation) => page,
+    pageBuilder: (context, animation, secondaryAnimation) {
+      return GestureDetector(
+        onHorizontalDragUpdate: (details) {
+          if (offset == const Offset(-1.0, 0.0)) {
+            if (details.primaryDelta! < -10) {
+              Navigator.pop(context);
+            }
+          } else if (offset == const Offset(1.0, 0.0)) {
+            if (details.primaryDelta! > 10) {
+              Navigator.pop(context);
+            }
+          }
+        },
+        child: page,
+      );
+    },
+    fullscreenDialog: fullscreenDialog,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
-      const begin = Offset(-1.0, 0.0);
+      var begin = offset;
       const end = Offset.zero;
       const curve = Curves.ease;
 
@@ -171,4 +192,25 @@ Future<int> getAlign() async {
   final align = prefs.getInt('align');
 
   return align ?? 0;
+}
+
+Future<int> getOnTap() async {
+  final prefs = await SharedPreferences.getInstance();
+  final onTap = prefs.getInt('onTap');
+
+  return onTap ?? 2;
+}
+
+Future<int> getOnDoubleTap() async {
+  final prefs = await SharedPreferences.getInstance();
+  final onDoubleTap = prefs.getInt('onDoubleTap');
+
+  return onDoubleTap ?? 0;
+}
+
+Future<int> getOnLongPress() async {
+  final prefs = await SharedPreferences.getInstance();
+  final onLongPress = prefs.getInt('onLongPress');
+
+  return onLongPress ?? 1;
 }

@@ -12,6 +12,7 @@ import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io' show Platform;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -30,10 +31,10 @@ class _SettingsPageState extends State<SettingsPage> {
         actions: [
           IconButton(
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ReportPage(),
+              Navigator.of(context).push(
+                betterPush(
+                  const ReportPage(),
+                  const Offset(1.0, 0.0),
                 ),
               );
             },
@@ -90,10 +91,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 fixedSize: const Size.fromHeight(55)),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ChangeThemePage(),
+              Navigator.of(context).push(
+                betterPush(
+                  const ChangeThemePage(),
+                  const Offset(1.0, 0.0),
                 ),
               );
             },
@@ -117,12 +118,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 fixedSize: const Size.fromHeight(55)),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ChangeIconPage(),
-                ),
-              );
+              Navigator.of(context).push(
+                  betterPush(const ChangeIconPage(), const Offset(1.0, 0.0)));
             },
             child:
                 const Text("Changer l'icône", style: TextStyle(fontSize: 18)),
@@ -143,12 +140,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 fixedSize: const Size.fromHeight(55)),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ActionsPage(),
-                ),
-              );
+              Navigator.of(context).push(
+                  betterPush(const ActionsPage(), const Offset(1.0, 0.0)));
             },
             child: const Text("Personnaliser les actions",
                 style: TextStyle(fontSize: 18)),
@@ -258,14 +251,16 @@ class _SettingsPageState extends State<SettingsPage> {
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text("Annuler"),
+                        child: Text("Annuler",
+                            style: TextStyle(
+                                color:
+                                    Platform.isIOS ? Colors.blue[500] : null)),
                       ),
                       TextButton(
                         onPressed: () async {
                           // Supprimer le token
                           final prefs = await SharedPreferences.getInstance();
                           await prefs.remove('token');
-
                           // Afficher la page EmptyTokenPage et ne pas pouvoir la fermer
                           Navigator.pushAndRemoveUntil(
                             context,
@@ -275,7 +270,10 @@ class _SettingsPageState extends State<SettingsPage> {
                             (route) => false,
                           );
                         },
-                        child: const Text("Se déconnecter"),
+                        child: Text("Se déconnecter",
+                            // Si on est sur iOS afficher en rouge
+                            style: TextStyle(
+                                color: Platform.isIOS ? Colors.red : null)),
                       ),
                     ],
                   );
@@ -295,14 +293,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 fixedSize: const Size.fromHeight(55)),
             onPressed: () {
-              // Afficher la page de suppression des données de bas en haut
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const DeleteDataPage(),
-                  fullscreenDialog: true,
-                ),
-              );
+              Navigator.of(context)
+                  .push(betterPush(const DeleteDataPage(), const Offset(1.0, 0.0)));
             },
             child: const Text("Supprimer mes données",
                 style: TextStyle(color: Colors.red, fontSize: 18)),

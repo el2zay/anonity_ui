@@ -25,7 +25,6 @@ class SharePassphrase extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: passphrase));
-              // TODO: Afficher un message de succès avec une animation de check
               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text(
                   'La passphrase a été copiée !',

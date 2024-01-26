@@ -99,7 +99,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
               );
             }
             return ListView.builder(
-              shrinkWrap: true,
+              shrinkWrap: false,
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 return PostCard(
