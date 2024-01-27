@@ -214,3 +214,36 @@ Future<int> getOnLongPress() async {
 
   return onLongPress ?? 1;
 }
+
+void showSnackBar(BuildContext context, String message, IconData icon) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Row(
+        children: [
+          Icon(icon, color: Colors.white, size: 24),
+          const SizedBox(width: 8.0),
+          Expanded(
+            child: Text(
+              message,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
+      behavior: SnackBarBehavior.floating,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(15)),
+      ),
+      duration: const Duration(seconds: 2),
+      backgroundColor: const Color.fromRGBO(28, 28, 28, 1),
+      // Margin width selon la taille de l'écran
+      margin: MediaQuery.of(context).size.width > 500
+          ? const EdgeInsets.only(left: 70, right: 70, bottom: 20)
+          : const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+    ),
+  );
+}

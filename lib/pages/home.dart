@@ -61,17 +61,10 @@ class _HomePageState extends State<HomePage> {
                     Navigator.of(context).push(betterPush(
                         const BookmarksPage(), const Offset(-1.0, 0.0)));
                   } else {
-                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text(
-                        'Suite à une erreur tu ne peux pas accéder à tes favoris pour le moment...',
-                        textAlign: TextAlign.center,
-                      ),
-                      behavior: SnackBarBehavior.floating,
-                      margin: EdgeInsets.only(left: 70, right: 70),
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15))),
-                      duration: Duration(seconds: 2),
-                    ));
+                    showSnackBar(
+                        context,
+                        "Suite à une erreur tu ne peux pas accéder à tes favoris pour le moment...",
+                        Icons.error);
                   }
                 },
               ),
@@ -158,17 +151,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                   );
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text(
-                      'Suite à une erreur tu ne peux pas témoigner pour le moment...',
-                      textAlign: TextAlign.center,
-                    ),
-                    behavior: SnackBarBehavior.floating,
-                    margin: EdgeInsets.only(left: 70, right: 70),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(15))),
-                    duration: Duration(seconds: 2),
-                  ));
+                  showSnackBar(
+                      context,
+                      "Suite à une erreur tu ne peux pas témoigner pour le moment...",
+                      Icons.error);
                 }
               },
             ),

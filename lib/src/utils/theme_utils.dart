@@ -71,10 +71,6 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(Colors.white),
       ),
-      snackBarTheme: SnackBarThemeData(
-        backgroundColor: Colors.grey[900],
-        contentTextStyle: const TextStyle(color: Colors.white),
-      ),
       useMaterial3: true,
     );
   } else {
@@ -115,7 +111,6 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
         checkColor: MaterialStateProperty.all(Colors.black),
         fillColor: MaterialStateProperty.all(Colors.white),
       ),
-      snackBarTheme: const SnackBarThemeData(backgroundColor: Colors.grey),
       useMaterial3: true,
     );
   }

@@ -1,10 +1,10 @@
 import 'dart:convert';
-
 import 'package:anonity/main.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
@@ -24,7 +24,8 @@ Future<List<Posts>> fetchBookMarks(context) async {
   } else if (response.statusCode == 400) {
     return [];
   } else {
-    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
+    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}",
+        Icons.error);
     return [];
   }
 }
@@ -46,7 +47,8 @@ Future<List> fetchBookmarksIds(context) async {
   } else if (response.statusCode == 400) {
     return [];
   } else {
-    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
+    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}",
+        Icons.error);
     return [];
   }
 }
@@ -68,7 +70,8 @@ Future<List> fetchSupports(context) async {
   } else if (response.statusCode == 400) {
     return [];
   } else {
-    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}");
+    showSnackBar(context, "Une erreur est survenue : ${response.reasonPhrase}",
+        Icons.error);
     return [];
   }
 }
@@ -102,30 +105,13 @@ Future<void> postData(context, age, title, expression) async {
   final response = await request.send();
 
   if (response.statusCode == 200) {
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text(
-        "Merci pour ta dénonciation !",
-        textAlign: TextAlign.center,
-      ),
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(left: 70, right: 70),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      duration: Duration(seconds: 2),
-    ));
+    showSnackBar(context, "Merci pour ta dénonciation !", LucideIcons.heart);
   } else {
     // TODO: Conserver la dénonciation en cache pour la renvoyer plus tard
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      content: Text(
-        "Une erreur est survenue lors de l'envoi de votre dénonciation.",
-        textAlign: TextAlign.center,
-      ),
-      behavior: SnackBarBehavior.floating,
-      margin: EdgeInsets.only(left: 70, right: 70),
-      shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      duration: Duration(seconds: 2),
-    ));
+    showSnackBar(
+        context,
+        "Suite à une erreur ta dénonciation sera envoyée plus tard.",
+        Icons.info_rounded);
   }
 }
 
@@ -142,8 +128,8 @@ Future<void> savePost(context, id) async {
   final response = await request.send();
 
   if (response.statusCode != 200) {
-    return showSnackBar(
-        context, "Une erreur est survenue : ${response.reasonPhrase}");
+    return showSnackBar(context,
+        "Une erreur est survenue : ${response.reasonPhrase}", Icons.error);
   }
 }
 
@@ -160,8 +146,8 @@ Future<void> supportsPost(context, id) async {
   final response = await request.send();
 
   if (response.statusCode != 200) {
-    return showSnackBar(
-        context, "Une erreur est survenue : ${response.reasonPhrase}");
+    return showSnackBar(context,
+        "Une erreur est survenue : ${response.reasonPhrase}", Icons.error);
   }
 }
 
@@ -175,8 +161,8 @@ Future register(context) async {
     final String token = jsonData['message'];
     return token;
   } else {
-    return showSnackBar(
-        context, "Une erreur est survenue : ${response.reasonPhrase}");
+    return showSnackBar(context,
+        "Une erreur est survenue : ${response.reasonPhrase}", Icons.error);
   }
 }
 
@@ -231,7 +217,7 @@ Future bugReport(
 
   if (response.statusCode == 200) {
     // Print ce qui a été envoyer
-    showSnackBar(context, "Merci pour ton rapport de bug !");
+    showSnackBar(context, "Merci pour ton rapport de bug !", Icons.error);
   } else {
     // Récupérer "message" dans le body
     final String responseBody = await response.stream.bytesToString();
@@ -253,8 +239,8 @@ Future<void> deleteDatas(context) async {
   final Map<String, dynamic> jsonData = json.decode(response.body);
   final bool success = jsonData['success'];
   if (response.statusCode != 200 || success == false) {
-    return showSnackBar(
-        context, "Une erreur est survenue : ${response.reasonPhrase}");
+    return showSnackBar(context,
+        "Une erreur est survenue : ${response.reasonPhrase}", Icons.error);
   } else {
     Navigator.pushAndRemoveUntil(
       context,
@@ -267,20 +253,4 @@ Future<void> deleteDatas(context) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove('token');
   }
-}
-
-void showSnackBar(BuildContext context, message) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(
-      content: Text(
-        message.toString(),
-        textAlign: TextAlign.center,
-      ),
-      behavior: SnackBarBehavior.floating,
-      margin: const EdgeInsets.only(left: 80, right: 80),
-      shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(Radius.circular(15))),
-      duration: const Duration(seconds: 2),
-    ),
-  );
 }

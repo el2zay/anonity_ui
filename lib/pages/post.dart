@@ -77,23 +77,28 @@ class _PostPageState extends State<PostPage> {
             ),
             const SizedBox(height: 15),
             Padding(
-              padding: const EdgeInsets.only(left: 145, right: 145, bottom: 20),
-              child: TextFormField(
-                controller: _ageController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
+              padding: const EdgeInsets.only(bottom: 20),
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxWidth: 100,
                 ),
-                style: const TextStyle(fontSize: 21),
-                textAlign: TextAlign.center,
-                maxLength: 2,
-                keyboardType: TextInputType.number,
-                buildCounter: (context,
-                        {required currentLength,
-                        required isFocused,
-                        maxLength}) =>
-                    null,
+                child: TextFormField(
+                  controller: _ageController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  style: const TextStyle(fontSize: 21),
+                  textAlign: TextAlign.center,
+                  maxLength: 2,
+                  keyboardType: TextInputType.number,
+                  buildCounter: (context,
+                          {required currentLength,
+                          required isFocused,
+                          maxLength}) =>
+                      null,
+                ),
               ),
             ),
             const SizedBox(height: 20),

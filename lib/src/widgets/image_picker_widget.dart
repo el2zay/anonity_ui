@@ -2,6 +2,7 @@
 
 import 'dart:io';
 
+import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -40,19 +41,12 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
           if (_images.length < 3) {
             _images.add(image);
           } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text("Tu ne peux pas ajouter plus de 3 images."),
-              ),
-            );
+            showSnackBar(context, "Tu ne peux pas ajouter plus de 3 images.",
+                Icons.error);
           }
         });
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text("L'image est trop volumineuse."),
-          ),
-        );
+        showSnackBar(context, "L'image est trop volumineuse.", Icons.error);
       }
     }
   }

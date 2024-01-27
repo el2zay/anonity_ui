@@ -1,5 +1,6 @@
 import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:flutter/services.dart';
 
@@ -25,17 +26,9 @@ class SharePassphrase extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               Clipboard.setData(ClipboardData(text: passphrase));
-              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                content: Text(
-                  'La passphrase a été copiée !',
-                  textAlign: TextAlign.center,
-                ),
-                behavior: SnackBarBehavior.floating,
-                margin: EdgeInsets.only(left: 70, right: 70),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15))),
-                duration: Duration(seconds: 2),
-              ));
+
+              showSnackBar(
+                  context, "La passphrase a été copiée.", LucideIcons.copy);
             },
             child: const Text("Copier la passphrase"),
           )

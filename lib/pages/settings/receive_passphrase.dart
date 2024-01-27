@@ -1,9 +1,12 @@
+import 'dart:typed_data';
+
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
+// import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReceivePassphrasePage extends StatefulWidget {
@@ -20,8 +23,8 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   final TextEditingController _passphraseController = TextEditingController();
   List<String> wordsInPassphrase = [];
 
-  Barcode? result;
-  QRViewController? controller;
+  // Barcode? result;
+  // QRViewController? controller;
   bool showScanner = true;
   bool isButtonDisabled = true;
 
@@ -55,25 +58,35 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   }
 
   Widget createScannerWidget() {
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: (QRViewController controller) {
-        setState(() {
-          this.controller = controller;
-        });
-        controller.scannedDataStream.listen((scanData) async {
-          // Print le text du QR code
-          await loginer(context, scanData.code);
-        });
-      },
-      overlay: QrScannerOverlayShape(
-        borderRadius: 10,
-        borderColor: Colors.white,
-        borderLength: 30,
-        borderWidth: 10,
-        cutOutSize: 300,
-      ),
-    );
+    // return QRView(
+    //   key: qrKey,
+    //   onQRViewCreated: (QRViewController controller) {
+    //     setState(() {
+    //       this.controller = controller;
+    //     });
+    //     controller.scannedDataStream.listen((scanData) async {
+    //       // Print le text du QR code
+    //       await loginer(context, scanData.code);
+    //     });
+    //   },
+    //   overlay: QrScannerOverlayShape(
+    //     borderRadius: 10,
+    //     borderColor: Colors.white,
+    //     borderLength: 30,
+    //     borderWidth: 10,
+    //     cutOutSize: 300,
+    //   ),
+    // );
+
+    return MobileScanner(
+        onDetect: (capture) {
+          final List<Barcode> barcodes = capture.barcodes;
+          final Uint8List? image = capture.image;
+          for (final barcode in barcodes) {
+            debugPrint('Barcode found! ${barcode.rawValue}');
+          }
+        },
+      );
   }
 
   @override

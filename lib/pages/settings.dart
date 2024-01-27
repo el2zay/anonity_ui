@@ -71,6 +71,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 });
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setBool('notif', isChecked);
+                showSnackBar(
+                    context,
+                    "Notifications ${value! ? "activées" : "désactivées"}",
+                    Icons.notifications);
               },
               activeColor: Colors.transparent,
             ),
@@ -293,8 +297,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     borderRadius: BorderRadius.all(Radius.circular(15))),
                 fixedSize: const Size.fromHeight(55)),
             onPressed: () {
-              Navigator.of(context)
-                  .push(betterPush(const DeleteDataPage(), const Offset(1.0, 0.0)));
+              Navigator.of(context).push(
+                  betterPush(const DeleteDataPage(), const Offset(1.0, 0.0)));
             },
             child: const Text("Supprimer mes données",
                 style: TextStyle(color: Colors.red, fontSize: 18)),
