@@ -217,7 +217,7 @@ Future bugReport(
 
   if (response.statusCode == 200) {
     // Print ce qui a été envoyer
-    showSnackBar(context, "Merci pour ton rapport de bug !", Icons.error);
+    showSnackBar(context, "Ton rapport de bug a bien été envoyé !", Icons.check);
   } else {
     // Récupérer "message" dans le body
     final String responseBody = await response.stream.bytesToString();

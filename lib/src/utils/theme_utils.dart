@@ -71,6 +71,9 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(Colors.white),
       ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: Colors.white,
+      ),
       useMaterial3: true,
     );
   } else {
@@ -110,6 +113,9 @@ ThemeData getAppSpecificTheme(bool isDarkMode) {
       checkboxTheme: CheckboxThemeData(
         checkColor: MaterialStateProperty.all(Colors.black),
         fillColor: MaterialStateProperty.all(Colors.white),
+      ),
+      progressIndicatorTheme: const ProgressIndicatorThemeData(
+        color: Colors.black,
       ),
       useMaterial3: true,
     );

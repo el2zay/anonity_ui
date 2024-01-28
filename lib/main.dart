@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'dart:io' show Platform;
 
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
@@ -246,4 +248,20 @@ void showSnackBar(BuildContext context, String message, IconData icon) {
           : const EdgeInsets.only(left: 20, right: 20, bottom: 20),
     ),
   );
+}
+
+Widget loader({color}) {
+  return Platform.isIOS
+      ? Center(
+          child: CupertinoActivityIndicator(
+            radius: 20,
+            color: color,
+          ),
+        )
+      : Center(
+          child: CircularProgressIndicator(
+            strokeWidth: 2,
+            color: color,
+          ),
+        );
 }

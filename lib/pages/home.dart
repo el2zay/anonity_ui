@@ -8,7 +8,6 @@ import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 class HomePage extends StatefulWidget {
@@ -262,11 +261,7 @@ class _HomePageState extends State<HomePage> {
                 },
               );
             }
-            return const Center(
-              child: CupertinoActivityIndicator(
-                radius: 20,
-              ),
-            );
+            return loader();
           },
         ),
       ),

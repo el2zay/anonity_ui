@@ -1,4 +1,5 @@
 // ignore_for_file: use_build_context_synchronously
+import 'dart:io' show Platform;
 
 import 'package:anonity/main.dart';
 import 'package:anonity/pages/empty_token.dart';
@@ -12,7 +13,6 @@ import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io' show Platform;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});

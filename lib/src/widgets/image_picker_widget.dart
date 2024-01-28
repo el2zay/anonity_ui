@@ -30,6 +30,12 @@ List<String?>? getImagesPath() {
 }
 
 class _ImagePickerWidgetState extends State<ImagePickerWidget> {
+  @override
+  void dispose() {
+    _images.clear();
+    super.dispose();
+  }
+
   Future getImageFromGallery(BuildContext context) async {
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);

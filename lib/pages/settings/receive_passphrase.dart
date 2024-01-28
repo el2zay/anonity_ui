@@ -1,12 +1,9 @@
-import 'dart:typed_data';
-
+import 'package:anonity/main.dart';
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-// import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:mobile_scanner/mobile_scanner.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ReceivePassphrasePage extends StatefulWidget {
@@ -23,10 +20,11 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   final TextEditingController _passphraseController = TextEditingController();
   List<String> wordsInPassphrase = [];
 
-  // Barcode? result;
-  // QRViewController? controller;
+  Barcode? result;
+  QRViewController? controller;
   bool showScanner = true;
   bool isButtonDisabled = true;
+  bool showLoading = false;
 
   late Widget scannerWidget;
 
@@ -58,51 +56,47 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   }
 
   Widget createScannerWidget() {
-    // return QRView(
-    //   key: qrKey,
-    //   onQRViewCreated: (QRViewController controller) {
-    //     setState(() {
-    //       this.controller = controller;
-    //     });
-    //     controller.scannedDataStream.listen((scanData) async {
-    //       // Print le text du QR code
-    //       await loginer(context, scanData.code);
-    //     });
-    //   },
-    //   overlay: QrScannerOverlayShape(
-    //     borderRadius: 10,
-    //     borderColor: Colors.white,
-    //     borderLength: 30,
-    //     borderWidth: 10,
-    //     cutOutSize: 300,
-    //   ),
-    // );
-
-    return MobileScanner(
-        onDetect: (capture) {
-          final List<Barcode> barcodes = capture.barcodes;
-          final Uint8List? image = capture.image;
-          for (final barcode in barcodes) {
-            debugPrint('Barcode found! ${barcode.rawValue}');
-          }
-        },
-      );
+    return QRView(
+      key: qrKey,
+      onQRViewCreated: (QRViewController controller) {
+        setState(() {
+          this.controller = controller;
+        });
+        controller.scannedDataStream.listen((scanData) async {
+          // Print le text du QR code
+          await loginer(context, scanData.code);
+        });
+      },
+      overlay: QrScannerOverlayShape(
+        borderRadius: 10,
+        borderColor: Colors.white,
+        borderLength: 30,
+        borderWidth: 10,
+        cutOutSize: 300,
+      ),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        // Mettre une croix pour fermer la page
-        leading: IconButton(
-          icon: const Icon(Icons.close),
-          onPressed: () {
-            Navigator.pop(context);
-          },
+    return PopScope(
+      canPop: !showLoading,
+      child: Scaffold(
+        appBar: AppBar(
+          leading: IconButton(
+            icon: const Icon(Icons.close),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         ),
+        resizeToAvoidBottomInset: false,
+        body: showLoading
+            ? loader()
+            : showScanner
+                ? buildScannerWidget()
+                : buildClosedScannerWidget(),
       ),
-      resizeToAvoidBottomInset: false,
-      body: showScanner ? buildScannerWidget() : buildClosedScannerWidget(),
     );
   }
 
@@ -151,7 +145,27 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
               ],
             ),
           ),
-          const SizedBox(height: 30),
+          const SizedBox(height: 10),
+          RichText(
+            textAlign: TextAlign.center,
+            strutStyle: const StrutStyle(fontSize: 25.0),
+            text: TextSpan(
+              style: Theme.of(context).textTheme.bodyMedium,
+              children: const [
+                TextSpan(
+                    text: 'Le QR Code se trouve dans ',
+                    style: TextStyle(fontSize: 16.0)),
+                WidgetSpan(
+                  child: Icon(LucideIcons.settings),
+                ),
+                TextSpan(
+                    text: ' > Récupérer ma passphrase.',
+                    style:
+                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold)),
+              ],
+            ),
+          ),
+          const SizedBox(height: 20),
           TextField(
             controller: _passphraseController,
             decoration: const InputDecoration(
@@ -236,16 +250,6 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   }
 
   Future<void> loginer(context, text) async {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const Center(
-          child: CupertinoActivityIndicator(
-            radius: 20,
-          ),
-        );
-      },
-    );
     var loginFunc = await login(context, text);
 
     final prefs = await SharedPreferences.getInstance();

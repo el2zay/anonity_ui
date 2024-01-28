@@ -1,7 +1,6 @@
 import 'package:anonity/main.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class BookmarksPage extends StatefulWidget {
@@ -111,11 +110,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
               },
             );
           } else {
-            return const Center(
-              child: CupertinoActivityIndicator(
-                radius: 20,
-              ),
-            );
+            return loader();
           }
         },
       ),
