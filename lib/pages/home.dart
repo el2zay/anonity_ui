@@ -195,37 +195,40 @@ class _HomePageState extends State<HomePage> {
               );
             } else if (snapshot.hasError &&
                 snapshot.connectionState == ConnectionState.done) {
-              debugPrint(snapshot.error.toString());
-              buttonsEnabled.value = false;
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.error_outline,
-                      color: Colors.red,
-                      size: 50,
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      "Une erreur critique est survenue, pas d'inquiétude cela vient sûrement du serveur.",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
+              setState(() {});
+              if (snapshot.hasError) {
+                buttonsEnabled.value = false;
+                return Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.error_outline,
+                        color: Colors.red,
+                        size: 50,
                       ),
-                      textAlign: TextAlign.center,
-                    ),
-                    const SizedBox(height: 10),
-                    ElevatedButton(
-                      onPressed: () {
-                        setState(() {});
-                      },
-                      child: const Text("Réessayer"),
-                    ),
-                    Text("${snapshot.error}"),
-                  ],
-                ),
-              );
+                      const SizedBox(height: 10),
+                      const Text(
+                        "Une erreur critique est survenue, pas d'inquiétude cela vient sûrement du serveur.",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      const SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          setState(() {});
+                        },
+                        child: const Text("Réessayer"),
+                      ),
+                      // TODO : à la publication de l'paplication retirer cette ligne
+                      Text("${snapshot.error}"),
+                    ],
+                  ),
+                );
+              }
             } else if (snapshot.hasData) {
               buttonsEnabled.value = true;
               return ListView.builder(

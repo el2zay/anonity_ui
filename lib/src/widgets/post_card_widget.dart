@@ -96,8 +96,7 @@ class _PostCardState extends State<PostCard> {
       ),
       child: GestureDetector(
         onDoubleTap: () async {
-          HapticFeedback.selectionClick();
-          HapticFeedback.selectionClick();
+          HapticFeedback.lightImpact();
           if (onDoubleTap == 0) await supportsPost(context, widget.postId);
           if (onDoubleTap == 1) await savePost(context, widget.postId);
           if (onDoubleTap == 2) {

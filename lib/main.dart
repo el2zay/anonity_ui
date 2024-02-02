@@ -25,6 +25,7 @@ late int onLongPress;
 bool isBookmarkPage = false;
 
 void main() async {
+  // Executer la requete isDeleted
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferences.getInstance();
   await dotenv.load(fileName: ".env");
@@ -145,7 +146,7 @@ Future<bool> getNotif() async {
   final prefs = await SharedPreferences.getInstance();
   final notif = prefs.getBool('notif');
 
-  return notif ?? false;
+  return notif ?? true;
 }
 
 Future<String> getPassphrase() async {

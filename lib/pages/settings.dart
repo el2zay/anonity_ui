@@ -71,10 +71,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 });
                 final prefs = await SharedPreferences.getInstance();
                 prefs.setBool('notif', isChecked);
-                showSnackBar(
-                    context,
-                    "Notifications ${value! ? "activées" : "désactivées"}",
-                    Icons.notifications);
               },
               activeColor: Colors.transparent,
             ),

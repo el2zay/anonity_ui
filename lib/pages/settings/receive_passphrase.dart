@@ -256,15 +256,13 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
 
     if (loginFunc[1] == true) {
       prefs.setString('token', loginFunc[0]);
-      Navigator.pushAndRemoveUntil(
+      Navigator.push(
         context,
         MaterialPageRoute(
           builder: (BuildContext context) => const HomePage(),
         ),
-        (route) => false,
       );
     } else {
-      Navigator.pop(context);
       setState(() {
         errorMessage = loginFunc[0];
       });

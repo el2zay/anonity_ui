@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<List<Posts>> fetchBookMarks(context) async {
+  isDeleted(context, token);
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'),
           // Ajouter le token
@@ -31,6 +32,7 @@ Future<List<Posts>> fetchBookMarks(context) async {
 }
 
 Future<List> fetchBookmarksIds(context) async {
+  isDeleted(context, token);
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'),
           // Ajouter le token
@@ -54,6 +56,7 @@ Future<List> fetchBookmarksIds(context) async {
 }
 
 Future<List> fetchSupports(context) async {
+  isDeleted(context, token);
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/supports'),
           // Ajouter le token
@@ -77,6 +80,7 @@ Future<List> fetchSupports(context) async {
 }
 
 Future<List<Posts>> fetchPosts(context, postIds) async {
+  isDeleted(context, token);
   final response = await http
       .get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts?ids=$postIds'));
 
@@ -86,6 +90,36 @@ Future<List<Posts>> fetchPosts(context, postIds) async {
     return data.map((e) => Posts.fromJson(e)).toList();
   } else {
     return [];
+  }
+}
+
+Future isDeleted(context, token) async {
+  final response = await http.get(
+      Uri.parse('${dotenv.env['API_REQUEST']!}/isDeleted'),
+      headers: <String, String>{
+        'Authorization': 'Bearer $token',
+      });
+
+  if (response.statusCode == 200 || response.statusCode == 400) {
+    bool success = false;
+    // Récupérer le success dans le body
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> jsonData = json.decode(response.body);
+      success = jsonData['success'];
+    }
+    if (success == false || response.statusCode == 400) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(
+          builder: (BuildContext context) => const EmptyTokenPage(),
+        ),
+        (route) => false,
+      );
+      // Supprimer le token
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('token');
+      showSnackBar(context, "Ton compte a été supprimé.", Icons.no_accounts);
+    }
   }
 }
 
@@ -216,8 +250,8 @@ Future bugReport(
   http.StreamedResponse response = await request.send();
 
   if (response.statusCode == 200) {
-    // Print ce qui a été envoyer
-    showSnackBar(context, "Ton rapport de bug a bien été envoyé !", Icons.check);
+    showSnackBar(
+        context, "Ton rapport de bug a bien été envoyé !", Icons.check);
   } else {
     // Récupérer "message" dans le body
     final String responseBody = await response.stream.bytesToString();
