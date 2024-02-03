@@ -5,6 +5,7 @@ import 'package:anonity/pages/home.dart';
 import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -18,6 +19,14 @@ class EmptyTokenPage extends StatefulWidget {
 class _EmptyTokenPageState extends State<EmptyTokenPage> {
   @override
   Widget build(BuildContext context) {
+    var shortestSide = MediaQuery.of(context).size.shortestSide;
+    final bool useMobileLayout = shortestSide < 550;
+    if (useMobileLayout) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
     final tokenProvider = Provider.of<TokenProvider>(context);
     return Scaffold(
       body: Container(

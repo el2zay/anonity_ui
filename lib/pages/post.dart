@@ -16,8 +16,8 @@ class _PostPageState extends State<PostPage> {
   final TextEditingController _titleController = TextEditingController();
   final TextEditingController _expressionController = TextEditingController();
   bool isButtonDisabled = true;
-  bool titleMessage = false;
-  bool expressionMessage = false;
+  bool titleMessage = true;
+  bool expressionMessage = true;
 
   @override
   void initState() {
@@ -69,129 +69,129 @@ class _PostPageState extends State<PostPage> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Text(
-              "Âge",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxWidth: 100,
+          child: Column(
+            children: [
+              const Text(
+                "Âge",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 20),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(
+                    maxWidth: 100,
+                  ),
+                  child: TextFormField(
+                    controller: _ageController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    style: const TextStyle(fontSize: 21),
+                    textAlign: TextAlign.center,
+                    maxLength: 2,
+                    keyboardType: TextInputType.number,
+                    buildCounter: (context,
+                            {required currentLength,
+                            required isFocused,
+                            maxLength}) =>
+                        null,
+                  ),
                 ),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                "Titre",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
-                  controller: _ageController,
+                  controller: _titleController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
                   ),
-                  style: const TextStyle(fontSize: 21),
+                  maxLength: 45,
+                  textCapitalization: TextCapitalization.sentences,
+                ),
+              ),
+              if (titleMessage)
+                RichText(
                   textAlign: TextAlign.center,
-                  maxLength: 2,
-                  keyboardType: TextInputType.number,
-                  buildCounter: (context,
-                          {required currentLength,
-                          required isFocused,
-                          maxLength}) =>
-                      null,
-                ),
-              ),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              "Titre",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                controller: _titleController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                  strutStyle: const StrutStyle(fontSize: 25.0),
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.info_outline,
+                          size: 20,
+                          color: Colors.blue[400],
+                        ),
+                      ),
+                      TextSpan(
+                          text: '\t10 lettres minimum.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue[400],
+                          )),
+                    ],
                   ),
                 ),
-                maxLength: 45,
-                textCapitalization: TextCapitalization.sentences,
+              const SizedBox(height: 20),
+              const Text(
+                "Exprime toi",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
-            ),
-            if (titleMessage)
-              RichText(
-                textAlign: TextAlign.center,
-                strutStyle: const StrutStyle(fontSize: 25.0),
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  children: [
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.info_outline,
-                        size: 20,
-                        color: Colors.blue[400],
-                      ),
+              const SizedBox(height: 15),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: TextFormField(
+                  controller: _expressionController,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    TextSpan(
-                        text: '\t10 lettres minimum.',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue[400],
-                        )),
-                  ],
+                  ),
+                  maxLength: 5000,
+                  style: const TextStyle(fontSize: 16),
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  textCapitalization: TextCapitalization.sentences,
                 ),
               ),
-            const SizedBox(height: 20),
-            const Text(
-              "Exprime toi",
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 15),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: TextFormField(
-                controller: _expressionController,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+              if (expressionMessage)
+                RichText(
+                  textAlign: TextAlign.center,
+                  strutStyle: const StrutStyle(fontSize: 25.0),
+                  text: TextSpan(
+                    style: Theme.of(context).textTheme.bodyMedium,
+                    children: [
+                      WidgetSpan(
+                        child: Icon(
+                          Icons.info_outline,
+                          size: 20,
+                          color: Colors.blue[400],
+                        ),
+                      ),
+                      TextSpan(
+                          text: '\t70 lettres minimum.',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w500,
+                            color: Colors.blue[400],
+                          )),
+                    ],
                   ),
                 ),
-                maxLength: 5000,
-                style: const TextStyle(fontSize: 16),
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                textCapitalization: TextCapitalization.sentences,
-              ),
-            ),
-            if (expressionMessage)
-              RichText(
-                textAlign: TextAlign.center,
-                strutStyle: const StrutStyle(fontSize: 25.0),
-                text: TextSpan(
-                  style: Theme.of(context).textTheme.bodyMedium,
-                  children: [
-                    WidgetSpan(
-                      child: Icon(
-                        Icons.info_outline,
-                        size: 20,
-                        color: Colors.blue[400],
-                      ),
-                    ),
-                    TextSpan(
-                        text: '\t70 lettres minimum.',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: Colors.blue[400],
-                        )),
-                  ],
-                ),
-              ),
-          ],
-        ),
+            ],
+          ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: isButtonDisabled
@@ -206,7 +206,18 @@ class _PostPageState extends State<PostPage> {
                 ? Colors.grey[500]
                 : Colors.grey[800]
             : Theme.of(context).floatingActionButtonTheme.backgroundColor,
-        child: const Icon(Icons.check, size: 35),
+        child: Icon(
+          Icons.check,
+          size: 35,
+          shadows: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.2),
+              spreadRadius: 1,
+              blurRadius: 1,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
       ),
     );
   }

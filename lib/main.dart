@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 late String passphrase;
@@ -23,6 +24,8 @@ late int onTap;
 late int onDoubleTap;
 late int onLongPress;
 bool isBookmarkPage = false;
+final lightTheme = getAppSpecificTheme(false);
+final darkTheme = getAppSpecificTheme(true);
 
 void main() async {
   // Executer la requete isDeleted
@@ -41,11 +44,15 @@ void main() async {
   onDoubleTap = await getOnDoubleTap();
   onLongPress = await getOnLongPress();
 
-  final lightTheme = getAppSpecificTheme(false);
-  final darkTheme = getAppSpecificTheme(true);
+  runApp(Phoenix(child: const MyApp()));
+}
 
-  runApp(
-    MultiProvider(
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiProvider(
       providers: [
         ChangeNotifierProvider<TokenProvider>(
           create: (context) => TokenProvider(),
@@ -76,8 +83,8 @@ void main() async {
           );
         },
       ),
-    ),
-  );
+    );
+  }
 }
 
 class ThemeProvider with ChangeNotifier {

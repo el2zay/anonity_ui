@@ -7,6 +7,8 @@ import 'package:anonity/pages/settings.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -17,7 +19,8 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
+  AsyncSnapshot<List<Posts>>? _snapshot;
   ValueNotifier<bool> buttonsEnabled = ValueNotifier(true);
 
   Future<void> _refresh() async {
@@ -40,6 +43,25 @@ class _HomePageState extends State<HomePage> {
       setState(() {
         activeConnection = false;
       });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (_snapshot!.hasError) {
+      Phoenix.rebirth(context);
     }
   }
 
@@ -163,6 +185,7 @@ class _HomePageState extends State<HomePage> {
         child: FutureBuilder<List<Posts>>(
           future: fetchPosts(context, null),
           builder: (context, AsyncSnapshot<List<Posts>> snapshot) {
+            _snapshot = snapshot;
             if (activeConnection == false) {
               buttonsEnabled.value = false;
               return Center(
@@ -185,7 +208,7 @@ class _HomePageState extends State<HomePage> {
                     ElevatedButton(
                       onPressed: () {
                         setState(() {
-                          checkUserConnection();
+                          Phoenix.rebirth(context);
                         });
                       },
                       child: const Text("Réessayer"),
