@@ -110,7 +110,7 @@ class _SetReaderPageState extends State<SetReaderPage> {
               showFonts = false;
             });
           },
-          icon: const Icon(Icons.arrow_back_ios),
+          icon: arrowBack(),
         ),
       ),
       body: Padding(

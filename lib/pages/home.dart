@@ -67,7 +67,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-    isBookmarkPage = false;
     double screenWidth = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
@@ -279,11 +278,13 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                     ]);
                   }
                   return PostCard(
-                    title: snapshot.data![index].title!,
-                    subject: snapshot.data![index].subject!,
-                    age: snapshot.data![index].age!,
-                    postId: snapshot.data![index].id!,
-                  );
+                      title: snapshot.data![index].title!,
+                      subject: snapshot.data![index].subject!,
+                      age: snapshot.data![index].age!,
+                      postId: snapshot.data![index].id!,
+                      onRemoveFromBookmarks: (String postId) {
+                        // TODO: Enlever l'icone bookmark
+                      });
                 },
               );
             }

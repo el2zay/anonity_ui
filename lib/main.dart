@@ -273,3 +273,11 @@ Widget loader({color}) {
           ),
         );
 }
+
+Widget arrowBack() {
+  return Platform.isIOS ? const Icon(
+    Icons.arrow_back_ios,
+  ) : const Icon(
+    Icons.arrow_back,
+  );
+}

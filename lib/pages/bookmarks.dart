@@ -12,8 +12,19 @@ class BookmarksPage extends StatefulWidget {
 
 class _BookmarksPageState extends State<BookmarksPage> {
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     isBookmarkPage = true;
+    super.initState();
+  }
+  
+  @override
+  void dispose() {
+    isBookmarkPage = false;
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Enregistrés"),
@@ -106,6 +117,12 @@ class _BookmarksPageState extends State<BookmarksPage> {
                   subject: snapshot.data![index].subject!,
                   age: snapshot.data![index].age!,
                   postId: snapshot.data![index].id!,
+                  onRemoveFromBookmarks: (String postId) {
+                    setState(() {
+                      snapshot.data!
+                          .removeWhere((element) => element.id == postId);
+                    });
+                  },
                 );
               },
             );

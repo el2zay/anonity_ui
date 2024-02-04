@@ -69,6 +69,9 @@ class _PostPageState extends State<PostPage> {
         ),
       ),
       body: SingleChildScrollView(
+        child: SafeArea(
+          top: false,
+          bottom: false,
           child: Column(
             children: [
               const Text(
@@ -192,6 +195,7 @@ class _PostPageState extends State<PostPage> {
                 ),
             ],
           ),
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: isButtonDisabled

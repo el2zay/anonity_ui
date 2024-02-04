@@ -43,6 +43,7 @@ class PostCard extends StatefulWidget {
   final String subject;
   final int age;
   final String postId;
+  final Function(String postId) onRemoveFromBookmarks;
 
   const PostCard({
     super.key,
@@ -50,6 +51,7 @@ class PostCard extends StatefulWidget {
     required this.subject,
     required this.age,
     required this.postId,
+    required this.onRemoveFromBookmarks,
   });
 
   @override
@@ -65,7 +67,7 @@ class _PostCardState extends State<PostCard> {
   void initState() {
     super.initState();
     isMounted = true;
-    checkStatus();
+    checkStatus(context);
   }
 
   @override
@@ -73,15 +75,16 @@ class _PostCardState extends State<PostCard> {
     isMounted = false;
     super.dispose();
   }
-
-  Future<void> checkStatus() async {
-    List supportsIds = await fetchSupports(context);
-    List bookmarksIds = await fetchBookmarksIds(context);
+  Future<void> checkStatus(context) async {
     if (isMounted) {
-      setState(() {
-        isSupported = supportsIds.contains(widget.postId);
-        isBookmarked = bookmarksIds.contains(widget.postId);
-      });
+      List supportsIds = await fetchSupports(context);
+      List bookmarksIds = await fetchBookmarksIds(context);
+      if (isMounted) {
+        setState(() {
+          isSupported = supportsIds.contains(widget.postId);
+          isBookmarked = bookmarksIds.contains(widget.postId);
+        });
+      }
     }
   }
 
@@ -109,7 +112,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                 const Offset(1.0, 0.0)));
           }
-          checkStatus();
+          checkStatus(context);
         },
         onLongPress: () async {
           HapticFeedback.selectionClick();
@@ -125,7 +128,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                 const Offset(1.0, 0.0)));
           }
-          checkStatus();
+          checkStatus(context);
         },
         onTap: () async {
           if (onTap == 0) await supportsPost(context, widget.postId);
@@ -140,7 +143,7 @@ class _PostCardState extends State<PostCard> {
                 ),
                 const Offset(1.0, 0.0)));
           }
-          checkStatus();
+          checkStatus(context);
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -175,7 +178,7 @@ class _PostCardState extends State<PostCard> {
                         onTap: () async {
                           HapticFeedback.selectionClick();
                           await supportsPost(context, widget.postId);
-                          checkStatus();
+                          checkStatus(context);
                         },
                         child: isSupported
                             ? Image.asset(
@@ -192,18 +195,29 @@ class _PostCardState extends State<PostCard> {
                         onTap: () async {
                           HapticFeedback.selectionClick();
                           await savePost(context, widget.postId);
-                          checkStatus();
+                          if (isBookmarkPage) {
+                            setState(() {
+                              widget.onRemoveFromBookmarks(widget.postId);
+                            });
+                          }
+                          checkStatus(context);
                         },
-                        child: isBookmarked
+                        child: isBookmarkPage
                             ? const Icon(
                                 Icons.bookmark,
                                 size: 25,
                                 color: Colors.blue,
                               )
-                            : const Icon(
-                                Icons.bookmark_add_outlined,
-                                size: 25,
-                              ),
+                            : isBookmarked
+                                ? const Icon(
+                                    Icons.bookmark,
+                                    size: 25,
+                                    color: Colors.blue,
+                                  )
+                                : const Icon(
+                                    Icons.bookmark_add_outlined,
+                                    size: 25,
+                                  ),
                       ),
                     ],
                   ),
