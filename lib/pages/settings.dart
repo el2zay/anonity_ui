@@ -1,6 +1,4 @@
 // ignore_for_file: use_build_context_synchronously
-import 'dart:io' show Platform;
-
 import 'package:anonity/main.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/pages/report.dart';
@@ -11,6 +9,7 @@ import 'package:anonity/pages/settings/delete_data.dart';
 import 'package:anonity/pages/settings/share_passphrase.dart';
 import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -254,7 +253,9 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Text("Annuler",
                             style: TextStyle(
                                 color:
-                                    Platform.isIOS ? Colors.blue[500] : null)),
+                                    defaultTargetPlatform == TargetPlatform.iOS
+                                        ? Colors.blue[500]
+                                        : null)),
                       ),
                       TextButton(
                         onPressed: () async {
@@ -273,7 +274,10 @@ class _SettingsPageState extends State<SettingsPage> {
                         child: Text("Se déconnecter",
                             // Si on est sur iOS afficher en rouge
                             style: TextStyle(
-                                color: Platform.isIOS ? Colors.red : null)),
+                                color:
+                                    defaultTargetPlatform == TargetPlatform.iOS
+                                        ? Colors.red
+                                        : null)),
                       ),
                     ],
                   );

@@ -7,7 +7,6 @@ import 'package:anonity/pages/settings.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
@@ -119,7 +118,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         width: screenWidth >= 768
                             ? screenWidth * 0.7
                             : double.infinity,
-                        // Ajustez la largeur selon vos besoins
                         child: TextField(
                           decoration: InputDecoration(
                             hintText: "Rechercher",
@@ -245,8 +243,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         },
                         child: const Text("Réessayer"),
                       ),
-                      // TODO : à la publication de l'paplication retirer cette ligne
-                      Text("${snapshot.error}"),
                     ],
                   ),
                 );

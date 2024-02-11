@@ -8,6 +8,7 @@ import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/services.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Posts {
   String? title;
@@ -75,6 +76,7 @@ class _PostCardState extends State<PostCard> {
     isMounted = false;
     super.dispose();
   }
+
   Future<void> checkStatus(context) async {
     if (isMounted) {
       List supportsIds = await fetchSupports(context);
@@ -110,7 +112,7 @@ class _PostCardState extends State<PostCard> {
                   age: widget.age,
                   postId: widget.postId,
                 ),
-                const Offset(1.0, 0.0)));
+                const Offset(0.0, 1.0)));
           }
           checkStatus(context);
         },
@@ -149,12 +151,49 @@ class _PostCardState extends State<PostCard> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             ListTile(
-              title: Text(
-                "${widget.title} (${widget.age} ans)",
-                style: const TextStyle(
-                  fontWeight: FontWeight.w700,
-                ),
-                textAlign: TextAlign.center,
+              title: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        "${widget.title} (${widget.age} ans)",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                        ),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ),
+                  IconButton(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onPressed: () async {
+                      if (kIsWeb) {
+                        await Clipboard.setData(ClipboardData(
+                            text: 'https://app.anonity.fr/${widget.postId}'));
+                        showSnackBar(context, 'Lien copié', LucideIcons.link);
+                      } else {
+                        final result = await Share.shareWithResult(
+                            'https://app.anonity.fr/${widget.postId}',
+                            subject: widget.title);
+
+                        if (result.status == ShareResultStatus.success) {
+                          showSnackBar(context, 'Merci pour ton partage',
+                              LucideIcons.heartHandshake);
+                        }
+                      }
+                    },
+                    icon: kIsWeb
+                        ? const Icon(LucideIcons.link2, size: 16)
+                        : const Icon(
+                            LucideIcons.share,
+                            size: 16,
+                          ),
+                  )
+                ],
               ),
               subtitle: ExpandableText(
                 widget.subject,

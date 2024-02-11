@@ -1,8 +1,8 @@
 import 'dart:convert';
-import 'dart:io' show Platform;
 
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/pages/home.dart';
+import 'package:anonity/pages/reader.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:flutter/foundation.dart';
 
 late String passphrase;
 late String token;
@@ -28,7 +28,6 @@ final lightTheme = getAppSpecificTheme(false);
 final darkTheme = getAppSpecificTheme(true);
 
 void main() async {
-  // Executer la requete isDeleted
   WidgetsFlutterBinding.ensureInitialized();
   await SharedPreferences.getInstance();
   await dotenv.load(fileName: ".env");
@@ -52,6 +51,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final id = postId();
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<TokenProvider>(
@@ -77,9 +77,14 @@ class MyApp extends StatelessWidget {
             theme: lightTheme,
             darkTheme: darkTheme,
             themeMode: initialThemeMode,
-            home: token == "" && !kIsWeb
-                ? const EmptyTokenPage()
-                : const HomePage(),
+            routes: {
+              '/': (context) => token == "" && !kIsWeb
+                  ? const EmptyTokenPage()
+                  : const HomePage(),
+              '/post': (context) => ReaderPage(
+                    postId: id,
+                  ),
+            },
           );
         },
       ),
@@ -140,6 +145,20 @@ Route betterPush(Widget page, Offset offset, {bool fullscreenDialog = false}) {
       );
     },
   );
+}
+
+String postId() {
+  if (kIsWeb) {
+    String? path = Uri.base.path;
+
+    List<String> pathSegments = path.split('/');
+    if (pathSegments[1] == 'post' && pathSegments[2] != "") {
+      String postId = pathSegments[2];
+
+      return postId;
+    }
+  }
+  return "";
 }
 
 Future<String?> getToken() async {
@@ -232,14 +251,12 @@ void showSnackBar(BuildContext context, String message, IconData icon) {
         children: [
           Icon(icon, color: Colors.white, size: 24),
           const SizedBox(width: 8.0),
-          Expanded(
-            child: Text(
-              message,
-              style: const TextStyle(
-                fontSize: 16.0,
-                color: Colors.white,
-                fontWeight: FontWeight.w500,
-              ),
+          Text(
+            message,
+            style: const TextStyle(
+              fontSize: 16.0,
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -248,18 +265,17 @@ void showSnackBar(BuildContext context, String message, IconData icon) {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       backgroundColor: const Color.fromRGBO(28, 28, 28, 1),
-      // Margin width selon la taille de l'écran
-      margin: MediaQuery.of(context).size.width > 500
-          ? const EdgeInsets.only(left: 70, right: 70, bottom: 20)
-          : const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+      width: MediaQuery.of(context).size.width > 600
+          ? 250
+          : MediaQuery.of(context).size.width,
     ),
   );
 }
 
 Widget loader({color}) {
-  return Platform.isIOS
+  return defaultTargetPlatform == TargetPlatform.iOS
       ? Center(
           child: CupertinoActivityIndicator(
             radius: 20,
@@ -275,9 +291,11 @@ Widget loader({color}) {
 }
 
 Widget arrowBack() {
-  return Platform.isIOS ? const Icon(
-    Icons.arrow_back_ios,
-  ) : const Icon(
-    Icons.arrow_back,
-  );
+  return defaultTargetPlatform == TargetPlatform.iOS
+      ? const Icon(
+          Icons.arrow_back_ios,
+        )
+      : const Icon(
+          Icons.arrow_back,
+        );
 }

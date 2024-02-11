@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:anonity/main.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lucide_icons/lucide_icons.dart';
@@ -93,7 +94,27 @@ Future<List<Posts>> fetchPosts(context, postIds) async {
   }
 }
 
+Future<List> fetchPostId(id) async {
+  final response =
+      await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts/$id'));
+
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> jsonData = json.decode(response.body);
+    final data = jsonData['data'];
+    final title = data['title'];
+    final subject = data['body'];
+    final age = data['age'];
+    return [title, subject, age];
+  }
+  return [
+    "Erreur",
+    "Une erreur s'est produite, il se peut que cette Dénonciation n'existe plus car l'utilisateur a supprimé le post.",
+    0
+  ];
+}
+
 Future isDeleted(context, token) async {
+  if (kIsWeb) return;
   final response = await http.get(
       Uri.parse('${dotenv.env['API_REQUEST']!}/isDeleted'),
       headers: <String, String>{
@@ -141,7 +162,6 @@ Future<void> postData(context, age, title, expression) async {
   if (response.statusCode == 200) {
     showSnackBar(context, "Merci pour ta dénonciation !", LucideIcons.heart);
   } else {
-    // TODO: Conserver la dénonciation en cache pour la renvoyer plus tard
     showSnackBar(
         context,
         "Suite à une erreur ta dénonciation sera envoyée plus tard.",
