@@ -7,7 +7,6 @@ import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class EmptyTokenPage extends StatefulWidget {
   const EmptyTokenPage({super.key});
@@ -64,7 +63,6 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
                   var newToken = await register(context);
                   if (newToken is String?) {
                     if (newToken != null) {
-                      final prefs = await SharedPreferences.getInstance();
                       prefs.setString('token', newToken);
                       tokenProvider.setToken(newToken);
 

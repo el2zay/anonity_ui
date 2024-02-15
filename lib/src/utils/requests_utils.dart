@@ -6,7 +6,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<List<Posts>> fetchBookMarks(context) async {
@@ -87,7 +86,7 @@ Future<List<Posts>> fetchPosts(context, postIds) async {
 
   if (response.statusCode == 200) {
     final Map<String, dynamic> jsonData = json.decode(response.body);
-    final List<dynamic> data = jsonData['data'];
+    final List data = jsonData['data'] ?? [];
     return data.map((e) => Posts.fromJson(e)).toList();
   } else {
     return [];
@@ -95,6 +94,13 @@ Future<List<Posts>> fetchPosts(context, postIds) async {
 }
 
 Future<List> fetchPostId(id) async {
+  var ignoreUser = await userPosts();
+  if (id == "") {
+    id = ignoreUser;
+  } else {
+    id = '$ignoreUser,$id';
+  }
+
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts/$id'));
 
@@ -137,14 +143,41 @@ Future isDeleted(context, token) async {
         (route) => false,
       );
       // Supprimer le token
-      final prefs = await SharedPreferences.getInstance();
+
       await prefs.remove('token');
       showSnackBar(context, "Ton compte a été supprimé.", Icons.no_accounts);
     }
   }
 }
 
-Future<void> postData(context, age, title, expression) async {
+Future<int> postsLength() async {
+  final responseGlobal = await http.get(
+    Uri.parse('${dotenv.env['API_REQUEST']!}/globalPostsLength'),
+  );
+
+  final Map<String, dynamic> jsonDataGlobal = json.decode(responseGlobal.body);
+  final int lengthGlobal = jsonDataGlobal['message'];
+
+  final responseUser = await http.get(
+    Uri.parse('${dotenv.env['API_REQUEST']!}/userPostsLength'),
+  );
+  final Map<String, dynamic> jsonDataUser = json.decode(responseUser.body);
+  final int lengthUser = jsonDataUser['message'];
+
+  return lengthGlobal - lengthUser;
+}
+
+Future<String> userPosts() async {
+  final response = await http.get(
+    Uri.parse('${dotenv.env['API_REQUEST']!}/userPosts'),
+  );
+  final Map<String, dynamic> jsonData = json.decode(response.body);
+  final List<dynamic> data = jsonData['data'];
+  final List ids = data.map((e) => e['id']).toList();
+  return ids.join(',');
+}
+
+Future postData(context, age, title, expression) async {
   var request =
       http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/posts'));
   request.body = jsonEncode({
@@ -169,7 +202,7 @@ Future<void> postData(context, age, title, expression) async {
   }
 }
 
-Future<void> savePost(context, id) async {
+Future savePost(context, id) async {
   var request = http.Request(
       'POST', Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'));
   request.body = jsonEncode({
@@ -187,7 +220,7 @@ Future<void> savePost(context, id) async {
   }
 }
 
-Future<void> supportsPost(context, id) async {
+Future supportsPost(context, id) async {
   var request =
       http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/supports'));
   request.body = jsonEncode({
@@ -282,7 +315,7 @@ Future bugReport(
   return "";
 }
 
-Future<void> deleteDatas(context) async {
+Future deleteDatas(context) async {
   final http.Response response = await http.delete(
     Uri.parse('${dotenv.env['API_REQUEST']!}/deleteAllMyDatas'),
     headers: <String, String>{
@@ -304,7 +337,7 @@ Future<void> deleteDatas(context) async {
       (route) => false,
     );
     // Supprimer le token
-    final prefs = await SharedPreferences.getInstance();
+
     await prefs.remove('token');
   }
 }

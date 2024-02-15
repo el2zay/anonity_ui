@@ -6,6 +6,7 @@ import 'package:anonity/pages/post.dart';
 import 'package:anonity/pages/settings.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -21,9 +22,15 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   AsyncSnapshot<List<Posts>>? _snapshot;
   ValueNotifier<bool> buttonsEnabled = ValueNotifier(true);
+  final _scrollController = ScrollController();
+  List<Posts> _posts = [];
+  String _postIds = "";
+  Future<List<Posts>>? _postsFuture;
+  bool _isLoading = false;
 
   Future<void> _refresh() async {
     setState(() {
+      _postsFuture = fetchPosts(context, _postIds);
       checkUserConnection();
     });
   }
@@ -49,12 +56,39 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
+    _scrollController.addListener(_loadMorePosts);
+    _postsFuture = fetchPosts(context, _postIds);
+    _postsFuture?.then((initialPosts) {
+      _posts = initialPosts;
+    });
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
     super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+    _scrollController.removeListener(_loadMorePosts);
+  }
+
+  void _loadMorePosts() async {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !_isLoading) {
+      setState(() {
+        _isLoading = true;
+      });
+
+      var newPostIds = "$_postIds,${_posts.map((post) => post.id).join(",")}";
+      var newPosts = await fetchPosts(context, newPostIds);
+
+      setState(() {
+        _posts = [..._posts, ...newPosts];
+        _postsFuture = Future.value(_posts);
+        _isLoading = false;
+
+        _postIds = newPostIds;
+      });
+    }
   }
 
   @override
@@ -180,7 +214,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         onRefresh: _refresh,
         displacement: 5,
         child: FutureBuilder<List<Posts>>(
-          future: fetchPosts(context, null),
+          future: _postsFuture,
           builder: (context, AsyncSnapshot<List<Posts>> snapshot) {
             _snapshot = snapshot;
             if (activeConnection == false) {
@@ -252,35 +286,48 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               return ListView.builder(
                 shrinkWrap: false,
                 itemCount: snapshot.data!.length,
+                controller: _scrollController,
                 itemBuilder: (context, index) {
                   if (index == snapshot.data!.length - 1) {
-                    return const Column(children: [
-                      Text(
-                        "Tu as atteint la fin de la liste.",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
+                    return const Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Center(
+                        child: CupertinoActivityIndicator(
+                          radius: 10,
                         ),
                       ),
-                      SizedBox(height: 15),
-                      Text(
-                        "Si tu souhaites témoigner, n'hésite pas.\nTu as juste a appuyé sur le bouton\nSache que ton témoignage est totalement anonyme et qu'il pourra permettre de t'aider mais aussi des personnes dans la même situation que toi.",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                        ),
-                        textAlign: TextAlign.center,
-                      )
-                    ]);
+                    );
                   }
+                  // return const Padding(
+                  //   padding: EdgeInsets.all(8.0),
+                  //   child: Column(
+                  //     children: [
+                  //       Text(
+                  //         "Tu as atteint la fin de la liste.",
+                  //         style: TextStyle(
+                  //           fontSize: 20,
+                  //           fontWeight: FontWeight.w700,
+                  //         ),
+                  //       ),
+                  //       SizedBox(height: 15),
+                  //       Text(
+                  //         "Si tu souhaites témoigner, n'hésite pas.\nTu as juste a appuyé sur le bouton\nSache que ton témoignage est totalement anonyme et qu'il pourra permettre de t'aider mais aussi des personnes dans la même situation que toi.",
+                  //         style: TextStyle(
+                  //           fontSize: 15,
+                  //           fontWeight: FontWeight.w500,
+                  //         ),
+                  //         textAlign: TextAlign.center,
+                  //       )
+                  //     ],
+                  //   ),
+                  // );
                   return PostCard(
-                      title: snapshot.data![index].title!,
-                      subject: snapshot.data![index].subject!,
-                      age: snapshot.data![index].age!,
-                      postId: snapshot.data![index].id!,
-                      onRemoveFromBookmarks: (String postId) {
-                        // TODO: Enlever l'icone bookmark
-                      });
+                    title: snapshot.data![index].title!,
+                    subject: snapshot.data![index].subject!,
+                    age: snapshot.data![index].age!,
+                    postId: snapshot.data![index].id!,
+                    onRemoveFromBookmarks: (String postId) {},
+                  );
                 },
               );
             }

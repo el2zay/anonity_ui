@@ -1,7 +1,6 @@
 import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangeThemePage extends StatefulWidget {
   const ChangeThemePage({super.key});
@@ -24,6 +23,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
         children: [
           const SizedBox(height: 20),
           CheckboxListTile(
+            activeColor: Colors.transparent,
             title: const Text(
               "Automatique",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -34,7 +34,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               setState(() {
                 theme = 0;
               });
-              final prefs = await SharedPreferences.getInstance();
+
               prefs.setInt('theme', 0);
               themeProvider.setThemeMode(ThemeMode.system);
             },
@@ -50,12 +50,13 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               setState(() {
                 theme = 1;
               });
-              final prefs = await SharedPreferences.getInstance();
+
               prefs.setInt('theme', 1);
               themeProvider.setThemeMode(ThemeMode.light);
             },
           ),
           CheckboxListTile(
+            activeColor: Colors.transparent,
             title: const Text(
               "Sombre",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
@@ -66,7 +67,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               setState(() {
                 theme = 2;
               });
-              final prefs = await SharedPreferences.getInstance();
+
               prefs.setInt('theme', 2);
               themeProvider.setThemeMode(ThemeMode.dark);
             },

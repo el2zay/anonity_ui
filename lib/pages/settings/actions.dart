@@ -1,7 +1,11 @@
 import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+/* 
+consuls faussassions inventoria bluffera sous-developpes tamponnaient debarrasseraient renauderais acetylerai valvees entrevous disposez traversas bernassiez prefererait demobilisees desabonnai allegoriques controlas civilisees maniaques ratiocinassions elisabethain fameuse rhodanienne defourneront commercons encasernat babiroussas thematisera brocarderions rhetique hebergee developpasses haut-relief decompensation remercieras exterioriserai enserrerions repatinions capitonneront regulatrices thermites quercitrines envieillie discernait pourleche architecturasses apaches ratiboisat
+
+*/
 
 class ActionsPage extends StatefulWidget {
   const ActionsPage({super.key});
@@ -61,7 +65,6 @@ class _ActionsPageState extends State<ActionsPage> {
                 key: "onLongPress"),
             ElevatedButton.icon(
               onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
                 prefs.setInt('onTap', 2);
                 prefs.setInt('onDoubleTap', 0);
                 prefs.setInt('onLongPress', 1);
@@ -97,7 +100,7 @@ class _ActionsPageState extends State<ActionsPage> {
               selectedIcon = icon;
               valueToUpdate = selectedIcon!.index;
             });
-            final prefs = await SharedPreferences.getInstance();
+
             prefs.setInt(key, selectedIcon!.index);
           },
           dropdownMenuEntries:

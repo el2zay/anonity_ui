@@ -12,6 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:flutter/foundation.dart';
 
+late SharedPreferences prefs;
 late String passphrase;
 late String token;
 late bool notif;
@@ -29,7 +30,7 @@ final darkTheme = getAppSpecificTheme(true);
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPreferences.getInstance();
+  prefs = await SharedPreferences.getInstance();
   await dotenv.load(fileName: ".env");
   token = (await getToken())!;
   notif = await getNotif();
@@ -162,14 +163,12 @@ String postId() {
 }
 
 Future<String?> getToken() async {
-  final prefs = await SharedPreferences.getInstance();
   final token = prefs.getString('token');
 
   return token ?? "";
 }
 
 Future<bool> getNotif() async {
-  final prefs = await SharedPreferences.getInstance();
   final notif = prefs.getBool('notif');
 
   return notif ?? true;
@@ -189,56 +188,48 @@ Future<String> getPassphrase() async {
 }
 
 Future<int> getTheme() async {
-  final prefs = await SharedPreferences.getInstance();
   final theme = prefs.getInt('theme');
 
   return theme ?? 0;
 }
 
 Future<int> getIcon() async {
-  final prefs = await SharedPreferences.getInstance();
   final icon = prefs.getInt('icon');
 
   return icon ?? 0;
 }
 
 Future<double> getFontSize() async {
-  final prefs = await SharedPreferences.getInstance();
   final fontSize = prefs.getDouble('fontSize');
 
   return fontSize ?? 20;
 }
 
 Future<String> getFontFamily() async {
-  final prefs = await SharedPreferences.getInstance();
   final fontFamily = prefs.getString('fontFamily');
 
   return fontFamily ?? "Roboto";
 }
 
 Future<int> getAlign() async {
-  final prefs = await SharedPreferences.getInstance();
   final align = prefs.getInt('align');
 
   return align ?? 0;
 }
 
 Future<int> getOnTap() async {
-  final prefs = await SharedPreferences.getInstance();
   final onTap = prefs.getInt('onTap');
 
   return onTap ?? 2;
 }
 
 Future<int> getOnDoubleTap() async {
-  final prefs = await SharedPreferences.getInstance();
   final onDoubleTap = prefs.getInt('onDoubleTap');
 
   return onDoubleTap ?? 0;
 }
 
 Future<int> getOnLongPress() async {
-  final prefs = await SharedPreferences.getInstance();
   final onLongPress = prefs.getInt('onLongPress');
 
   return onLongPress ?? 1;
@@ -251,12 +242,14 @@ void showSnackBar(BuildContext context, String message, IconData icon) {
         children: [
           Icon(icon, color: Colors.white, size: 24),
           const SizedBox(width: 8.0),
-          Text(
-            message,
-            style: const TextStyle(
-              fontSize: 16.0,
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
+          Flexible(
+            child: Text(
+              message,
+              style: const TextStyle(
+                fontSize: 16.0,
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+              ),
             ),
           ),
         ],
@@ -267,9 +260,7 @@ void showSnackBar(BuildContext context, String message, IconData icon) {
       ),
       duration: const Duration(seconds: 1),
       backgroundColor: const Color.fromRGBO(28, 28, 28, 1),
-      width: MediaQuery.of(context).size.width > 600
-          ? 250
-          : MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
     ),
   );
 }

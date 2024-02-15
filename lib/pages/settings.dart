@@ -11,7 +11,6 @@ import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -68,7 +67,7 @@ class _SettingsPageState extends State<SettingsPage> {
                 setState(() {
                   notif = value!;
                 });
-                final prefs = await SharedPreferences.getInstance();
+
                 prefs.setBool('notif', isChecked);
               },
               activeColor: Colors.transparent,
@@ -260,7 +259,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       TextButton(
                         onPressed: () async {
                           // Supprimer le token
-                          final prefs = await SharedPreferences.getInstance();
+
                           await prefs.remove('token');
                           // Afficher la page EmptyTokenPage et ne pas pouvoir la fermer
                           Navigator.pushAndRemoveUntil(

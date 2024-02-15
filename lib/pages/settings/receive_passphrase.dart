@@ -4,7 +4,6 @@ import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ReceivePassphrasePage extends StatefulWidget {
   const ReceivePassphrasePage({super.key});
@@ -51,19 +50,16 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   @override
   void initState() {
     super.initState();
-    // Créer le widget du scanner une fois dans initState
     scannerWidget = createScannerWidget();
   }
 
   Widget createScannerWidget() {
     return QRView(
       key: qrKey,
+      cameraFacing: CameraFacing.back,
+      formatsAllowed: const [BarcodeFormat.qrcode],
       onQRViewCreated: (QRViewController controller) {
-        setState(() {
-          this.controller = controller;
-        });
         controller.scannedDataStream.listen((scanData) async {
-          // Print le text du QR code
           await loginer(context, scanData.code);
         });
       },
@@ -251,8 +247,6 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
 
   Future<void> loginer(context, text) async {
     var loginFunc = await login(context, text);
-
-    final prefs = await SharedPreferences.getInstance();
 
     if (loginFunc[1] == true) {
       prefs.setString('token', loginFunc[0]);

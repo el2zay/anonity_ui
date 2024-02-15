@@ -29,7 +29,7 @@
 		<key>io.flutter.embedded_views_preview</key>
 		<true/>
 		<key>NSCameraUsageDescription</key>
-		<string>This application needs the camera to scan a QRCode, enabling users to synchronise what they passkey between their devices.</string>
+		<string>This app needs camera access to scan QR codes</string>
 		<key>NSPhotoLibraryUsageDescription</key>
 		<string>This application needs the photo library to send screenshots when a bug is reported.</string>
 		<key>UIApplicationSupportsIndirectInputEvents</key>

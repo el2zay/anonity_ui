@@ -1,5 +1,4 @@
 import 'package:anonity/main.dart';
-import 'package:anonity/pages/home.dart';
 import 'package:anonity/pages/set_reader.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
@@ -41,15 +40,8 @@ class _ReaderPageState extends State<ReaderPage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {
-            // Revenir à la première page
-            Navigator.of(context).pushAndRemoveUntil(
-                betterPush(
-                    const HomePage(),
-                    const Offset(-1, 0)),
-                (route) => false);
-          },
-          icon: const Icon(Icons.arrow_back),
+          icon: arrowBack(),
+          onPressed: Navigator.of(context).pop,
         ),
       ),
       floatingActionButton: FloatingActionButton(

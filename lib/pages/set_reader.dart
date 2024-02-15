@@ -1,7 +1,6 @@
 import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class SetReaderPage extends StatefulWidget {
   const SetReaderPage({super.key});
@@ -83,11 +82,9 @@ class _SetReaderPageState extends State<SetReaderPage> {
                     fontFamily = "Roboto";
                     align = 0;
                   });
-                  SharedPreferences.getInstance().then((prefs) {
-                    prefs.setDouble("fontSize", 20);
-                    prefs.setString("fontFamily", "Roboto");
-                    prefs.setInt("align", 0);
-                  });
+                  prefs.setDouble("fontSize", 20);
+                  prefs.setString("fontFamily", "Roboto");
+                  prefs.setInt("align", 0);
                 },
                 icon: const Icon(Icons.replay_sharp),
                 label: const Text("Réinitialiser")),
@@ -143,7 +140,6 @@ class Alignment extends StatefulWidget {
 
 class _AlignmentState extends State<Alignment> {
   void _saveAlign(int alignment) async {
-    final prefs = await SharedPreferences.getInstance();
     prefs.setInt('align', alignment);
   }
 
@@ -260,7 +256,6 @@ class _TextSizeSliderState extends State<TextSizeSlider> {
               widget.onChanged(value);
             },
             onChangeEnd: (value) async {
-              final prefs = await SharedPreferences.getInstance();
               prefs.setDouble("fontSize", value);
             },
           ),

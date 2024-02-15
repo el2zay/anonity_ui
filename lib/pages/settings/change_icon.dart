@@ -1,6 +1,5 @@
 import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ChangeIconPage extends StatefulWidget {
   const ChangeIconPage({super.key});
@@ -76,7 +75,7 @@ class _ChangeIconPageState extends State<ChangeIconPage> {
         setState(() {
           icon = index;
         });
-        final prefs = await SharedPreferences.getInstance();
+
         prefs.setInt('icon', index);
       },
       trailing: Checkbox(
