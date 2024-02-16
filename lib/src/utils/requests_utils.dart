@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:anonity/main.dart';
+import 'package:anonity/pages/draft.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/foundation.dart';
@@ -199,6 +200,31 @@ Future postData(context, age, title, expression) async {
         context,
         "Suite à une erreur ta dénonciation sera envoyée plus tard.",
         Icons.info_rounded);
+
+    List<String> drafts = prefs.getStringList('drafts') ?? [];
+
+    Map<String, String> newDraft = {
+      'age': age,
+      'title': title,
+      'expression': expression,
+    };
+
+    drafts.add(json.encode(newDraft));
+
+    // Enregistrez la liste mise à jour de brouillons
+    await prefs.setStringList('drafts', drafts);
+
+    // bottom sheet qui fait quasiment la taille de l'écran
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      constraints: BoxConstraints(
+        maxHeight: MediaQuery.of(context).size.height * 0.9,
+      ),
+      builder: (context) {
+        return const DraftPage();
+      },
+    );
   }
 }
 

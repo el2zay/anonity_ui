@@ -1,5 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+
+import 'package:anonity/main.dart';
+import 'package:anonity/pages/draft.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
 
@@ -7,48 +11,49 @@ class PostPage extends StatefulWidget {
   const PostPage({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
-  _PostPageState createState() => _PostPageState();
+  createState() => _PostPageState();
 }
 
 class _PostPageState extends State<PostPage> {
-  final TextEditingController _ageController = TextEditingController();
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _expressionController = TextEditingController();
   bool isButtonDisabled = true;
   bool titleMessage = true;
   bool expressionMessage = true;
 
+  final ageController = TextEditingController();
+  final titleController = TextEditingController();
+  final expressionController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
-    _ageController.addListener(updateButtonState);
-    _titleController.addListener(updateButtonState);
-    _expressionController.addListener(updateButtonState);
+    ageController.addListener(updateButtonState);
+    titleController.addListener(updateButtonState);
+    expressionController.addListener(updateButtonState);
   }
 
+  // Dispose
   @override
   void dispose() {
-    _ageController.dispose();
-    _titleController.dispose();
-    _expressionController.dispose();
+    ageController.dispose();
+    titleController.dispose();
+    expressionController.dispose();
     super.dispose();
   }
 
   void updateButtonState() {
     setState(() {
-      isButtonDisabled = _ageController.text.isEmpty ||
-          _titleController.text.replaceAll(RegExp(r'[\s\u200E]'), '').length <
+      isButtonDisabled = ageController.text.isEmpty ||
+          titleController.text.replaceAll(RegExp(r'[\s\u200E]'), '').length <
               10 ||
-          _expressionController.text
+          expressionController.text
                   .replaceAll(RegExp(r'[\s\u200E]'), '')
                   .length <
               70;
 
       titleMessage =
-          _titleController.text.replaceAll(RegExp(r'[\s\u200E]'), '').length <
+          titleController.text.replaceAll(RegExp(r'[\s\u200E]'), '').length <
               10;
-      expressionMessage = _expressionController.text
+      expressionMessage = expressionController.text
               .replaceAll(RegExp(r'[\s\u200E]'), '')
               .length <
           70;
@@ -59,14 +64,83 @@ class _PostPageState extends State<PostPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Lorsque l'on clic sur le bouton retour, on ferme le clavier
         leading: IconButton(
           onPressed: () {
             FocusScope.of(context).unfocus();
-            Navigator.pop(context);
+            if (expressionController.text.isNotEmpty) {
+              showDialog(
+                context: context,
+                builder: (context) {
+                  return AlertDialog.adaptive(
+                    title: const Text("Quitter"),
+                    content: const Text(
+                        "Tu es sur le point de quitter sans publier ton message. Souhaites-tu l'enregistrer dans les brouillons ?"),
+                    actions: [
+                      TextButton(
+                        onPressed: () async {
+                          List<String> drafts =
+                              prefs.getStringList('drafts') ?? [];
+
+                          Map<String, String> newDraft = {
+                            'age': ageController.text,
+                            'title': titleController.text,
+                            'expression': expressionController.text,
+                          };
+                          drafts.add(json.encode(newDraft));
+
+                          await prefs.setStringList('drafts', drafts);
+
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          showSnackBar(
+                              context,
+                              "Ta Dénonciation a bien été enregistrée",
+                              Icons.check);
+                        },
+                        child: const Text("Enregistrer"),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                        },
+                        child: const Text("Quitter"),
+                      ),
+                    ],
+                  );
+                },
+              );
+            } else {
+              Navigator.pop(context);
+            }
           },
           icon: const Icon(Icons.close),
         ),
+        actions: [
+          ElevatedButton(
+              onPressed: () {
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  constraints: BoxConstraints(
+                    maxHeight: MediaQuery.of(context).size.height * 0.9,
+                  ),
+                  builder: (context) {
+                    return const DraftPage();
+                  },
+                ).then((value) {
+                  if (value != null) {
+                    Map<String, dynamic> returnedData = value;
+                    setState(() {
+                      ageController.text = returnedData["age"];
+                      titleController.text = returnedData["title"];
+                      expressionController.text = returnedData["expression"];
+                    });
+                  }
+                });
+              },
+              child: const Text("Brouillons")),
+        ],
       ),
       body: SingleChildScrollView(
         child: SafeArea(
@@ -86,7 +160,7 @@ class _PostPageState extends State<PostPage> {
                     maxWidth: 100,
                   ),
                   child: TextFormField(
-                    controller: _ageController,
+                    controller: ageController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -113,7 +187,7 @@ class _PostPageState extends State<PostPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
-                  controller: _titleController,
+                  controller: titleController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -156,7 +230,7 @@ class _PostPageState extends State<PostPage> {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: TextFormField(
-                  controller: _expressionController,
+                  controller: expressionController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -201,8 +275,8 @@ class _PostPageState extends State<PostPage> {
         onPressed: isButtonDisabled
             ? null
             : () async {
-                await postData(context, _ageController.text,
-                    _titleController.text, _expressionController.text);
+                await postData(context, ageController.text,
+                    titleController.text, expressionController.text);
                 Navigator.pop(context);
               },
         backgroundColor: isButtonDisabled
