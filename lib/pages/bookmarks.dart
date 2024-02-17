@@ -16,7 +16,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
     isBookmarkPage = true;
     super.initState();
   }
-  
+
   @override
   void dispose() {
     isBookmarkPage = false;
@@ -108,23 +108,31 @@ class _BookmarksPageState extends State<BookmarksPage> {
                 ),
               );
             }
-            return ListView.builder(
-              shrinkWrap: false,
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                return PostCard(
-                  title: snapshot.data![index].title!,
-                  subject: snapshot.data![index].subject!,
-                  age: snapshot.data![index].age!,
-                  postId: snapshot.data![index].id!,
-                  onRemoveFromBookmarks: (String postId) {
-                    setState(() {
-                      snapshot.data!
-                          .removeWhere((element) => element.id == postId);
-                    });
-                  },
-                );
-              },
+            return RawScrollbar(
+              thumbColor: Colors.grey[600],
+              radius: const Radius.circular(20),
+              thickness: 5,
+              interactive: true,
+              timeToFade: const Duration(seconds: 3),
+              fadeDuration: const Duration(milliseconds: 300),
+              child: ListView.builder(
+                shrinkWrap: false,
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  return PostCard(
+                    title: snapshot.data![index].title!,
+                    subject: snapshot.data![index].subject!,
+                    age: snapshot.data![index].age!,
+                    postId: snapshot.data![index].id!,
+                    onRemoveFromBookmarks: (String postId) {
+                      setState(() {
+                        snapshot.data!
+                            .removeWhere((element) => element.id == postId);
+                      });
+                    },
+                  );
+                },
+              ),
             );
           } else {
             return loader();

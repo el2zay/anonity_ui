@@ -3,6 +3,7 @@
 import 'package:anonity/main.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/image_picker_widget.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class ReportPage extends StatefulWidget {
@@ -56,14 +57,20 @@ class _ReportPageState extends State<ReportPage> {
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
-                                  child: const Text('Rester'),
+                                  child: Text('Rester', style: TextStyle(
+                            color: defaultTargetPlatform == TargetPlatform.iOS
+                                ? Colors.blue[500]
+                                : null)),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                     Navigator.of(context).pop();
                                   },
-                                  child: const Text('Quitter'),
+                                  child:  Text('Quitter', style: TextStyle(
+                            color: defaultTargetPlatform == TargetPlatform.iOS
+                                ? Colors.red
+                                : null)),
                                 )
                               ],
                             );

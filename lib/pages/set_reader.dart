@@ -300,7 +300,16 @@ class _FontListState extends State<FontList> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    return 
+    RawScrollbar(
+              thumbColor: Colors.grey[600],
+              radius: const Radius.circular(20),
+              thickness: 5,
+              interactive: true,
+              timeToFade: const Duration(seconds: 3),
+              fadeDuration: const Duration(milliseconds: 300),
+              child: 
+    ListView.builder(
       shrinkWrap: false,
       itemCount: availableFonts.length,
       itemBuilder: (context, index) {
@@ -319,6 +328,6 @@ class _FontListState extends State<FontList> {
           },
         );
       },
-    );
+    ),);
   }
 }

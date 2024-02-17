@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:anonity/main.dart';
 import 'package:anonity/pages/draft.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 class PostPage extends StatefulWidget {
@@ -74,7 +75,8 @@ class _PostPageState extends State<PostPage> {
                   return AlertDialog.adaptive(
                     title: const Text("Quitter"),
                     content: const Text(
-                        "Tu es sur le point de quitter sans publier ton message. Souhaites-tu l'enregistrer dans les brouillons ?"),
+                      "Tu es sur le point de quitter sans publier ton message. Souhaites-tu l'enregistrer dans les brouillons ?",
+                    ),
                     actions: [
                       TextButton(
                         onPressed: () async {
@@ -97,14 +99,20 @@ class _PostPageState extends State<PostPage> {
                               "Ta Dénonciation a bien été enregistrée",
                               Icons.check);
                         },
-                        child: const Text("Enregistrer"),
+                        child: Text("Enregistrer", style: TextStyle(
+                            color: defaultTargetPlatform == TargetPlatform.iOS
+                                ? Colors.blue[500]
+                                : null)),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
-                        child: const Text("Quitter"),
+                        child: Text("Quitter", style: TextStyle(
+                            color: defaultTargetPlatform == TargetPlatform.iOS
+                                ? Colors.red
+                                : null)),
                       ),
                     ],
                   );

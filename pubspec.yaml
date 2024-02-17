@@ -23,6 +23,7 @@ dependencies:
   flutter_native_splash: ^2.3.9
   flutter_phoenix: ^1.1.1
   share_plus: ^7.2.2
+  get_storage: ^2.1.1
 
 flutter_native_splash:
   color: "#000000"

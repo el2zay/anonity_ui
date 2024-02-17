@@ -283,53 +283,63 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
               }
             } else if (snapshot.hasData) {
               buttonsEnabled.value = true;
-              return ListView.builder(
-                shrinkWrap: false,
-                itemCount: snapshot.data!.length,
-                controller: _scrollController,
-                itemBuilder: (context, index) {
-                  if (index == snapshot.data!.length - 1) {
-                    return const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Center(
-                        child: CupertinoActivityIndicator(
-                          radius: 10,
-                        ),
-                      ),
-                    );
-                  }
-                  // return const Padding(
-                  //   padding: EdgeInsets.all(8.0),
-                  //   child: Column(
-                  //     children: [
-                  //       Text(
-                  //         "Tu as atteint la fin de la liste.",
-                  //         style: TextStyle(
-                  //           fontSize: 20,
-                  //           fontWeight: FontWeight.w700,
-                  //         ),
-                  //       ),
-                  //       SizedBox(height: 15),
-                  //       Text(
-                  //         "Si tu souhaites témoigner, n'hésite pas.\nTu as juste a appuyé sur le bouton\nSache que ton témoignage est totalement anonyme et qu'il pourra permettre de t'aider mais aussi des personnes dans la même situation que toi.",
-                  //         style: TextStyle(
-                  //           fontSize: 15,
-                  //           fontWeight: FontWeight.w500,
-                  //         ),
-                  //         textAlign: TextAlign.center,
-                  //       )
-                  //     ],
-                  //   ),
-                  // );
-                  return PostCard(
-                    title: snapshot.data![index].title!,
-                    subject: snapshot.data![index].subject!,
-                    age: snapshot.data![index].age!,
-                    postId: snapshot.data![index].id!,
-                    onRemoveFromBookmarks: (String postId) {},
-                  );
-                },
-              );
+              return RawScrollbar(
+                  thumbColor: Colors.grey[600],
+                  radius: const Radius.circular(20),
+                  thickness: 5,
+                  interactive: true,
+                  timeToFade: const Duration(seconds: 3),
+                  fadeDuration: const Duration(milliseconds: 300),
+                  controller: _scrollController,
+                  child: ListView.builder(
+                    shrinkWrap: false,
+                    itemCount: snapshot.data!.length,
+                    scrollDirection: Axis.vertical,
+                    controller: _scrollController,
+                    itemBuilder: (context, index) {
+                      if (index == snapshot.data!.length - 1) {
+                        return const Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Center(
+                            child: CupertinoActivityIndicator(
+                              radius: 10,
+                            ),
+                          ),
+                        );
+                      }
+                      // TODO: Rajouter ce message à la fin
+                      // return const Padding(
+                      //   padding: EdgeInsets.all(8.0),
+                      //   child: Column(
+                      //     children: [
+                      //       Text(
+                      //         "Tu as atteint la fin de la liste.",
+                      //         style: TextStyle(
+                      //           fontSize: 20,
+                      //           fontWeight: FontWeight.w700,
+                      //         ),
+                      //       ),
+                      //       SizedBox(height: 15),
+                      //       Text(
+                      //         "Si tu souhaites témoigner, n'hésite pas.\nTu as juste a appuyé sur le bouton\nSache que ton témoignage est totalement anonyme et qu'il pourra permettre de t'aider mais aussi des personnes dans la même situation que toi.",
+                      //         style: TextStyle(
+                      //           fontSize: 15,
+                      //           fontWeight: FontWeight.w500,
+                      //         ),
+                      //         textAlign: TextAlign.center,
+                      //       )
+                      //     ],
+                      //   ),
+                      // );
+                      return PostCard(
+                        title: snapshot.data![index].title!,
+                        subject: snapshot.data![index].subject!,
+                        age: snapshot.data![index].age!,
+                        postId: snapshot.data![index].id!,
+                        onRemoveFromBookmarks: (String postId) {},
+                      );
+                    },
+                  ));
             }
             return loader();
           },

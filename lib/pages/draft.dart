@@ -19,16 +19,23 @@ class _DraftPageState extends State<DraftPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Brouillons'),
-          leading: IconButton(
-            icon: const Icon(Icons.close),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+      appBar: AppBar(
+        title: const Text('Brouillons'),
+        leading: IconButton(
+          icon: const Icon(Icons.close),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
-        body: ListView(
+      ),
+      body: RawScrollbar(
+        thumbColor: Colors.grey[600],
+        radius: const Radius.circular(20),
+        thickness: 5,
+        interactive: true,
+        timeToFade: const Duration(seconds: 3),
+        fadeDuration: const Duration(milliseconds: 300),
+        child: ListView(
           children: [
             FutureBuilder(
               future: getDrafts(),
@@ -94,6 +101,8 @@ class _DraftPageState extends State<DraftPage> {
               },
             ),
           ],
-        ));
+        ),
+      ),
+    );
   }
 }

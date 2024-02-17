@@ -6,7 +6,6 @@ import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
 
 class EmptyTokenPage extends StatefulWidget {
   const EmptyTokenPage({super.key});
@@ -26,7 +25,7 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
         DeviceOrientation.portraitDown,
       ]);
     }
-    final tokenProvider = Provider.of<TokenProvider>(context);
+    // final tokenProvider = Provider.of<TokenProvider>(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -64,7 +63,7 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
                   if (newToken is String?) {
                     if (newToken != null) {
                       prefs.setString('token', newToken);
-                      tokenProvider.setToken(newToken);
+                      // tokenProvider.setToken(newToken);
 
                       Navigator.pushAndRemoveUntil(
                         context,
