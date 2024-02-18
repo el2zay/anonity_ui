@@ -1,5 +1,6 @@
-import 'package:anonity/main.dart';
+import 'package:anonity/src/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
 class SetReaderPage extends StatefulWidget {
@@ -8,6 +9,10 @@ class SetReaderPage extends StatefulWidget {
   @override
   State<SetReaderPage> createState() => _SetReaderPageState();
 }
+
+double fontSize = GetStorage().read('fontSize') ?? 20;
+String fontFamily = GetStorage().read("fontFamily") ?? "Roboto";
+int align = GetStorage().read("align") ?? 0;
 
 class _SetReaderPageState extends State<SetReaderPage> {
   bool showFonts = false;
@@ -82,9 +87,9 @@ class _SetReaderPageState extends State<SetReaderPage> {
                     fontFamily = "Roboto";
                     align = 0;
                   });
-                  prefs.setDouble("fontSize", 20);
-                  prefs.setString("fontFamily", "Roboto");
-                  prefs.setInt("align", 0);
+                  GetStorage().write("fontSize", 20);
+                  GetStorage().write("fontFamily", "Roboto");
+                  GetStorage().write("align", 0);
                 },
                 icon: const Icon(Icons.replay_sharp),
                 label: const Text("Réinitialiser")),
@@ -140,7 +145,7 @@ class Alignment extends StatefulWidget {
 
 class _AlignmentState extends State<Alignment> {
   void _saveAlign(int alignment) async {
-    prefs.setInt('align', alignment);
+    GetStorage().write('align', alignment);
   }
 
   @override
@@ -256,7 +261,7 @@ class _TextSizeSliderState extends State<TextSizeSlider> {
               widget.onChanged(value);
             },
             onChangeEnd: (value) async {
-              prefs.setDouble("fontSize", value);
+              GetStorage().write("fontSize", value);
             },
           ),
         ),
@@ -300,34 +305,33 @@ class _FontListState extends State<FontList> {
 
   @override
   Widget build(BuildContext context) {
-    return 
-    RawScrollbar(
-              thumbColor: Colors.grey[600],
-              radius: const Radius.circular(20),
-              thickness: 5,
-              interactive: true,
-              timeToFade: const Duration(seconds: 3),
-              fadeDuration: const Duration(milliseconds: 300),
-              child: 
-    ListView.builder(
-      shrinkWrap: false,
-      itemCount: availableFonts.length,
-      itemBuilder: (context, index) {
-        return ListTile(
-          title: Text(availableFonts[index],
-              style:
-                  TextStyle(fontFamily: availableFonts[index], fontSize: 20)),
-          trailing: _selectedFont == availableFonts[index]
-              ? const Icon(Icons.check)
-              : null,
-          onTap: () async {
-            setState(() {
-              _selectedFont = availableFonts[index];
-            });
-            widget.onChanged(availableFonts[index]);
-          },
-        );
-      },
-    ),);
+    return RawScrollbar(
+      thumbColor: Colors.grey[600],
+      radius: const Radius.circular(20),
+      thickness: 5,
+      interactive: true,
+      timeToFade: const Duration(seconds: 3),
+      fadeDuration: const Duration(milliseconds: 300),
+      child: ListView.builder(
+        shrinkWrap: false,
+        itemCount: availableFonts.length,
+        itemBuilder: (context, index) {
+          return ListTile(
+            title: Text(availableFonts[index],
+                style:
+                    TextStyle(fontFamily: availableFonts[index], fontSize: 20)),
+            trailing: _selectedFont == availableFonts[index]
+                ? const Icon(Icons.check)
+                : null,
+            onTap: () async {
+              setState(() {
+                _selectedFont = availableFonts[index];
+              });
+              widget.onChanged(availableFonts[index]);
+            },
+          );
+        },
+      ),
+    );
   }
 }

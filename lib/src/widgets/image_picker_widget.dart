@@ -2,7 +2,7 @@
 
 import 'dart:io';
 
-import 'package:anonity/main.dart';
+import 'package:anonity/src/utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 

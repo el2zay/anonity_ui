@@ -1,5 +1,5 @@
-import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class ChangeIconPage extends StatefulWidget {
   const ChangeIconPage({super.key});
@@ -9,6 +9,8 @@ class ChangeIconPage extends StatefulWidget {
 }
 
 class _ChangeIconPageState extends State<ChangeIconPage> {
+  var box = GetStorage();
+  var icon = GetStorage().read('icon') ?? 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,8 +77,7 @@ class _ChangeIconPageState extends State<ChangeIconPage> {
         setState(() {
           icon = index;
         });
-
-        prefs.setInt('icon', index);
+        box.write('icon', index);
       },
       trailing: Checkbox(
         value: icon == index,

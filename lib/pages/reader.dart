@@ -1,4 +1,4 @@
-import 'package:anonity/main.dart';
+import 'package:anonity/src/widgets/common_widgets.dart';
 import 'package:anonity/pages/set_reader.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class DraftPage extends StatefulWidget {
   const DraftPage({super.key});
@@ -12,7 +12,7 @@ class DraftPage extends StatefulWidget {
 
 class _DraftPageState extends State<DraftPage> {
   Future<List> getDrafts() async {
-    List<String> drafts = prefs.getStringList('drafts') ?? [];
+    List<String> drafts = GetStorage().read('drafts') ?? [];
     return drafts.map((draft) => json.decode(draft)).toList();
   }
 
@@ -65,9 +65,9 @@ class _DraftPageState extends State<DraftPage> {
                               highlightColor: Colors.transparent,
                               onPressed: () async {
                                 List<String> drafts =
-                                    prefs.getStringList('drafts') ?? [];
+                                   GetStorage().read('drafts') ?? [];
                                 drafts.remove(json.encode(draft));
-                                await prefs.setStringList('drafts', drafts);
+                               GetStorage().write('drafts', drafts);
 
                                 setState(() {});
                               },

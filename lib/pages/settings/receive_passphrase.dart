@@ -1,7 +1,8 @@
-import 'package:anonity/main.dart';
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
+import 'package:anonity/src/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -249,7 +250,7 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
     var loginFunc = await login(context, text);
 
     if (loginFunc[1] == true) {
-      prefs.setString('token', loginFunc[0]);
+      GetStorage().write('token', loginFunc[0]);
       Navigator.push(
         context,
         MaterialPageRoute(

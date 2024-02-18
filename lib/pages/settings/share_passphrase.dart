@@ -1,4 +1,4 @@
-import 'package:anonity/main.dart';
+import 'package:anonity/src/utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -15,7 +15,7 @@ class SharePassphrase extends StatelessWidget {
           const SizedBox(height: 10),
           Center(
             child: QrImageView(
-              data: passphrase,
+              data: getPassphrase(),
               version: QrVersions.auto,
               size: 200,
               gapless: false,
@@ -25,7 +25,7 @@ class SharePassphrase extends StatelessWidget {
           const SizedBox(height: 15),
           ElevatedButton(
             onPressed: () {
-              Clipboard.setData(ClipboardData(text: passphrase));
+              Clipboard.setData(ClipboardData(text: getPassphrase()));
 
               showSnackBar(
                   context, "La passphrase a été copiée.", LucideIcons.copy);

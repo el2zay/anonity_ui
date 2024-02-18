@@ -1,6 +1,6 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:anonity/main.dart';
+import 'package:anonity/src/widgets/common_widgets.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/image_picker_widget.dart';
 import 'package:flutter/foundation.dart';

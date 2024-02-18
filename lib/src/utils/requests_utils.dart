@@ -1,21 +1,23 @@
 import 'dart:convert';
-import 'package:anonity/main.dart';
+import 'package:anonity/src/utils/common_utils.dart';
 import 'package:anonity/pages/draft.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart' as http;
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+var box = GetStorage();
+
 Future<List<Posts>> fetchBookMarks(context) async {
-  isDeleted(context, token);
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'),
           // Ajouter le token
           headers: <String, String>{
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${GetStorage().read('token')}',
         'Content-Type': 'application/json',
       });
 
@@ -33,12 +35,11 @@ Future<List<Posts>> fetchBookMarks(context) async {
 }
 
 Future<List> fetchBookmarksIds(context) async {
-  isDeleted(context, token);
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/bookmarks'),
           // Ajouter le token
           headers: <String, String>{
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${GetStorage().read('token')}',
         'Content-Type': 'application/json',
       });
 
@@ -57,12 +58,11 @@ Future<List> fetchBookmarksIds(context) async {
 }
 
 Future<List> fetchSupports(context) async {
-  isDeleted(context, token);
   final response =
       await http.get(Uri.parse('${dotenv.env['API_REQUEST']!}/supports'),
           // Ajouter le token
           headers: <String, String>{
-        'Authorization': 'Bearer $token',
+        'Authorization': 'Bearer ${GetStorage().read('token')}',
         'Content-Type': 'application/json',
       });
 
@@ -81,7 +81,6 @@ Future<List> fetchSupports(context) async {
 }
 
 Future<List<Posts>> fetchPosts(context, postIds) async {
-  isDeleted(context, token);
   final response = await http
       .get(Uri.parse('${dotenv.env['API_REQUEST']!}/posts?ids=$postIds'));
 
@@ -144,8 +143,8 @@ Future isDeleted(context, token) async {
         (route) => false,
       );
       // Supprimer le token
+      box.remove('token');
 
-      await prefs.remove('token');
       showSnackBar(context, "Ton compte a été supprimé.", Icons.no_accounts);
     }
   }
@@ -179,6 +178,7 @@ Future<String> userPosts() async {
 }
 
 Future postData(context, age, title, expression) async {
+  isDeleted(context, GetStorage().read('token'));
   var request =
       http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/posts'));
   request.body = jsonEncode({
@@ -187,7 +187,7 @@ Future postData(context, age, title, expression) async {
     'body': expression,
   });
   request.headers.addAll({
-    'Authorization': 'Bearer $token',
+    'Authorization': 'Bearer ${GetStorage().read('token')}',
     'Content-Type': 'application/json',
   });
 
@@ -201,7 +201,7 @@ Future postData(context, age, title, expression) async {
         "Suite à une erreur ta dénonciation sera envoyée plus tard.",
         Icons.info_rounded);
 
-    List<String> drafts = prefs.getStringList('drafts') ?? [];
+    List<String> drafts = box.read('drafts') ?? [];
 
     Map<String, String> newDraft = {
       'age': age,
@@ -212,7 +212,7 @@ Future postData(context, age, title, expression) async {
     drafts.add(json.encode(newDraft));
 
     // Enregistrez la liste mise à jour de brouillons
-    await prefs.setStringList('drafts', drafts);
+    await box.write('drafts', drafts);
 
     // bottom sheet qui fait quasiment la taille de l'écran
     showModalBottomSheet(
@@ -235,7 +235,7 @@ Future savePost(context, id) async {
     "id": id,
   });
   request.headers.addAll({
-    'Authorization': 'Bearer $token',
+    'Authorization': 'Bearer ${GetStorage().read('token')}',
     'Content-Type': 'application/json',
   });
   final response = await request.send();
@@ -253,7 +253,7 @@ Future supportsPost(context, id) async {
     "id": id,
   });
   request.headers.addAll({
-    'Authorization': 'Bearer $token',
+    'Authorization': 'Bearer ${GetStorage().read('token')}',
     'Content-Type': 'application/json',
   });
   final response = await request.send();
@@ -280,7 +280,7 @@ Future register(context) async {
 }
 
 Future<List> login(context, newPassphrase) async {
-  if (newPassphrase == passphrase) {
+  if (newPassphrase == getPassphrase()) {
     return ["Mais c'est déjà ta passphrase 👀", false];
   }
   var request =
@@ -345,7 +345,7 @@ Future deleteDatas(context) async {
   final http.Response response = await http.delete(
     Uri.parse('${dotenv.env['API_REQUEST']!}/deleteAllMyDatas'),
     headers: <String, String>{
-      'Authorization': 'Bearer $token',
+      'Authorization': 'Bearer ${GetStorage().read('token')}',
     },
   );
   // Récupérer success dans le body
@@ -362,8 +362,7 @@ Future deleteDatas(context) async {
       ),
       (route) => false,
     );
-    // Supprimer le token
-
-    await prefs.remove('token');
+    
+    box.remove('token');
   }
 }

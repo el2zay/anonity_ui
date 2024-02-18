@@ -1,5 +1,6 @@
 import 'package:anonity/main.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 
 class ChangeThemePage extends StatefulWidget {
@@ -13,7 +14,8 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
   @override
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
-
+    var box = GetStorage();
+    var theme = GetStorage().read('theme') ?? 0;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Changer le thème"),
@@ -34,8 +36,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               setState(() {
                 theme = 0;
               });
-
-              prefs.setInt('theme', 0);
+              box.write('theme', 0);
               themeProvider.setThemeMode(ThemeMode.system);
             },
           ),
@@ -50,8 +51,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
               setState(() {
                 theme = 1;
               });
-
-              prefs.setInt('theme', 1);
+              box.write('theme', 1);
               themeProvider.setThemeMode(ThemeMode.light);
             },
           ),
@@ -68,7 +68,7 @@ class _ChangeThemePageState extends State<ChangeThemePage> {
                 theme = 2;
               });
 
-              prefs.setInt('theme', 2);
+              box.write('theme', 2);
               themeProvider.setThemeMode(ThemeMode.dark);
             },
           ),

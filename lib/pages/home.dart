@@ -1,6 +1,7 @@
 import 'dart:io';
 
-import 'package:anonity/main.dart';
+import 'package:anonity/src/utils/common_utils.dart';
+import 'package:anonity/src/widgets/common_widgets.dart';
 import 'package:anonity/pages/bookmarks.dart';
 import 'package:anonity/pages/post.dart';
 import 'package:anonity/pages/settings.dart';
@@ -12,6 +13,7 @@ import 'package:flutter_phoenix/flutter_phoenix.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+// ignore: must_be_immutable
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 

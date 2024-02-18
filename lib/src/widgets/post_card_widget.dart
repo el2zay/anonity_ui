@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:anonity/main.dart';
+import 'package:anonity/src/utils/common_utils.dart';
 import 'package:anonity/pages/reader.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -102,50 +103,23 @@ class _PostCardState extends State<PostCard> {
       child: GestureDetector(
         onDoubleTap: () async {
           HapticFeedback.lightImpact();
-          if (onDoubleTap == 0) await supportsPost(context, widget.postId);
-          if (onDoubleTap == 1) await savePost(context, widget.postId);
-          if (onDoubleTap == 2) {
-            Navigator.of(context).push(betterPush(
-                ReaderPage(
-                  title: widget.title,
-                  subject: widget.subject,
-                  age: widget.age,
-                  postId: widget.postId,
-                ),
-                const Offset(0.0, 1.0)));
-          }
+          await supportsPost(context, widget.postId);
           checkStatus(context);
         },
         onLongPress: () async {
           HapticFeedback.selectionClick();
-          if (onLongPress == 0) await supportsPost(context, widget.postId);
-          if (onLongPress == 1) await savePost(context, widget.postId);
-          if (onLongPress == 2) {
-            Navigator.of(context).push(betterPush(
-                ReaderPage(
-                  title: widget.title,
-                  subject: widget.subject,
-                  age: widget.age,
-                  postId: widget.postId,
-                ),
-                const Offset(1.0, 0.0)));
-          }
+          await savePost(context, widget.postId);
           checkStatus(context);
         },
         onTap: () async {
-          if (onTap == 0) await supportsPost(context, widget.postId);
-          if (onTap == 1) await savePost(context, widget.postId);
-          if (onTap == 2) {
-            Navigator.of(context).push(betterPush(
-                ReaderPage(
-                  title: widget.title,
-                  subject: widget.subject,
-                  age: widget.age,
-                  postId: widget.postId,
-                ),
-                const Offset(1.0, 0.0)));
-          }
-          checkStatus(context);
+          Navigator.of(context).push(betterPush(
+              ReaderPage(
+                title: widget.title,
+                subject: widget.subject,
+                age: widget.age,
+                postId: widget.postId,
+              ),
+              const Offset(1.0, 0.0)));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

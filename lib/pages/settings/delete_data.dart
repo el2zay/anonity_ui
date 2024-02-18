@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:anonity/main.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
+import 'package:anonity/src/widgets/common_widgets.dart';
 import 'package:flutter/material.dart';
 
 class DeleteDataPage extends StatefulWidget {
@@ -17,6 +17,19 @@ var isClicked = false;
 bool showLoading = false;
 
 class _DeleteDataPageState extends State<DeleteDataPage> {
+  
+  @override
+  void dispose() {
+    if (showLoading) {
+      setState(() {
+        showLoading = false;
+      });
+    } else {
+      timer.cancel();
+    }
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return PopScope(

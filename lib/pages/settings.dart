@@ -1,8 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
-import 'package:anonity/main.dart';
+import 'package:anonity/src/utils/common_utils.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/pages/report.dart';
-import 'package:anonity/pages/settings/actions.dart';
 import 'package:anonity/pages/settings/change_icon.dart';
 import 'package:anonity/pages/settings/change_theme.dart';
 import 'package:anonity/pages/settings/delete_data.dart';
@@ -11,6 +10,7 @@ import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/theme_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -20,9 +20,10 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  bool isChecked = true;
+  final box = GetStorage();
   @override
   Widget build(BuildContext context) {
+    var notif = box.read('notif') ?? true;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Paramètres"),
@@ -42,7 +43,6 @@ class _SettingsPageState extends State<SettingsPage> {
           ),
         ],
       ),
-
       body: RawScrollbar(
         thumbColor: Colors.grey[600],
         radius: const Radius.circular(20),
@@ -72,8 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   setState(() {
                     notif = value!;
                   });
-
-                  prefs.setBool('notif', isChecked);
+                  box.write('notif', value);
                 },
                 activeColor: Colors.transparent,
               ),
@@ -132,28 +131,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
             const Text(
                 "Tu peux changer l'icône de l'application pour la faire passer pour une autre application.",
-                textAlign: TextAlign.center,
-                style: TextStyle(fontSize: 15)),
-
-            const SizedBox(height: 40),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(15))),
-                  fixedSize: const Size.fromHeight(55)),
-              onPressed: () {
-                Navigator.of(context).push(
-                    betterPush(const ActionsPage(), const Offset(1.0, 0.0)));
-              },
-              child: const Text("Personnaliser les actions",
-                  style: TextStyle(fontSize: 18)),
-            ),
-
-            const SizedBox(height: 5),
-
-            const Text(
-                "Tu peux personnaliser les actions sur les posts pour pouvoir les faires comme tu le souhaites et plus rapidement.",
                 textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 15)),
 
@@ -253,7 +230,6 @@ class _SettingsPageState extends State<SettingsPage> {
                         TextButton(
                           onPressed: () {
                             Navigator.pop(context);
-                            showSnackBar(context, "$defaultTargetPlatform", Icons.error);
                           },
                           child: Text("Annuler",
                               style: TextStyle(
@@ -264,9 +240,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                         TextButton(
                           onPressed: () async {
-                            // Supprimer le token
-
-                            await prefs.remove('token');
+                            await box.remove('token');
                             // Afficher la page EmptyTokenPage et ne pas pouvoir la fermer
                             Navigator.pushAndRemoveUntil(
                               context,

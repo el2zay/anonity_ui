@@ -1,11 +1,11 @@
 // ignore_for_file: use_build_context_synchronously
 
-import 'package:anonity/main.dart';
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/pages/settings/receive_passphrase.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_storage/get_storage.dart';
 
 class EmptyTokenPage extends StatefulWidget {
   const EmptyTokenPage({super.key});
@@ -25,7 +25,6 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
         DeviceOrientation.portraitDown,
       ]);
     }
-    // final tokenProvider = Provider.of<TokenProvider>(context);
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
@@ -62,8 +61,7 @@ class _EmptyTokenPageState extends State<EmptyTokenPage> {
                   var newToken = await register(context);
                   if (newToken is String?) {
                     if (newToken != null) {
-                      prefs.setString('token', newToken);
-                      // tokenProvider.setToken(newToken);
+                      GetStorage().write('token', newToken);
 
                       Navigator.pushAndRemoveUntil(
                         context,

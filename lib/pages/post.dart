@@ -2,11 +2,12 @@
 
 import 'dart:convert';
 
-import 'package:anonity/main.dart';
+import 'package:anonity/src/utils/common_utils.dart';
 import 'package:anonity/pages/draft.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class PostPage extends StatefulWidget {
   const PostPage({super.key});
@@ -81,7 +82,7 @@ class _PostPageState extends State<PostPage> {
                       TextButton(
                         onPressed: () async {
                           List<String> drafts =
-                              prefs.getStringList('drafts') ?? [];
+                             GetStorage().read('drafts') ?? [];
 
                           Map<String, String> newDraft = {
                             'age': ageController.text,
@@ -90,7 +91,7 @@ class _PostPageState extends State<PostPage> {
                           };
                           drafts.add(json.encode(newDraft));
 
-                          await prefs.setStringList('drafts', drafts);
+                          await GetStorage().write('drafts', drafts);
 
                           Navigator.pop(context);
                           Navigator.pop(context);
