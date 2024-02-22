@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:anonity/pages/draft.dart';
+import 'package:anonity/pages/post.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -66,7 +68,8 @@ String getPassphrase() {
   return passphrase ?? "";
 }
 
-void showSnackBar(BuildContext context, String message, IconData icon) {
+void showSnackBar(BuildContext context, String message, IconData icon,
+    [String? action]) {
   ScaffoldMessenger.of(context).showSnackBar(
     SnackBar(
       content: Row(
@@ -92,6 +95,32 @@ void showSnackBar(BuildContext context, String message, IconData icon) {
       duration: const Duration(seconds: 1),
       backgroundColor: const Color.fromRGBO(28, 28, 28, 1),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+      action: action != null
+          ? SnackBarAction(
+              label: action,
+              onPressed: () {
+                if (action == "Voir") {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const PostPage(),
+                      fullscreenDialog: true,
+                    ),
+                  );
+                  showModalBottomSheet(
+                    context: context,
+                    isScrollControlled: true,
+                    constraints: BoxConstraints(
+                      maxHeight: MediaQuery.of(context).size.height * 0.9,
+                    ),
+                    builder: (context) {
+                      return const DraftPage();
+                    },
+                  );
+                }
+              },
+            )
+          : null,
     ),
   );
 }

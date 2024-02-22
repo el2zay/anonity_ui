@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:anonity/src/utils/common_utils.dart';
-import 'package:anonity/pages/draft.dart';
 import 'package:anonity/pages/empty_token.dart';
 import 'package:anonity/src/widgets/post_card_widget.dart';
 import 'package:flutter/foundation.dart';
@@ -179,8 +178,10 @@ Future<String> userPosts() async {
 
 Future postData(context, age, title, expression) async {
   isDeleted(context, GetStorage().read('token'));
+  var client = http.Client();
   var request =
-      http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/posts'));
+      // TODO remettre /posts
+      http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/psts'));
   request.body = jsonEncode({
     'age': age,
     'title': title,
@@ -190,42 +191,34 @@ Future postData(context, age, title, expression) async {
     'Authorization': 'Bearer ${GetStorage().read('token')}',
     'Content-Type': 'application/json',
   });
-
-  final response = await request.send();
+  http.StreamedResponse response = await client.send(request);
 
   if (response.statusCode == 200) {
-    showSnackBar(context, "Merci pour ta dénonciation !", LucideIcons.heart);
-  } else {
-    showSnackBar(
-        context,
-        "Suite à une erreur ta dénonciation sera envoyée plus tard.",
-        Icons.info_rounded);
-
-    List<String> drafts = box.read('drafts') ?? [];
-
-    Map<String, String> newDraft = {
-      'age': age,
-      'title': title,
-      'expression': expression,
-    };
-
-    drafts.add(json.encode(newDraft));
-
-    // Enregistrez la liste mise à jour de brouillons
-    await box.write('drafts', drafts);
-
-    // bottom sheet qui fait quasiment la taille de l'écran
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      constraints: BoxConstraints(
-        maxHeight: MediaQuery.of(context).size.height * 0.9,
-      ),
-      builder: (context) {
-        return const DraftPage();
-      },
-    );
+    showSnackBar(context, "Merci pour ta Dénonciation !", LucideIcons.heart);
+    return;
   }
+
+  Navigator.pop(context);
+  Navigator.pop(context);
+
+  showSnackBar(
+      context,
+      "Suite à une erreur ta Dénonciation a été enregistrée dans les brouillons.",
+      Icons.info_rounded,
+      "Voir");
+
+  List<String> drafts = box.read('drafts') ?? [];
+
+  Map<String, String> newDraft = {
+    'age': age,
+    'title': title,
+    'expression': expression,
+  };
+
+  drafts.add(json.encode(newDraft));
+
+  box.write('drafts', drafts);
+  return;
 }
 
 Future savePost(context, id) async {
@@ -362,7 +355,7 @@ Future deleteDatas(context) async {
       ),
       (route) => false,
     );
-    
+
     box.remove('token');
   }
 }

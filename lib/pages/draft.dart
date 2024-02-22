@@ -40,7 +40,7 @@ class _DraftPageState extends State<DraftPage> {
             FutureBuilder(
               future: getDrafts(),
               builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-                if (snapshot.data!.isNotEmpty) {
+                if (snapshot.data != null) {
                   return Column(
                     children: snapshot.data!.map((draft) {
                       return ListTile(
@@ -65,9 +65,9 @@ class _DraftPageState extends State<DraftPage> {
                               highlightColor: Colors.transparent,
                               onPressed: () async {
                                 List<String> drafts =
-                                   GetStorage().read('drafts') ?? [];
+                                    GetStorage().read('drafts') ?? [];
                                 drafts.remove(json.encode(draft));
-                               GetStorage().write('drafts', drafts);
+                                GetStorage().write('drafts', drafts);
 
                                 setState(() {});
                               },

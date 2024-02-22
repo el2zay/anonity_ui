@@ -75,7 +75,7 @@ class _BookmarksPageState extends State<BookmarksPage> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      "Vous n'avez pas encore enregistré de dénonciation.",
+                      "Vous n'avez pas encore enregistré de Dénonciation.",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,

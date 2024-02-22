@@ -112,14 +112,16 @@ class _PostCardState extends State<PostCard> {
           checkStatus(context);
         },
         onTap: () async {
-          Navigator.of(context).push(betterPush(
-              ReaderPage(
+          await Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => ReaderPage(
+                postId: widget.postId,
                 title: widget.title,
                 subject: widget.subject,
                 age: widget.age,
-                postId: widget.postId,
               ),
-              const Offset(1.0, 0.0)));
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,

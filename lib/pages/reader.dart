@@ -1,6 +1,7 @@
 import 'package:anonity/src/widgets/common_widgets.dart';
 import 'package:anonity/pages/set_reader.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -37,61 +38,73 @@ class _ReaderPageState extends State<ReaderPage> {
     if (widget.title == null || widget.subject == null || widget.age == null) {
       ifId();
     }
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: arrowBack(),
-          onPressed: Navigator.of(context).pop,
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        mini: true,
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            barrierColor: const Color.fromARGB(42, 0, 0, 0),
-            builder: (context) {
-              return const SetReaderPage();
-            },
-          );
-        },
-        child: Icon(
-          Icons.more_horiz,
-          shadows: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.2),
-              spreadRadius: 1,
-              blurRadius: 1,
-              offset: const Offset(0, 1),
+    return LayoutBuilder(
+      builder: (BuildContext context, BoxConstraints constraints) {
+        double maxWidth =
+            kIsWeb && constraints.maxWidth > 1000 ? 1000 : constraints.maxWidth;
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              icon: arrowBack(),
+              onPressed: Navigator.of(context).pop,
             ),
-          ],
-        ),
-      ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Text("${widget.title ?? "Titre null"} (${widget.age ?? 0} ans)",
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w700,
-                    fontSize: 20,
-                  ),
-                  textAlign: TextAlign.center),
-              const SizedBox(height: 25),
-              Padding(
-                padding: const EdgeInsets.only(left: 10.0),
-                child: Text(
-                  widget.subject ?? "le sujet est null",
-                  style: TextStyle(fontSize: fontSize, fontFamily: fontFamily),
-                  textAlign: TextAlign.values[align],
-                ),
-              )
-            ],
           ),
-        ),
-      ),
+          floatingActionButton: FloatingActionButton(
+            mini: true,
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                barrierColor: const Color.fromARGB(42, 0, 0, 0),
+                builder: (context) {
+                  return const SetReaderPage();
+                },
+              );
+            },
+            child: Icon(
+              Icons.more_horiz,
+              shadows: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  spreadRadius: 1,
+                  blurRadius: 1,
+                  offset: const Offset(0, 1),
+                ),
+              ],
+            ),
+          ),
+          body: SingleChildScrollView(
+            child:Center(child:  ConstrainedBox(
+              constraints: BoxConstraints(maxWidth: maxWidth),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    SelectableText(
+                        "${widget.title ?? "Titre null"} (${widget.age ?? 0} ans)",
+                        style: const TextStyle(
+                          fontWeight: FontWeight.w700,
+                          fontSize: 20,
+                        ),
+                        textAlign: TextAlign.center),
+                    const SizedBox(height: 25),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 10.0),
+                      child: SelectableText(
+                        widget.subject ?? "le sujet est null",
+                        style: TextStyle(
+                            fontSize: fontSize, fontFamily: fontFamily),
+                        textAlign: TextAlign.values[align],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          ),
+        );
+      },
     );
   }
 }

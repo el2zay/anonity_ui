@@ -81,8 +81,11 @@ class _PostPageState extends State<PostPage> {
                     actions: [
                       TextButton(
                         onPressed: () async {
-                          List<String> drafts =
-                             GetStorage().read('drafts') ?? [];
+                          List<dynamic> dynamicList =
+                              GetStorage().read('drafts') ?? [];
+                          List<String> drafts = dynamicList
+                              .map((item) => item.toString())
+                              .toList();
 
                           Map<String, String> newDraft = {
                             'age': ageController.text,
@@ -100,20 +103,24 @@ class _PostPageState extends State<PostPage> {
                               "Ta Dénonciation a bien été enregistrée",
                               Icons.check);
                         },
-                        child: Text("Enregistrer", style: TextStyle(
-                            color: defaultTargetPlatform == TargetPlatform.iOS
-                                ? Colors.blue[500]
-                                : null)),
+                        child: Text("Enregistrer",
+                            style: TextStyle(
+                                color:
+                                    defaultTargetPlatform == TargetPlatform.iOS
+                                        ? Colors.blue[500]
+                                        : null)),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
-                        child: Text("Quitter", style: TextStyle(
-                            color: defaultTargetPlatform == TargetPlatform.iOS
-                                ? Colors.red
-                                : null)),
+                        child: Text("Quitter",
+                            style: TextStyle(
+                                color:
+                                    defaultTargetPlatform == TargetPlatform.iOS
+                                        ? Colors.red
+                                        : null)),
                       ),
                     ],
                   );
@@ -139,11 +146,11 @@ class _PostPageState extends State<PostPage> {
                   },
                 ).then((value) {
                   if (value != null) {
-                    Map<String, dynamic> returnedData = value;
+                    Map<String, String> returnedData = value;
                     setState(() {
-                      ageController.text = returnedData["age"];
-                      titleController.text = returnedData["title"];
-                      expressionController.text = returnedData["expression"];
+                      ageController.text = returnedData["age"]!;
+                      titleController.text = returnedData["title"]!;
+                      expressionController.text = returnedData["expression"]!;
                     });
                   }
                 });
