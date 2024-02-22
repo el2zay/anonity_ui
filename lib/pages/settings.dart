@@ -176,9 +176,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   fixedSize: const Size.fromHeight(55)),
               onPressed: () {
                 double maxHeight = MediaQuery.of(context).size.height * 0.7;
-                if (maxHeight > 300) {
-                  maxHeight = 300;
-                }
+                if (maxHeight > 300) maxHeight = 300;
 
                 showModalBottomSheet(
                   constraints: BoxConstraints(

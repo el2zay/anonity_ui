@@ -1,6 +1,7 @@
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/common_widgets.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lucide_icons/lucide_icons.dart';
@@ -22,7 +23,7 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
 
   Barcode? result;
   QRViewController? controller;
-  bool showScanner = true;
+  bool showScanner = false;
   bool isButtonDisabled = true;
   bool showLoading = false;
 
@@ -31,6 +32,8 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   @override
   void dispose() {
     errorMessage = '';
+    _passphraseController.dispose();
+    controller?.stopCamera();
     super.dispose();
   }
 
@@ -91,8 +94,8 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
         body: showLoading
             ? loader()
             : showScanner
-                ? buildScannerWidget()
-                : buildClosedScannerWidget(),
+                ? buildClosedScannerWidget()
+                : buildScannerWidget(),
       ),
     );
   }
@@ -120,7 +123,7 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
             onPressed: () {
               setState(() {
                 errorMessage = '';
-                showScanner = false;
+                showScanner = true;
               });
             },
             style: ElevatedButton.styleFrom(
@@ -201,48 +204,54 @@ class _ReceivePassphrasePageState extends State<ReceivePassphrasePage> {
   }
 
   Widget buildClosedScannerWidget() {
-    return Expanded(
-      flex: 5,
-      child: Stack(
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: double.infinity,
-            child: scannerWidget,
-          ),
-          if (errorMessage.isNotEmpty)
-            Positioned(
-              bottom: 80,
-              width: MediaQuery.of(context).size.width,
-              child: Center(
-                child: Text(
-                  errorMessage,
-                  style: TextStyle(
-                    color: Colors.red[800],
-                    fontWeight: FontWeight.w600,
-                    fontSize: 15,
+    return Column(
+      children: [
+        Expanded(
+          flex: 5,
+          child: Stack(
+            children: [
+              SizedBox(
+                width: double.infinity,
+                height: double.infinity,
+                child: scannerWidget,
+              ),
+              if (errorMessage.isNotEmpty)
+                Positioned(
+                  bottom: 80,
+                  width: MediaQuery.of(context).size.width,
+                  child: Center(
+                    child: Text(
+                      errorMessage,
+                      style: TextStyle(
+                        color: Colors.red[800],
+                        fontWeight: FontWeight.w600,
+                        fontSize: 15,
+                      ),
+                    ),
+                  ),
+                ),
+              Positioned(
+                bottom: 20,
+                width: MediaQuery.of(context).size.width,
+                child: Center(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      setState(() {
+                        showScanner = false;
+                        errorMessage = '';
+                      });
+                      // Arrêter complètement la caméra
+                      controller?.stopCamera();
+                      // FocusScope.of(context).unfocus();
+                    },
+                    child: const Text('Fermer le scanner'),
                   ),
                 ),
               ),
-            ),
-          Positioned(
-            bottom: 20,
-            width: MediaQuery.of(context).size.width,
-            child: Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  setState(() {
-                    showScanner = true;
-                    errorMessage = '';
-                  });
-                  FocusScope.of(context).unfocus();
-                },
-                child: const Text('Fermer le scanner'),
-              ),
-            ),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
