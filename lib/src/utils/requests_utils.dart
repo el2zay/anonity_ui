@@ -180,8 +180,7 @@ Future postData(context, age, title, expression) async {
   isDeleted(context, GetStorage().read('token'));
   var client = http.Client();
   var request =
-      // TODO remettre /posts
-      http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/psts'));
+      http.Request('POST', Uri.parse('${dotenv.env['API_REQUEST']!}/posts'));
   request.body = jsonEncode({
     'age': age,
     'title': title,
@@ -194,11 +193,11 @@ Future postData(context, age, title, expression) async {
   http.StreamedResponse response = await client.send(request);
 
   if (response.statusCode == 200) {
+    Navigator.pop(context);
     showSnackBar(context, "Merci pour ta Dénonciation !", LucideIcons.heart);
     return;
   }
 
-  Navigator.pop(context);
   Navigator.pop(context);
 
   showSnackBar(
@@ -207,7 +206,7 @@ Future postData(context, age, title, expression) async {
       Icons.info_rounded,
       "Voir");
 
-  List<String> drafts = box.read('drafts') ?? [];
+  List drafts = box.read('drafts') ?? [];
 
   Map<String, String> newDraft = {
     'age': age,

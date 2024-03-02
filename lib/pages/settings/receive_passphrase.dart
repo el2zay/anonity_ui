@@ -1,7 +1,6 @@
 import 'package:anonity/pages/home.dart';
 import 'package:anonity/src/utils/requests_utils.dart';
 import 'package:anonity/src/widgets/common_widgets.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:lucide_icons/lucide_icons.dart';

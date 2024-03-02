@@ -83,6 +83,7 @@ class _PostPageState extends State<PostPage> {
                         onPressed: () async {
                           List<dynamic> dynamicList =
                               GetStorage().read('drafts') ?? [];
+
                           List<String> drafts = dynamicList
                               .map((item) => item.toString())
                               .toList();
@@ -101,26 +102,22 @@ class _PostPageState extends State<PostPage> {
                           showSnackBar(
                               context,
                               "Ta Dénonciation a bien été enregistrée",
-                              Icons.check);
+                              Icons.check, "Voir");
                         },
-                        child: Text("Enregistrer",
-                            style: TextStyle(
-                                color:
-                                    defaultTargetPlatform == TargetPlatform.iOS
-                                        ? Colors.blue[500]
-                                        : null)),
+                        child: Text("Enregistrer", style: TextStyle(
+                            color: defaultTargetPlatform == TargetPlatform.iOS
+                                ? Colors.blue[500]
+                                : null)),
                       ),
                       TextButton(
                         onPressed: () {
                           Navigator.pop(context);
                           Navigator.pop(context);
                         },
-                        child: Text("Quitter",
-                            style: TextStyle(
-                                color:
-                                    defaultTargetPlatform == TargetPlatform.iOS
-                                        ? Colors.red
-                                        : null)),
+                        child: Text("Quitter", style: TextStyle(
+                            color: defaultTargetPlatform == TargetPlatform.iOS
+                                ? Colors.red
+                                : null)),
                       ),
                     ],
                   );
@@ -146,11 +143,11 @@ class _PostPageState extends State<PostPage> {
                   },
                 ).then((value) {
                   if (value != null) {
-                    Map<String, String> returnedData = value;
+                    Map<String, dynamic> returnedData = value;
                     setState(() {
-                      ageController.text = returnedData["age"]!;
-                      titleController.text = returnedData["title"]!;
-                      expressionController.text = returnedData["expression"]!;
+                      ageController.text = returnedData["age"];
+                      titleController.text = returnedData["title"];
+                      expressionController.text = returnedData["expression"];
                     });
                   }
                 });
@@ -185,7 +182,10 @@ class _PostPageState extends State<PostPage> {
                     style: const TextStyle(fontSize: 21),
                     textAlign: TextAlign.center,
                     maxLength: 2,
-                    keyboardType: TextInputType.number,
+                    keyboardType: const TextInputType.numberWithOptions(
+                      signed: false,
+                      decimal: false,
+                    ),
                     buildCounter: (context,
                             {required currentLength,
                             required isFocused,
@@ -293,7 +293,6 @@ class _PostPageState extends State<PostPage> {
             : () async {
                 await postData(context, ageController.text,
                     titleController.text, expressionController.text);
-                Navigator.pop(context);
               },
         backgroundColor: isButtonDisabled
             ? Theme.of(context).brightness == Brightness.light

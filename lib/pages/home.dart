@@ -288,7 +288,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                         const SizedBox(height: 10),
                         ElevatedButton(
                           onPressed: () {
-                            setState(() {});
+                            Phoenix.rebirth(context);
                           },
                           child: const Text("Réessayer"),
                         ),

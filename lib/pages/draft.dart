@@ -12,7 +12,7 @@ class DraftPage extends StatefulWidget {
 
 class _DraftPageState extends State<DraftPage> {
   Future<List> getDrafts() async {
-    List<String> drafts = GetStorage().read('drafts') ?? [];
+    List drafts = GetStorage().read('drafts') ?? [];
     return drafts.map((draft) => json.decode(draft)).toList();
   }
 
@@ -28,80 +28,70 @@ class _DraftPageState extends State<DraftPage> {
           },
         ),
       ),
-      body: RawScrollbar(
-        thumbColor: Colors.grey[600],
-        radius: const Radius.circular(20),
-        thickness: 5,
-        interactive: true,
-        timeToFade: const Duration(seconds: 3),
-        fadeDuration: const Duration(milliseconds: 300),
-        child: ListView(
-          children: [
-            FutureBuilder(
-              future: getDrafts(),
-              builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-                if (snapshot.data != null) {
-                  return Column(
-                    children: snapshot.data!.map((draft) {
-                      return ListTile(
-                        title: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Center(
-                                child: Text(
-                                  "${draft['title'] ?? ""} (${draft['age'] ?? ""} ans)",
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w700,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
+      body: FutureBuilder(
+        future: getDrafts(),
+        builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+          if (snapshot.data != null) {
+            return Column(
+              children: snapshot.data!.map((draft) {
+                return ListTile(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            "${draft['title'] ?? ""} (${draft['age'] ?? ""} ans)",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w700,
                             ),
-                            IconButton(
-                              splashColor: Colors.transparent,
-                              highlightColor: Colors.transparent,
-                              onPressed: () async {
-                                List<String> drafts =
-                                    GetStorage().read('drafts') ?? [];
-                                drafts.remove(json.encode(draft));
-                                GetStorage().write('drafts', drafts);
+                            textAlign: TextAlign.center,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        splashColor: Colors.transparent,
+                        highlightColor: Colors.transparent,
+                        onPressed: () async {
+                          List drafts =
+                              GetStorage().read('drafts') ?? [];
+                          drafts.remove(json.encode(draft));
+                          GetStorage().write('drafts', drafts);
 
-                                setState(() {});
-                              },
-                              icon: const Icon(
-                                Icons.close,
-                                size: 16,
-                              ),
-                            )
-                          ],
-                        ),
-                        subtitle: Text(
-                          draft['expression'] ?? "",
-                        ),
-                        onTap: () {
-                          Navigator.pop(context, {
-                            "title": draft['title'],
-                            "expression": draft['expression'],
-                            "age": draft['age']
+                          setState(() {
+                            snapshot.data!.remove(draft);
                           });
                         },
-                      );
-                    }).toList(),
-                  );
-                } else {
-                  return const Center(
-                      child: Text(
-                    "Tu n'as pas de brouillons.",
-                    textAlign: TextAlign.center,
-                  ));
-                }
-              },
-            ),
-          ],
-        ),
+                        icon: const Icon(
+                          Icons.close,
+                          size: 16,
+                        ),
+                      )
+                    ],
+                  ),
+                  subtitle: Text(
+                    draft['expression'] ?? "",
+                  ),
+                  onTap: () {
+                    Navigator.pop(context, {
+                      "title": draft['title'],
+                      "expression": draft['expression'],
+                      "age": draft['age']
+                    });
+                  },
+                );
+              }).toList(),
+            );
+          } else {
+            return const Center(
+                child: Text(
+              "Tu n'as pas de brouillons.",
+              textAlign: TextAlign.center,
+            ));
+          }
+        },
       ),
     );
   }

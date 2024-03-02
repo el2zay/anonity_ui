@@ -1,7 +1,5 @@
 import 'dart:convert';
 
-import 'package:anonity/pages/draft.dart';
-import 'package:anonity/pages/post.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -92,35 +90,37 @@ void showSnackBar(BuildContext context, String message, IconData icon,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.all(Radius.circular(15)),
       ),
-      duration: const Duration(seconds: 1),
+      duration: const Duration(milliseconds: 2500),
       backgroundColor: const Color.fromRGBO(28, 28, 28, 1),
       padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-      action: action != null
-          ? SnackBarAction(
-              label: action,
-              onPressed: () {
-                if (action == "Voir") {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const PostPage(),
-                      fullscreenDialog: true,
-                    ),
-                  );
-                  showModalBottomSheet(
-                    context: context,
-                    isScrollControlled: true,
-                    constraints: BoxConstraints(
-                      maxHeight: MediaQuery.of(context).size.height * 0.9,
-                    ),
-                    builder: (context) {
-                      return const DraftPage();
-                    },
-                  );
-                }
-              },
-            )
-          : null,
+      // action: action != null
+      //     ? SnackBarAction(
+      //         label: action,
+      //         textColor: Colors.blue,
+      //         onPressed: () {
+      //           if (action == "Voir") {
+      //             Navigator.push(
+      //               context,
+      //               MaterialPageRoute(
+      //                 builder: (context) => const PostPage(
+      //                 ),
+      //                 fullscreenDialog: true,
+      //               ),
+      //             );
+      //             showModalBottomSheet(
+      //               context: context,
+      //               isScrollControlled: true,
+      //               constraints: BoxConstraints(
+      //                 maxHeight: MediaQuery.of(context).size.height * 0.9,
+      //               ),
+      //               builder: (context) {
+      //                 return const DraftPage();
+      //               },
+      //             );
+      //           }
+      //         },
+      //       )
+      //     : null,
     ),
   );
 }
